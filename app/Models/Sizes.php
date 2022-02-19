@@ -13,4 +13,7 @@ class Sizes extends Model
     protected $fillable=[
         'size_name','trang_thai'
     ];
+    public function sanpham(){
+        return $this->belongsToMany(Products::class,'size_pros','id_size','id_pro');
+    }
 }

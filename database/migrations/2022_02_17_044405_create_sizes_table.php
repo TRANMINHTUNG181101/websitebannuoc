@@ -24,13 +24,13 @@ class CreateSizesTable extends Migration
         DB::table('sizes')->insert(
             array(
                 [
-                    'size_name' => "nho",
+                    'size_name' => "Nhỏ",
                 ],
                 [
-                    'size_name' => "vua",
+                    'size_name' => "Vừa",
                 ],
                 [
-                    'size_name' => "lon",
+                    'size_name' => "Lớn",
                 ]
             )
 
