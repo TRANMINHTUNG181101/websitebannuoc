@@ -41,7 +41,10 @@
                     @endif
                 </div>
 
-
+                <div class="form-group">
+                    <label for="">mo ta san pham</label><br>
+                    <textarea name="Description" id="Description" style="width:100%" cols="30" rows="10"></textarea>
+                </div>
                 <div class="form-group">
                     <label for="">Hinh anh</label>
                     <input type="file" name="ProductImage" id="ProductImage" class="form-control">

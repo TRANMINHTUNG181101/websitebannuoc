@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('ten_san_pham',255);
             $table->integer('gia_ban');
             $table->string('hinh_anh',255);
+            $table->string('mo_ta_san_pham',255)->nullable();
+            $table->string('slug',255);
             $table->tinyInteger('trang_thai')->default(1);
             $table->timestamps();
         });

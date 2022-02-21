@@ -39,24 +39,14 @@
                             <span class="align-middle">Nguyen Lieu</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="#">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Khuyen Mai</span>
-                        </a>
-                    </li>
+ 
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{route('products.show')}}">
                             <i class="align-middle" data-feather="user"></i>
                             <span class="align-middle">San Pham</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="#">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Don Vi San Pham</span>
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </nav>

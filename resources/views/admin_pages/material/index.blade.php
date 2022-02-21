@@ -4,7 +4,7 @@
         <h3>Nguyên liệu</h3>
     </div>
     <div class="add-material">
-        <a href="{{route('material.addview')}}">Them Nguyen Lieu</a>
+        <a href="{{ route('material.addview') }}">Them Nguyen Lieu</a>
         <div class="form-search-mal">
             <form action="{{ route('material.search') }}" method="post">
                 @csrf
@@ -21,7 +21,6 @@
             <?php Session::flush(); ?>
         </div>
     @endif
-    <h3>{{ $idlog }}</h3>
     <div class="content-show">
         <table class="table table-bordered">
             <thead>
@@ -35,7 +34,6 @@
                     <th>ngay nhap</th>
                     <th>han su dung</th>
                     <th>trang thai</th>
-                    <th>thu vien anh</th>
                     <th>thao tac</th>
                 </tr>
             </thead>
@@ -49,21 +47,36 @@
                         </td>
                         <td>{{ $nl->so_luong }}</td>
                         <td>{{ $nl->don_vi_nglieu }}</td>
-                        <td>{{ $nl->ngay_nhap }}</td>
-                        <td>{{ $nl->ngay_het_han }}</td>
-                        <td>{{ $nl->trang_thai }}</td>
                         <td>
-                            <a href="#"><i class="fa fa-edit" style="font-size:24px;color:green"></i></a>
+                            <?php
+                            $dateInFM = date('d/m/Y', $nl->ngay_nhap);
+                            echo $dateInFM;
+                            ?>
                         </td>
+                        <td><?php
+                        $dateInFM = date('d/m/Y', $nl->ngay_het_han);
+                        echo $dateInFM;
+                        ?></td>
+                        <td>{{ $nl->trang_thai }}</td>
+
                         <td>
                             <a href="{{ route('material.delete', $nl->id) }}"><i class="material-icons"
                                     style="font-size:24px;color:red">delete</i></a>
-                            <a href="{{ route('material.editview', $nl->id) }}"><i class="fa fa-edit"
+                            <a href="{{ route('material.editview', $nl->slug) }}"><i class="fa fa-edit"
                                     style="font-size:24px;color:green"></i></a>
                         </td>
                     </tr>
                 @endforeach
+
             </tbody>
+
         </table>
+
     </div>
+    {{-- <span>{{ $nglieu->links() }}</span>
+    <style>
+        .w-5{
+            display: none;
+        }
+    </style> --}}
 @endsection

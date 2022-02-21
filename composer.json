@@ -31,7 +31,8 @@
         },
         "files": [
             "helpers/create_id.php",
-            "helpers/checkinput.php"
+            "helpers/checkinput.php",
+            "helpers/convert_Vi_En.php"
         ]
     },
     "autoload-dev": {
