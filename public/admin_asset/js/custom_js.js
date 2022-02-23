@@ -50,13 +50,6 @@
 //     },
 // });
 
-
-
-
-
-
-
-
 function preview_image(input) {
     var file = $("input[type=file]").get(0).files[0];
 
@@ -95,13 +88,13 @@ $().ready(function() {
 function formatMoney() {
 
     var x = document.getElementById('ImportPrice').value;
-
-
     console.log(x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-
-
     // document.getElementById('ImportPrice').value = x;
     // x.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
     console.log(x);
 }
+
+
+
+// thong ke trang web
