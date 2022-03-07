@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->Integer('httt');
             $table->dateTime('ngaytao');
             $table->double('tongtien');
+            $table->tinyInteger('trangthaithanhtoan')->default(1);
             $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
 

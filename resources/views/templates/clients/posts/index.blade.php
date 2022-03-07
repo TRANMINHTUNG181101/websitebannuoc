@@ -1,6 +1,6 @@
 @extends('templates.clients.frontend')
 @section('content')
-<div class="breadcrumbs_wrap dark mgt">
+<div class="breadcrumbs_wrap dark">
 	<div class="container">
 		<div class="row align-items-center">
 
@@ -33,9 +33,9 @@
 					@if($cate)
 					@foreach($cate as $key => $value)
 					<div class="tab-item-post {{$key == 0 ? 'active' : ''}}">
-								<div class="post_title">
-									<a href="javascript:" >{{$value->tendanhmuc}}</a>
-								</div>
+						<div class="post_title">
+							<a href="javascript:">{{$value->tendanhmuc}}</a>
+						</div>
 					</div>
 					@endforeach
 					@endif
@@ -59,13 +59,13 @@
 									<div class="post-article box-inner">
 										<div class="post-grid-caption-header">
 											<span class="post-article-cat theme-bg">{{ $val->Danhmuc->tendanhmuc}}</span>
-											<h4 class="entry-title"><a href="blog-detail.html">{{$val->tieude}}</a></h4>
-									
+											<h4 class="entry-title"><a href="{{ route('detail.posts', $val->slug)}}">{{$val->tieude}}</a></h4>
+
 										</div>
 									</div>
 									<div class="post-article-footer">
 										<div class="post-author">
-							<a href="search-sidebar.html" class="btn offer_box_btn">Đọc tiếp</a>
+											<a href="{{ route('detail.posts', $val->slug)}}" class="btn offer_box_btn">Đọc tiếp</a>
 										</div>
 										<span><i class="fas fa-calendar mr-1"></i>1 ngày trước</span>
 									</div>

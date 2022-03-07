@@ -33,7 +33,7 @@
                 @foreach($product->size as $key =>  $value)
                 <div class="custom-varient custom-size">
                     <input type="radio" class="custom-control-input" name="sizeRadio" id="sizeRadioOne{{$value->id}}" value="{{$value->id}}" data-toggle="form-caption" data-target="#sizeCaption" {{($value->id == $size ? "checked" : "")}}>
-                    <label class="custom-control-label" for="sizeRadioOne{{$value->id}}">{{$value->ten}}</label>
+                    <label class="custom-control-label" for="sizeRadioOne{{$value->id}}">{{$value->size_name}}</label>
                 </div>
                 @endforeach
                 @endif

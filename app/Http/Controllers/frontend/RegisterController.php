@@ -30,7 +30,7 @@ class RegisterController extends Controller
                     $email->subject('Drinks - Web');
                     $email->to($customer->email, ($customer->hoten) ? $customer->hoten : "");
                 });
-                return redirect()->route('get.home')->with('activeAcc', 'Mã xác thực đã được gửi đến email của bạn, Vui lòng kiểm tra email xác thực tài khoản để có thể đăng nhập.');
+                return redirect()->back()->with('activeAcc', 'Mã xác thực đã được gửi đến email của bạn, Vui lòng kiểm tra email xác thực tài khoản để có thể đăng nhập.');
             }
         }
 
@@ -50,9 +50,9 @@ class RegisterController extends Controller
 
         if($customer->token == $token) {
             $customer->update(['trangthai' => 1, 'token' => null]);
-            return redirect()->route('get.home')->with('activeAcc', 'Tài khoản đã được kích hoạt thành công, bạn có thể đăng nhập');
+            return redirect()->back()->with('activeAcc', 'Tài khoản đã được kích hoạt thành công, bạn có thể đăng nhập');
         }else {
-            return redirect()->route('get.home')->with('activeAcc', 'Tài khoản kích hoạt thất bại');
+            return redirect()->back()->with('activeAcc', 'Tài khoản kích hoạt thất bại');
         }
     }
 
@@ -65,7 +65,7 @@ class RegisterController extends Controller
             $email->subject('Drinks - Lấy Lại Mật Khẩu');
             $email->to($customer->email, ($customer->hoten) ? $customer->hoten : 'Khách hàng');
         });
-        return redirect()->route('get.home')->with('activeAcc', 'Vui lòng kiểm tra Email của bạn để lấy lại mật khẩu.');
+        return redirect()->back()->with('activeAcc', 'Vui lòng kiểm tra Email của bạn để lấy lại mật khẩu.');
 
     }
     public function getPass(Customer $customer, $token)
@@ -74,7 +74,7 @@ class RegisterController extends Controller
 
             return view('templates.clients.account.getPassword', ['customer' => $customer]);
         } else {
-            return redirect()->route('get.home')->with('activeAcc', 'Đặt lại mật khẩu không thành công.');
+            return redirect()->back()->with('activeAcc', 'Đặt lại mật khẩu không thành công.');
         }
     }
 
@@ -83,6 +83,6 @@ class RegisterController extends Controller
 
         $pass = bcrypt($request->password);
         $customer->update(['password' => $pass, 'token' => null]);
-        return redirect()->route('get.home')->with('activeAcc', 'Đặt lại mật khẩu thành công, Bạn có thể đăng nhập');
+        return redirect()->back()->with('activeAcc', 'Đặt lại mật khẩu thành công, Bạn có thể đăng nhập');
     }
 }

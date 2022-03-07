@@ -47,7 +47,8 @@
                     loadCart(data);
                     loadCartItem(data);
                     $('#viewproduct-over').modal('hide');
-                    alertify.success('Đã thêm món', 1);
+                    toastr.options.timeOut = 30;
+                    toastr.success('Đã thêm món');
 
                 }
             })
@@ -65,7 +66,12 @@
             success(data) {
                 loadCart(data);
                 loadCartItem(data);
-                alertify.success('Đã thêm món', 1);
+                toastr.options.timeOut = 30;
+                toastr.options = {
+                    "timeout" : 30,
+                    "positionClass": "toast-top-left",
+                }
+                toastr.error('Đã xoá món');
 
             }
         })
@@ -141,7 +147,8 @@
                     loadCart(data);
                     loadCartItem(data);
                     $('#viewproduct-over').modal('hide');
-                    alertify.success('Đã cập nhật', 1);
+                    toastr.options.timeOut = 30;
+                    toastr.success('Đã cập nhật');
                 }
             })
         }
@@ -164,13 +171,98 @@
             success: function(data) {
                 if (data == true) {
                     location.reload();
-                    alertify.success('Đăng nhập thành công', 1);
+                    toastr.options.timeOut = 30;
+                    toastr.success('Đăng nhập thành công');
                 } else {
                     $('.massage').empty()
                     $('.massage').append(data.loginAcc)
                     $('.massage').show().delay(3000).fadeOut()
                 }
 
+            }
+        });
+    })
+
+    $(document).on('click', '.sendComments', function(e) {
+        e.preventDefault()
+        let textContent = $('.content-commment')
+        let content = textContent.val()
+        let url = $(this).attr('href');
+        let list_commment = $('.review-list');
+
+        if(content) {
+            $.ajax({
+            url: url,
+            type: 'post',
+            data: {
+                content: content,
+            },
+            success: function(data) {
+              if(data) {
+                  list_commment.html(data)
+              }
+            }
+        });
+        } else {
+            textContent.addClass('danger')
+            toastr.error('Bình luận không được bỏ trống.')
+        }
+    })
+
+    $(document).on('click', '.reply_commment', function(e){
+        e.preventDefault()
+        let id_rep = $(this).data('id')
+        $('.form-rep-'+id_rep).slideToggle()
+    })
+
+    $(document).on('click', '.sendCommentsReply',function(e){
+        e.preventDefault()
+        let id = $(this).data('id')
+        let textContent = $('.content-'+id)
+        let content = textContent.val()
+        let url = $(this).attr('href');
+        let list_commment = $('.review-list');
+
+        if(content) {
+            $.ajax({
+            url: url,
+            type: 'post',
+            data: {
+                content: content,
+                id_reply : id
+            },
+            success: function(data) {
+              if(data) {
+                  console.log(data)
+                  list_commment.html(data)
+              }
+            }
+        });
+        } else {
+            textContent.addClass('danger')
+            toastr.error('Bình luận không được bỏ trống.')
+        }
+
+    })
+
+    $(document).on('click', '.filter .toolbar .search', function(){
+        let form_search = $('#form-search').modal('show')
+    })
+    $(document).on('input ', '#keyword_search', function(e){
+        e.preventDefault()
+        let keyword = $(this).val()
+        $.ajax({
+            url:  "{{ route('get.search')}}",
+            type: 'post',
+            data: {
+                keyword: keyword,
+            },
+            success: function(data) {
+              if(data) {
+                $('.list-search').empty()
+                  $('.list-search').fadeIn('slow')
+                  $('.list-search').html(data)
+              }
             }
         });
     })

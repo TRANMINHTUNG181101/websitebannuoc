@@ -1,91 +1,41 @@
 @extends('templates.clients.frontend')
 @section('content')
-
-<section>
-    <div class="container">
-        @if($product)
-        <div class="row">
-
-            <div class="col-lg-5 col-md-12 col-sm-12">
-
-                <div class="img-detail"><img src="{{ asset('uploads/product/'.$product->hinhanh)}}" alt=""></div>
-            </div>
-
-            <div class="col-lg-7 col-md-12 col-sm-12">
-                <div class="woo_pr_detail">
-
-                    <div class="woo_cats_wrps">
-                        <a href="#" class="woo_pr_cats">{{$product->danhmuc->tenloai}}</a>
-                    </div>
-                    <h2 class="woo_pr_title">{{$product->tensp}}</h2>
-
-
-                    <div class="woo_pr_price">
-                        <div class="woo_pr_offer_price">
-                            <h3>{{currency_format($product->giaban)}}</h3>
-                        </div>
-                    </div>
-
-                    <div class="woo_pr_short_desc">
-                        <p>{{$product->mota}}</p>
-                    </div>
-
-                    <div class="woo_pr_color flex_inline_center mb-3">
-                        <div class="woo_pr_varient">
-                            <h6>Size:</h6>
-                        </div>
-                        <div class="woo_colors_list pl-3">
-                            @if($product->size)
-                            @foreach($product->size as $key => $value)
-                            <div class="custom-varient custom-size">
-                                <input type="radio" class="custom-control-input" name="sizeRadio" id="sizeRadioOne{{$value->id}}" value="{{$value->id}}" data-toggle="form-caption" data-target="#sizeCaption" {{($key == 0 ? "checked" : "")}}>
-                                <label class="custom-control-label" for="sizeRadioOne{{$value->id}}">{{$value->size_name}}</label>
-                            </div>
-                            @endforeach
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="woo_btn_action">
-                        <div class="col-12 col-lg-auto">
-                            <input type="number" name="addSl" class="form-control mb-2 full-width" value=1 />
-                        </div>
-                    </div>
-
-                    <div class="woo_btn_action">
-                        <div class="col-12 col-lg-auto">
-                            <button type="submit" id="addCart" data-id="{{$product->id}}" class="btn btn-block btn-dark mb-2">Thêm Vào Giỏ <i class="fas fa-shopping-basket ml-2"></i></button>
-                        </div>
-                        <div class="col-12 col-lg-auto">
-                            <button class="btn btn-gray btn-block mb-2" data-toggle="button">Yêu Thích <i class="fas fa-heart ml-2"></i></button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Product Description -->
-        <div class="row mt-5">
-            <div class="col-lg-12 col-md-12">
-                <div class="custom-tab style-1">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true" aria-expanded="true">Thông tin</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false" aria-expanded="false">Đánh giá</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade active show" id="description" role="tabpanel" aria-labelledby="description-tab" aria-expanded="true">
-                            <p>{{$product->noidung}}</p>
-                        </div>
-
-                        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab" aria-expanded="false">
-                            <div class="review-wrapper">
+<!-- <div class="breadcrumbs_wrap dark">
+				<div class="container">
+					<div class="row align-items-center">
+						
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="text-center">
+								<h2 class="breadcrumbs_title">Single Blog Post Article Style</h2>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div> -->
+			<!-- =========================== Breadcrumbs =================================== -->
+			
+			
+			<!-- =========================== News & Articles =================================== -->
+			<section class="gray">
+				<div class="container">
+					<div class="row">
+	
+						<div class="col-lg-8 col-md-12 col-sm-12">
+							<article class="blog-news big-detail-wrap">
+								<div class="blog-detail-wrap">
+								
+									<!-- Blog Content -->
+									<div class="full blog-content">
+										<a href="blog-detail.html"><h3>{{$post->tieude}}</h3></a>
+										<div class="blog-text">
+                                        {!! html_entity_decode($post->noidung) !!}
+										</div>
+										
+									</div>
+                                </div>
+                            </article>
+							<div class="review-wrapper">
                                 <div class="review-wrapper-header">
                                 </div>
                                 <div class="review-wrapper-body">
@@ -115,7 +65,7 @@
                                                         <p>{{$value->noidung}}</p>
                                                         <div class="col-sm-12">
 
-                                                            <a href="{{ route('get.comment',['product', $value->id_sanpham])}}" data-id="{{$value->id}}" class="reply_commment">Trả lời</a>
+                                                            <a href="{{ route('get.comment',['post', $value->id_baiviet])}}" data-id="{{$value->id}}" class="reply_commment">Trả lời</a>
                                                             <div class="review-wrapper-body hide form-rep form-rep-{{$value->id}}">
                                                                 <div class="row">
 
@@ -123,7 +73,7 @@
                                                                         <textarea class="form-control height-110 content-{{$value->id}}" placeholder="Nội dung bình luận..."></textarea>
                                                                     </div>
                                                                     <div class="col-sm-12">
-                                                                        <a href="{{ route('get.comment',['product', $value->id_sanpham])}}" data-id="{{$value->id}}" class="btn btn-primary sendCommentsReply">Gửi</a>
+                                                                        <a href="{{ route('get.comment',['post', $value->id_baiviet])}}" data-id="{{$value->id}}" class="btn btn-primary sendCommentsReply">Gửi</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -171,8 +121,7 @@
                                     </ul>
                                 </div>
                             </div>
-
-                            <div class="review-wrapper">
+							<div class="review-wrapper">
                                 <div class="review-wrapper-header">
                                     <h4>Bình luận</h4>
                                 </div>
@@ -185,7 +134,7 @@
                                             <textarea class="form-control height-110 content-commment" placeholder="Nội dung bình luận..."></textarea>
                                         </div>
                                         <div class="col-sm-12">
-                                            <a href="{{ route('get.comment',['product', $product->id])}}" class="btn btn-primary sendComments">Gửi</a>
+                                            <a href="{{ route('get.comment',['post', $post->id])}}" class="btn btn-primary sendComments">Gửi</a>
                                         </div>
                                     </div>
                                 </div>
@@ -200,60 +149,66 @@
                                 @endif
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-    </div>
-</section>
-<!-- =========================== Product Detail =================================== -->
+									
+						</div>
+						
+						<!-- Sidebar Start -->
+						<div class="col-lg-4 col-md-12 col-sm-12">
+							<div class="blog-sidebar">
+								
+								<div class="side-widget">
+									<div class="side-widget-header border-0">
+										<h4><i class="fa fa-search" aria-hidden="true"></i> Tìm Kiếm</h4>
+									</div>
+									
+									<div class="side-widget-body p-t-10">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="Từ Khoá...">
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-primary btn-lg">Go</button>
+											</span>
+										</div>
+									</div>
+								</div>
+								
+								<div class="side-widget">
+									<div class="side-widget-header">
+										<h4><i class="fa fa-bars" aria-hidden="true"></i> Bài viết gần đây</h4>
+									</div>
+									<div class="side-widget-body p-t-10">
+										<div class="side-list">
+											<ul class="side-blog-list">
+												@if(isset($lated))
+												@foreach($lated as $value)
+												<li>
+													<a href="{{ route('detail.posts', $value->slug)}}">
+														<div class="blog-list-img">
+															<img src="{{ asset('frontend/img/'.$value->hinhanh) }}" class="img-responsive" alt="">
+														</div>
+													</a>
+													<div class="blog-list-info">
+														<h5><a href="{{ route('detail.posts', $value->slug)}}" title="blog">{{$value->tieude}}</a></h5>
+														<div class="blog-post-meta">
+															<span class="updated">1 ngày trước</span> | <a href="#" rel="tag">{{ $value->Danhmuc->tendanhmuc}}</a>					
+														</div>
+													</div>
+												</li>
+												@endforeach
+												@endif
+												
 
-<!-- =========================== Related Products =================================== -->
-<section class="gray">
-    <div class="container">
+											</ul>
+										</div>
+									</div>
+								</div>
+								
+							
+								
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</section>
 
-        <div class="row">
-            <div class="col-lg-12 col-md-12 mb-2">
-                <h4 class="mb-0">Sản phẩm liên quan</h4>
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col-lg-12 col-md-12">
-                <div class="owl-carousel products-slider owl-theme">
-                    @if($related)
-                    @foreach($related as $value)
-
-                    <div class="item">
-                        <div class="woo_product_grid">
-
-                            <div class="woo_product_thumb">
-                                <img src="{{ asset('uploads/product/'.$value->hinhanh)}}" class="img-fluid" alt="" />
-                            </div>
-                            <div class="woo_product_caption center">
-                                <div class="woo_title">
-                                    <h4 class="woo_pro_title"><a href="{{route('detail', $value->slug)}}">{{$value->tensp}}</a></h4>
-                                </div>
-                                <div class="woo_price ">
-                                    <h6>{{currency_format($value->giaban)}}<span class="less_price"></span></h6>
-                                    <a href="javascript:" class="btn-plus quickView" data-id="{{$value->id}}"><i class="fas fa-plus"></i></i></a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    @endforeach
-                    @endif
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</section>
 @stop

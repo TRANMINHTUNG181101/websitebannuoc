@@ -11,4 +11,8 @@ class Payment extends Model
     protected $table = 'payments';
     protected $fillable = ['tongtien', 'mancc','loaithanhtoan', 'sohoadon','magiaodich', 'magiaodichBank', 'noidung', 'ngaythanhtoan', 'id_donhang'];
 
+    public function Donhang() {
+       return $this->belongsTo(Order::class, 'id_donhang');
+    }
+
 }

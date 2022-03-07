@@ -78,11 +78,41 @@
 						</div>
 					</div>
 				</div>
+				<div class="row filter">
+					<div class="col-lg-12 col-md-12">
+						<div class="toolbar toolbar-products">
+							<div class="toolbar-sorter sorter">
+								<span class="sorter-label" for="sorter">Tìm kiếm</span>
+								<input type="text" class="form-control search" placeholder="Tìm kiếm..." readonly>
+							</div>
+
+							<!-- <div class="modes">
+								<a class="modes-mode mode-grid" title="Grid" href="#"><i class="ti-layout-grid3"></i></a>
+								<a class="modes-mode mode-list" title="Grid" href="#"><i class="ti-view-list"></i></a>
+							</div>
+
+							<div class="field limiter">
+								<label class="label" for="limiter">
+									<span>Show</span>
+								</label>
+								<div class="control">
+									<select id="limiter" data-role="limiter" class="limiter-options">
+										<option value="5">5</option>
+										<option value="10" selected="selected">10</option>
+										<option value="15">15</option>
+										<option value="20">20</option>
+										<option value="25">25</option>
+									</select>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
 
 				<!-- Shorter Toolbar -->
 				@if($danhmuc)
 				@foreach($danhmuc as $value)
-				<div class="row scroll-t-20" id="{{$value->id}}" >
+				<div class="row scroll-t-20" id="{{$value->id}}">
 					<div class="col-lg-12 col-md-12">
 						<div class="toolbar toolbar-products">
 							<div class="toolbar-sorter sorter">
@@ -133,4 +163,24 @@
 		</div>
 	</div>
 </section>
+<div class="modal fade" id="form-search" tabindex="-1" role="dialog" aria-labelledby="add-payment" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" id="view-product">
+			<span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="fas fa-times"></i></span>
+			<span class="header-search">Tìm kiếm</span>
+			<div class="modal-body">
+				<div class="row align-items-center">
+
+					<div class="input-search ol-lg-12 col-md-12 col-sm-12">
+						<i class="fa fa-search" aria-hidden="true"></i>
+						<input type="text" class="form-control" id="keyword_search" placeholder="Tìm tên sản phẩm mà bạn quan tâm">
+					</div>
+					<div class="row align-items-center list-search col-12">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 @stop

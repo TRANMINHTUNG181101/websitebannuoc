@@ -18,10 +18,17 @@
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Admin</title>
+
     <link href="{!! asset('admin_asset/css/app.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/css/custom_css.css') !!}" rel="stylesheet">
 
+
+    <link href="{{ asset('admin_asset/css/style.css')  }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/bootstrap.css') }}" />
+
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -57,6 +64,12 @@
                             <span class="align-middle">Don Vi San Pham</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Đơn hàng</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -68,6 +81,9 @@
     <script src="{!! asset('admin_asset/js/jquery-3.4.1.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
+    
+    <link href="{!! asset('jsconfirm/jquery-confirm.min.css') !!}" rel="stylesheet">
+    <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
@@ -293,6 +309,9 @@
             });
         });
     </script> --}}
+
+
+
 
 
 

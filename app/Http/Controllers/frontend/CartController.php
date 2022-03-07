@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\ChitietDH;
+use App\Models\Comments;
 use App\Models\Donhang;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -83,12 +84,9 @@ class CartController extends Controller
         $request->session()->put('cart', $newCart);
         return view('templates.clients.home.cart');
     }
-    public function delCart(Request $request)
+    public function delCart()
     {
-        // $cart = Session('cart') ? Session('cart') : null;
-        // dd($cart->products);
-
-        dd($request->hihi);
+        return redirect()->route('get.home')->with('activeAcc', 'Mã xác thực đã được gửi đến email của bạn, Vui lòng kiểm tra email xác thực tài khoản để có thể đăng nhập.');
     }
 
     //lưu đơn hàng
@@ -116,6 +114,8 @@ class CartController extends Controller
             $donhang['tongtien'] = $cart->totalPrice;
             $donhang['ngaytao'] = Carbon::now();
             $donhang['httt'] = $request->payment;
+        }else {
+            return redirect()->route('product');
         }
         $payment = $request->payment;
         switch ($payment) {
@@ -150,7 +150,6 @@ class CartController extends Controller
                             return redirect()->away($links['href']);
                         }
                     }
-
                     return redirect()
                         ->route('get.cart')
                         ->with('error', 'Something went wrong.');
@@ -298,6 +297,7 @@ class CartController extends Controller
         if ($request->vnp_Amount) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
+            $donhang['trangthaithanhtoan'] = 1;
             $donhang->save();
             if ($donhang) {
                 foreach ($cart->products as $value) {
@@ -331,6 +331,7 @@ class CartController extends Controller
         } else if ($request->partnerCode) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
+            $donhang['trangthaithanhtoan'] = 1;
             $donhang->save();
             if ($donhang) {
                 foreach ($cart->products as $value) {
@@ -404,8 +405,10 @@ class CartController extends Controller
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+            dd($response);
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
+            $donhang['trangthaithanhtoan'] = 1;
             $donhang->save();
             if ($donhang) {
                 foreach ($cart->products as $value) {

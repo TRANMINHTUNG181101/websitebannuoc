@@ -10,23 +10,32 @@ class Order extends Model
 {
     use HasFactory;
     protected $table = 'orders';
-    protected $fillable = ['hoten','madh','tongtien', 'diachi', 'dienthoai', 'ghichu', 'trangthai', 'id_nhanvien', 'id_khachhang', 'email', 'ngaytao', 'httt'];
+    protected $fillable = ['hoten','madh','tongtien', 'diachi', 'dienthoai', 'ghichu', 'trangthai', 'id_nhanvien', 'id_khachhang', 'email', 'ngaytao', 'httt','trangthaithanhtoan'];
     protected $status = [
-        '0' => [
-            'class' => 'info',
-            'name' => 'Chờ xác nhận'
-        ],
         '1' => [
-            'class' => 'primary',
-            'name' => 'Vận chuyển'
+            'class' => 'info',
+            'name' => 'Chờ xác nhận',
+            'progress' => ''
         ],
         '2' => [
+            'class' => 'warning',
+            'name' => 'Đang xử lí',
+            'progress' => 'load33'
+        ],
+        '3' => [
+            'class' => 'primary',
+            'name' => 'Vận chuyển',
+            'progress' => 'load66'
+        ],
+        '4' => [
             'class' => 'success',
-            'name' => 'Đã giao'
+            'name' => 'Đã giao',
+            'progress' => 'load100'
         ],
         '-1' => [
             'class' => 'danger',
-            'name' => 'Đã huỷ'
+            'name' => 'Đã huỷ',
+            'progress' => 'load0'
         ],
     ];
 

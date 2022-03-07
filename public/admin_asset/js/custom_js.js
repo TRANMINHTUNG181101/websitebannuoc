@@ -92,16 +92,4 @@ $().ready(function() {
 
 
 
-function formatMoney() {
 
-    var x = document.getElementById('ImportPrice').value;
-
-
-    console.log(x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-
-
-    // document.getElementById('ImportPrice').value = x;
-    // x.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-    console.log(x);
-}

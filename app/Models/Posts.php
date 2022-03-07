@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Posts extends Model
 {
     use HasFactory;
+    protected $table = 'posts';
+    protected $fillable = ['tieude','slug','hinhanh','mota','trangthai', 'hot', 'id_danhmuc'];
+    public function Danhmuc(){
+        return $this->belongsTo(MenuPosts::class, 'id_danhmuc');
+    }
 }

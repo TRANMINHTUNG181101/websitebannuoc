@@ -1,17 +1,5 @@
 @extends('templates.clients.frontend')
 @section('content')
-@if(session()->has('messageLogin'))
-<script>
-	alertify.success("{{session()->get('messageLogin')}}", 1);
-</script>
-@endif
-
-@if(session()->has('activeAcc'))
-<script>
-	alertify
-		.alert("Thông báo", "{{session()->get('activeAcc')}}");
-</script>
-@endif
 
 <div class="slideshow bg-pink">
 	<div class="owl-carousel category-slider owl-slide">
@@ -53,7 +41,7 @@
 									<a href="search-sidebar.html"><img src="{{ asset('uploads/type/'.$value->hinhanh)}}" class="img-fluid" alt="" /></a>
 								</div>
 								<div class="woo_cat_caption">
-									<h4><a href="search-sidebar.html">{{$value->tendm}}</a></h4>
+									<h4><a href="search-sidebar.html">{{$value->tenloai}}</a></h4>
 								</div>
 							</div>
 						</div>
@@ -76,7 +64,7 @@
 
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
-				<div class="sec-heading-flex pl-2 pr-2">
+				<div class="sec-heading-flex ">
 					<div class="sec-heading-flex-one">
 						<h2>Sản Phẩm Bán chạy</h2>
 					</div>
@@ -136,7 +124,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
-				<div class="sec-heading-flex pl-2 pr-2">
+				<div class="sec-heading-flex ">
 					<div class="sec-heading-flex-one">
 						<h2>Sản Phẩm Mới</h2>
 					</div>
@@ -188,7 +176,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12">
-					<div class="sec-heading-flex pl-2 pr-2">
+					<div class="sec-heading-flex ">
 						<div class="sec-heading-flex-one center">
 							<h2>Các Sản phẩm</h2>
 						</div>
@@ -256,7 +244,7 @@
 			</div>
 			<div class="row d-flex justify-content-center">
 				<div class="sec-heading-flex-last">
-					<a href="search-sidebar.html" class="btn btn-theme">Xem tất cả <i class="fas fa-arrow-right mgl-5"> </i></a>
+					<a href="{{ route('product')}}" class="btn btn-theme">Xem tất cả <i class="fas fa-arrow-right mgl-5"> </i></a>
 				</div>
 			</div>
 		</div>
@@ -267,7 +255,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
-				<div class="sec-heading-flex pl-2 pr-2">
+				<div class="sec-heading-flex ">
 					<div class="sec-heading-flex-one">
 						<h2>Tin tức</h2>
 					</div>
@@ -291,9 +279,9 @@
 								<div class="offer_title">{{ $value->tieude}}</div>
 							</div>
 						</div>
-
+						
 						<div class="offer_caption">
-							<a href="search-sidebar.html" class="btn offer_box_btn">Đọc tiếp</a>
+							<a href="{{ route('detail.posts', $value->slug)}}" class="btn offer_box_btn">Đọc tiếp</a>
 						</div>
 					</div>
 
@@ -304,15 +292,10 @@
 		</div>
 		<div class="row d-flex justify-content-center">
 			<div class="sec-heading-flex-last">
-				<a href="search-sidebar.html" class="btn btn-theme">Xem tất cả <i class="fas fa-arrow-right mgl-5"></i></a>
+				<a href="{{ route('get.posts')}}" class="btn btn-theme">Xem tất cả <i class="fas fa-arrow-right mgl-5"></i></a>
 			</div>
 		</div>
 	</div>
 </section>
 
-
-
-<script>
-
-</script>
 @stop

@@ -36,7 +36,19 @@ Route::get('/register','RegisterController@showFormRegister')->name('auth.regist
 Route::post('/register','RegisterController@postRegister')->name('authregister');
 Route::post('/login','LoginController@postLogin')->name('authlogin');
 Route::get('/login','LoginController@getLogin')->name('auth.login');
-Route::get('/logout','LoginController@logout')->name('auth.logout');
+Route::get('/logoutAdmin','LoginController@logout')->name('auth.logout');
+
+
+//xử lí đơn hàng
+Route::get('order', 'OrderController@index')->name('get.order');
+Route::get('delorder/{id}', 'OrderController@del')->name('get.del');
+Route::get('viewDetail/{id}', 'OrderController@viewDetail')->name('get.viewDetail');
+Route::get('action/{action}/{id}', 'OrderController@action')->name('get.action');
+Route::get('update/{madh}', 'OrderController@update')->name('get.update');
+Route::get('actionPayment/{action}/{id}', 'OrderController@actionPayment')->name('get.actionPayment');
+Route::get('print-order/{madh}', 'OrderController@print_order')->name('print.order');
+
+
 
 
 
@@ -55,7 +67,7 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('/Cart', 'CartController@index')->name('get.cart');
 
 
-    Route::post('/delCart', 'CartController@delCart')->name('testdl');
+    Route::get('/delCart', 'CartController@delCart')->name('testdl');
 
     //cart update 
     Route::post('/upCart', 'CartController@upCart')->name('get.upCart');
@@ -101,14 +113,19 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::post('/active', 'LoginSocialController@activeSDT')->name('activeSDT');
 
 
+
+
+    //tin tức
     Route::get('posts',  'PostsController@index')->name('get.posts');
+    Route::get('posts/{slug}',  'PostsController@getPosts')->name('detail.posts');
+
 
     Route::get('about',  'AboutController@index')->name('about');
 
 
     Route::get('products',  'ProductController@index')->name('product');
     Route::get('detail/{p}',  'ProductController@detail')->name('detail');
-
+    Route::post('search',  'ProductController@search')->name('get.search');
 
     Route::get('info' ,'LoginSocialController@getInfo')->name('get.infouser');
 
@@ -131,6 +148,12 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::post('forget-password','RegisterController@postforgetPasss')->name('post.forget');
     Route::get('/get-password/{customer}/{token}','RegisterController@getPass')->name('get.pass');
     Route::post('/get-password/{customer}','RegisterController@postPass')->name('post.pass');
+
+
+
+    //bình luận
+    Route::post('comment/{type}/{id}' ,'CommentController@comment')->name('get.comment');
+
 
 
 });
