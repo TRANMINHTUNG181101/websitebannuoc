@@ -90,4 +90,5 @@ class ProductController extends Controller
             'top_sale_num' => $newArrNum,
         ]);
     }
+    
 }

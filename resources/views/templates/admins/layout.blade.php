@@ -20,13 +20,21 @@
 
     <title>Admin</title>
     <link href="{!! asset('admin_asset/bootstrap-5.1.3-dist/css/bootstrap.min.css') !!}" rel="stylesheet">
+
+
     <link href="{!! asset('admin_asset/css/app.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/bootstrap-5.1.3-dist/css/bootstrap.min.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/css/custom_css.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/toastr/toastr.min.css') !!}" rel="stylesheet">
 
 
+
+    <link href="{{ asset('admin_asset/css/style.css')  }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/bootstrap.css') }}" />
+
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -52,6 +60,18 @@
                         </a>
                     </li>
 
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="#">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Don Vi San Pham</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Đơn hàng</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -69,6 +89,9 @@
     <script src="{!! asset('admin_asset/toastr/toastr.min.js') !!}"></script>
 
 
+    
+    <link href="{!! asset('jsconfirm/jquery-confirm.min.css') !!}" rel="stylesheet">
+    <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
@@ -294,6 +317,9 @@
             });
         });
     </script> --}}
+
+
+
 
 
 
