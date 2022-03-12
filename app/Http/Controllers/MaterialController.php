@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class MaterialController extends Controller
 {
@@ -16,10 +17,18 @@ class MaterialController extends Controller
     // {
     //     $this->middleware('auth');
     // }
+
     public function show()
     {
-        $nglieu = Materials::all();
-        return view('admin_pages.material.index', compact('nglieu'));
+        $nglieu = Materials::paginate(1);
+        return view('admin_pages.material.index',compact('nglieu'));
+    }
+    public function showMalAjax()
+    {
+        $nglieu = Materials::paginate(1);
+        return response()->json([
+            'nguyenlieu' => $nglieu
+        ]);
     }
 
     //add new material
@@ -29,18 +38,42 @@ class MaterialController extends Controller
         return view('admin_pages.material.add', compact('dv_nglieu'));
     }
 
-    public function uploadImage($req)
+    public function addMaterialViewAjax()
     {
-        $imageName = "";
-        $images = $req->file('MaterialImage');
-        if ($req->hasFile('MaterialImage')) {
-            $images = $req->file('MaterialImage');
-            $imageName = time() . '.' . $images->extension();
-            $images->move(public_path('uploads/materials'), $imageName);
-        }
-        return $imageName;
+        $dv_nl = MaterialUnit::all();
+        return response()->json([
+            'dv_ngl' => $dv_nl,
+        ]);
+    }
+    public function addMaterialHandleAjax(Request $request)
+    {
+        $newMal = new Materials();
+        $newMal->ten_nglieu = $request->ten_nl;
+        $newMal->slug = Str::slug($request->ten_nl);
+        $newMal->gia_nhap = $request->gia_nhap;
+        $newMal->don_vi_nglieu = $request->don_vi_nglieu;
+        $timecurr = new DateTime();
+        $newMal->ngay_nhap = $timecurr->getTimestamp();
+        $newMal->so_luong = $request->so_luong;
+        $newMal->ngay_het_han = $request->ngay_het_han;
+        $newMal->save();
+        toastr()->success('An error has occurred please try again later.');
+
+        return response()->json(
+            [
+                'message' => "insert database success"
+            ]
+        );
     }
 
+    public function delMalAjax($id)
+    {
+        $del = Materials::findOrFail($id);
+        $del->delete();
+        return response()->json([
+            'msg' => 'xoa thhanh cong'
+        ]);
+    }
     public function addMaterialHandle(Request $req)
     {
         //validate values input from form add
@@ -58,13 +91,13 @@ class MaterialController extends Controller
         $nglieu->gia_nhap = $req->ImportPrice;
         $nglieu->so_luong = $req->MaterialQuantily;
 
+        //format date to timestamp
         $timecurr = new DateTime();
         $nglieu->ngay_nhap = $timecurr->getTimestamp();
-
-        //format date to timestamp
         $tam = $req->ExpiredDate;
         $date = new DateTime($tam);
         $nglieu->ngay_het_han = $date->getTimestamp();
+
         $nglieu->hinh_anh = $imageName;
         $nglieu->don_vi_nglieu = $req->input('select_unit');
         $nglieu->save();
@@ -85,17 +118,13 @@ class MaterialController extends Controller
 
     public function updateMaterial(Request $req)
     {
-
         $nglieu = Materials::findOrFail($req->id);
         $nglieu->ten_nglieu = $req->ten_nglieu;
         $nglieu->gia_nhap = $req->gia_nhap;
         $nglieu->so_luong = $req->so_luong;
 
         if ($req->hinh_anh_edit != null) {
-            $imageName = "";
-            $images = $req->file('hinh_anh_edit');
-            $imageName = time() . '.' . $images->extension();
-            $images->move(public_path('uploads/materials'), $imageName);
+            $imageName = $this->uploadImage($req);
         } else {
             $imageName = $req->imageOld;
         }
@@ -137,5 +166,28 @@ class MaterialController extends Controller
             session()->put('success_del_mal', 'xoa nguyen lieu thanh cong!');
         }
         return redirect('admin/nguyen-lieu');
+    }
+
+    public function checkNameMalExisted($nameMal)
+    {
+        $mal = Materials::all();
+        foreach ($mal as $val) {
+            if ($val->ten_nguyen_lieu == $nameMal) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function uploadImage($req)
+    {
+        $imageName = "";
+        $images = $req->file('MaterialImage');
+        if ($req->hasFile('MaterialImage')) {
+            $images = $req->file('MaterialImage');
+            $imageName = time() . '.' . $images->extension();
+            $images->move(public_path('uploads/materials'), $imageName);
+        }
+        return $imageName;
     }
 }

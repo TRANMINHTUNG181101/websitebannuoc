@@ -14,8 +14,13 @@ class CreateOrderStatisticalsTable extends Migration
     public function up()
     {
         Schema::create('order_statisticals', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->string('ten_san_pham_order',255);
+            $table->integer('so_luot_dat');
+            $table->tinyInteger('trang_thai')->default(1);
             $table->timestamps();
+
+
         });
     }
 
