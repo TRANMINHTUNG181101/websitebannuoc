@@ -1,11 +1,10 @@
 @extends('templates.admins.layout')
 @section('content')
-
 <div class="title-show">
     <h3>San pham</h3>
 </div>
 <div class="add-material">
-    <a href="{{ route('products.addview') }}">Them San Pham</a>
+    <a href="{{ route('products.addview') }}" class="btn btn-success">Them San Pham</a>
     <div class="form-search-mal">
         <form action="{{ route('material.search') }}" method="post">
             @csrf
@@ -33,7 +32,7 @@
                 <th>Hinh anh</th>
                 <th>size</th>
                 <th>trang thai</th>
-                <th>thu vien anh</th>
+                <th>mo ta san pham</th>
                 <th>thao tac</th> 
             </tr>
         </thead>
@@ -43,17 +42,19 @@
                     <td>{{ $sp->id }}</td>
                     <td>{{ $sp->ten_san_pham }}</td>
                     <td>{{ $sp->gia_ban }}</td>
-                    <td><img style="widtd:100px;height:150px" src="{{ asset('uploads/materials/' . $sp->hinh_anh) }}">
+                    <td><img style="widtd:100px;height:150px" src="{{ asset('uploads/products/' . $sp->hinh_anh) }}">
                     </td>
-                    <td>size</td>
-                    <td>{{ $sp->trang_thai }}</td>
                     <td>
-                        <a href="#"><i class="fa fa-edit" style="font-size:24px;color:green"></i></a>
+                        @foreach($sp->size as $value)
+                        {{$value->size_name}}
+                        @endforeach
                     </td>
+                    <td>{{ $sp->trang_thai }}</td>
+                    <td>{{$sp->mo_ta_san_pham}}</td>
                     <td>
                         <a href="{{ route('material.delete', $sp->id) }}"><i class="material-icons"
                                 style="font-size:24px;color:red">delete</i></a>
-                        <a href="{{ route('material.addView', $sp->id) }}"><i class="fa fa-edit"
+                        <a href="#"><i class="fa fa-edit"
                                 style="font-size:24px;color:green"></i></a>
                     </td>
                 </tr>

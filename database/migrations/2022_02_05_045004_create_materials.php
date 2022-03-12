@@ -17,10 +17,11 @@ class CreateMaterials extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ten_nglieu',255);
-            $table->string('gia_nhap',255);
+            $table->integer('gia_nhap');
             $table->string('hinh_anh',255)->nullable();
             $table->integer('so_luong');
             $table->string('don_vi_nglieu',255);
+            $table->string('slug',255);
             $table->integer('ngay_nhap');
             $table->integer('ngay_het_han');
             $table->tinyInteger('trang_thai')->default(1);
