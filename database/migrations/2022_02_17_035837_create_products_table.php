@@ -14,6 +14,13 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('ten_san_pham',255);
+            $table->integer('gia_ban');
+            $table->string('hinh_anh',255);
+            $table->string('mo_ta_san_pham',255)->nullable();
+            $table->string('slug',255);
+            $table->tinyInteger('trang_thai')->default(1);
             $table->Increments('id');
             $table->string('tensp', 100)->unique();
             $table->string('slug', 100);
