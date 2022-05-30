@@ -7,16 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
     <meta name="author" content="AdminKit">
-    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <meta name="keywords"
+        content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mukta+Vaani:wght@300;400;500;600;700&family=Mukta:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="{!! asset('admin_asset/img/icons/icon-48x48.png') !!}" />
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <title>Admin</title>
 
     <link href="{!! asset('admin_asset/css/app.css') !!}" rel="stylesheet">
@@ -66,10 +75,41 @@
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('get.order') }}">
-                            <i class="align-middle" data-feather="user"></i>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                             <span class="align-middle">Đơn hàng</span>
                         </a>
                     </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.admin.coupon') }}">
+                            <i class="fa fa-gift" aria-hidden="true"></i>
+                            <span class="align-middle">Khuyến Mãi</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.shipping') }}">
+                            <i class="fa fa-truck" aria-hidden="true"></i>
+                            <span class="align-middle">Vận Chuyển</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
+                        Trang tĩnh
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.slide') }}">
+                            <i class="fa fa-gift" aria-hidden="true"></i>
+                            <span class="align-middle">Slide</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.shipping') }}">
+                            <i class="fa fa-truck" aria-hidden="true"></i>
+                            <span class="align-middle">Vận Chuyển</span>
+                        </a>
+                    </li>
+
                 </ul>
             </div>
         </nav>
@@ -81,7 +121,8 @@
     <script src="{!! asset('admin_asset/js/jquery-3.4.1.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <link href="{!! asset('jsconfirm/jquery-confirm.min.css') !!}" rel="stylesheet">
     <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     {{-- <script>
@@ -313,8 +354,57 @@
 
 
 
+    <div class="modal_t">
+        <div class="modal_overlay"></div>
+        <div class="modal_body">
+            <div class="modal_close">
+                <i class="fa fa-times"></i>
+            </div>
+            <header class="modal_header">
+                Chọn danh mục
+            </header>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><input type="checkbox" /></th>
+                        <th>STT</th>
+                        <th>Tên</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>1</td>
+                        <td style="font-size: 16px; text-transform: uppercase; font-weight: 600;">
+                            <img class="img-type"
+                                src="http://localhost/website_ban_nuoc/public/uploads/type/tra-trai-cay62.png">
+                            Cà Phê
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="modal_footer">
+                <a href="" id="listPromotion" class="btn primary">Lưu</a>
+            </footer>
+        </div>
+    </div>
+    <script>
+    const close = document.querySelector('.modal_close');
+    const modal = document.querySelector('.modal_t');
+    const modalBody = document.querySelector('.modal_t .modal_body');
 
 
+    close.addEventListener("click", () => {
+        modal.classList.remove('showModal_t')
+    })
+
+    modal.addEventListener("click", () => {
+        modal.classList.remove('showModal_t')
+    })
+    modalBody.addEventListener("click", (e) => {
+        e.stopPropagation();
+    })
+    </script>
 </body>
 
 </html>

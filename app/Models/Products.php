@@ -11,11 +11,23 @@ class Products extends Model
 
 
     protected $table = 'products';
-    protected $fillable = ['tensp','slug','mota','hinhanh','noidung','giaban','id_loaisanpham','trangthai'];
-    public function danhmuc(){
-        return $this->belongsTo(Category::class,'id_loaisanpham');
+    protected $fillable = ['tensp', 'slug', 'mota', 'hinhanh', 'noidung', 'giaban', 'id_loaisanpham', 'trangthai'];
+    public function danhmuc()
+    {
+        return $this->belongsTo(Category::class, 'id_loaisanpham');
     }
-    public function size(){
-        return $this->belongsToMany(Sizes::class,'size_pros','id_pro','id_size');
+    public function size()
+    {
+        return $this->belongsToMany(Sizes::class, 'size_pros', 'id_pro', 'id_size');
+    }
+
+    public function wishlist()
+    {
+        return $this->belongsToMany(Customer::class, 'wishlists', 'id_sanpham', 'id_khachhang');
+    }
+
+    public function Coupon()
+    {
+        return $this->belongsToMany(Coupon::class, 'products_coupon', 'id_product', 'id_coupon');
     }
 }

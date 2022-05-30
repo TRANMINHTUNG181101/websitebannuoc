@@ -7,6 +7,9 @@ class Cart
     public $products = null;
     public $totalPrice = 0;
     public $totalQuanty = 0;
+    public $feeShip = null;
+    public $coupon = null;
+
 
     public function __construct($cart)
     {
@@ -18,12 +21,12 @@ class Cart
     }
     public function addCart($product, $idcart, $sl, $size)
     {
-        $newProduct = ['quanty' => 0, 'productInfo' => $product, 'price' => $product->gia, 'size' => $size];
-            if ($this->products) {
-                if (array_key_exists($idcart, $this->products)) {
-                    $newProduct = $this->products[$idcart];
-                }
+        $newProduct = ['quanty' => 0, 'productInfo' => $product, 'price' => $product->giaban, 'size' => $size];
+        if ($this->products) {
+            if (array_key_exists($idcart, $this->products)) {
+                $newProduct = $this->products[$idcart];
             }
+        }
         $newProduct['quanty'] += $sl;
         $newProduct['price']  = $newProduct['quanty'] * $product->giaban;
         $this->products[$idcart] = $newProduct;
@@ -43,16 +46,16 @@ class Cart
 
         $this->products[$key]['size'] = $size;
         $this->products[$key]['quanty'] = $sl;
-        $this->products[$key]['price'] = $sl * $this->products[$key]['productInfo']->giaban;
+        $this->products[$key]['price'] = $sl * $this->products[$key]['productInfo']->gianban;
 
         $this->totalQuanty += $this->products[$key]['quanty'];
         $this->totalPrice += $this->products[$key]['price'];
-       
     }
-    public function checkCartProduct($id, $size, $cart ) {
+    public function checkCartProduct($id, $size, $cart)
+    {
         $i = 0;
         foreach ($cart->products as $key => $value) {
-            if($value['productInfo']->id == $id ) {
+            if ($value['productInfo']->id == $id) {
                 $i++;
             }
             if ($value['productInfo']->id == $id && $value['size']->id == $size) {
@@ -60,10 +63,9 @@ class Cart
             }
         }
         if ($i > 0) {
-            return $id.$size;
+            return $id . $size;
         } else {
             return $id;
         }
     }
-
 }

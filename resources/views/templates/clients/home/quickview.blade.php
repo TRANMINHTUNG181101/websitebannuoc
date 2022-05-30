@@ -10,7 +10,7 @@
 
         <div class="woo_cats_wrps">
             <a href="#" class="woo_pr_cats">{{$product->danhmuc->tendm}}</a>
-            
+
         </div>
         <h2 class="woo_pr_title">{{$product->tensp}}</h2>
 
@@ -30,9 +30,11 @@
             </div>
             <div class="woo_colors_list pl-3">
                 @if($product->size)
-                @foreach($product->size as $key =>  $value)
+                @foreach($product->size as $key => $value)
                 <div class="custom-varient custom-size">
-                    <input type="radio" class="custom-control-input" name="sizeRadio" id="sizeRadioOne{{$value->id}}" value="{{$value->id}}" data-toggle="form-caption" data-target="#sizeCaption" {{($key == 0 ? "checked" : "")}}>
+                    <input type="radio" class="custom-control-input" name="sizeRadio" id="sizeRadioOne{{$value->id}}"
+                        value="{{$value->id}}" data-toggle="form-caption" data-target="#sizeCaption"
+                        {{($key == 0 ? "checked" : "")}}>
                     <label class="custom-control-label" for="sizeRadioOne{{$value->id}}">{{$value->size_name}}</label>
                 </div>
                 @endforeach
@@ -44,16 +46,18 @@
 
         <div class="woo_btn_action">
             <div class="col-12 col-lg-auto">
-                <input type="number"  name="addSl" class="form-control mb-2 full-width" value=1 />
+                <input type="number" name="addSl" class="form-control mb-2 full-width" value=1 />
             </div>
         </div>
 
         <div class="woo_btn_action">
             <div class="col-12 col-lg-auto">
-                <button type="submit" id="addCart" data-id="{{$product->id}}" class="btn btn-block btn-dark mb-2">Thêm Vào Giỏ <i class="fas fa-shopping-basket ml-2"></i></button>
+                <button type="submit" id="addCart" data-id="{{$product->id}}" class="btn btn-block btn-dark mb-2">Thêm
+                    Vào Giỏ <i class="fas fa-shopping-basket ml-2"></i></button>
             </div>
             <div class="col-12 col-lg-auto">
-                <button class="btn btn-gray btn-block mb-2" data-toggle="button">Yêu Thích <i class="fas fa-heart ml-2"></i></button>
+                <a href="{{route('get.user.wishlist', $product->id)}}"
+                    class="btn btn-gray btn-block mb-2 btn-wishlist">Yêu Thích <i class="fas fa-heart ml-2"></i></a>
             </div>
         </div>
 

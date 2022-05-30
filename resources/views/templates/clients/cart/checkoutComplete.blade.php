@@ -29,7 +29,7 @@
 									{{$madh}}
 									@endif
 								</span></p>
-								<p class="font-size-sm">Bạn sẽ sớm nhận được email xác nhận đơn đặt hàng của bạn. <u>Bạn có thể:</u></p><a class="btn btn-secondary mt-3 mr-3" href="search-sidebar.html">Tiếp tục mua </a><a class="btn btn-primary mt-3" href="order-tracking.html"><i class="czi-location"></i>&nbsp;Theo dõi đơn hàng</a>
+								<p class="font-size-sm">Bạn sẽ sớm nhận được email xác nhận đơn đặt hàng của bạn. <u>Bạn có thể:</u></p><a class="btn btn-secondary mt-3 mr-3" href=" {{ route('product')}}">Tiếp tục mua </a><a class="btn btn-primary mt-3" href=" {{ route('get.infouser', 'history')}}"><i class="czi-location"></i>&nbsp;Theo dõi đơn hàng</a>
 							  </div>
 							</div>
 						

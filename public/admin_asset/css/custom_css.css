@@ -133,7 +133,9 @@
 }
 
 input[type=text] {
-    background-color: #1A2226;
+    /* background-color: #1A2226; */
+    background-color: #fff;
+    cursor: pointer;
     border: none;
     border-bottom: 2px solid #0DB8DE;
     border-top: 0px;

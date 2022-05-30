@@ -9,6 +9,14 @@
                     {{ $order->getStatus($order->trangthai)['name']}}
                 </div>
             </li>
+            <li><span> <i class="fa fa-money" aria-hidden="true"></i> Thông tin thanh toán :</span>
+                @if($order->trangthaithanhtoan == 2 )
+                <div class="badge badge-warning">Chờ thanh toán</div>
+                @else
+                <div class="badge badge-success">Đã thanh toán</div>
+                @endif
+
+            </li>
 
         </ul>
     </div>
@@ -61,11 +69,23 @@
             <b> Tổng tiền sản phẩm</b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
         </div>
         <div class="info-sum">
-            <b>Tiền phí vận chuyển </b><span class="mrg-l10"> 0đ</span>
+            <b>Tiền phí vận chuyển </b><span class="mrg-l10">
+                + {{currency_format($order->Ship->feeship)}}
+            </span>
         </div>
+        @if($order->Coupon)
         <div class="info-sum">
-            <b>Giảm giá </b><span class="mrg-l10"> 0đ</span>
+            @if($order->Coupon->loaigiam === 1)
+            <b>Giảm giá </b><span class="mrg-l10"> {{ $order->Coupon->giamgia}}%
+                ( -
+                {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                )</span>
+            @else
+            <b>Giảm giá </b><span class="mrg-l10"> -
+                {{currency_format($order->Coupon->giamgia)}}</span>
+            @endif
         </div>
+        @endif
         <div class="info-sum text-danger">
             <b>Thành tiền </b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
         </div>

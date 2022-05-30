@@ -38,8 +38,11 @@
                             @if($product->size)
                             @foreach($product->size as $key => $value)
                             <div class="custom-varient custom-size">
-                                <input type="radio" class="custom-control-input" name="sizeRadio" id="sizeRadioOne{{$value->id}}" value="{{$value->id}}" data-toggle="form-caption" data-target="#sizeCaption" {{($key == 0 ? "checked" : "")}}>
-                                <label class="custom-control-label" for="sizeRadioOne{{$value->id}}">{{$value->size_name}}</label>
+                                <input type="radio" class="custom-control-input" name="sizeRadio"
+                                    id="sizeRadioOne{{$value->id}}" value="{{$value->id}}" data-toggle="form-caption"
+                                    data-target="#sizeCaption" {{($key == 0 ? "checked" : "")}}>
+                                <label class="custom-control-label"
+                                    for="sizeRadioOne{{$value->id}}">{{$value->size_name}}</label>
                             </div>
                             @endforeach
                             @endif
@@ -54,10 +57,14 @@
 
                     <div class="woo_btn_action">
                         <div class="col-12 col-lg-auto">
-                            <button type="submit" id="addCart" data-id="{{$product->id}}" class="btn btn-block btn-dark mb-2">Thêm Vào Giỏ <i class="fas fa-shopping-basket ml-2"></i></button>
+                            <button type="submit" id="addCart" data-id="{{$product->id}}"
+                                class="btn btn-block btn-dark mb-2">Thêm Vào Giỏ <i class="fa fa-plus-circle ml-2"
+                                    aria-hidden="true"></i></button>
                         </div>
                         <div class="col-12 col-lg-auto">
-                            <button class="btn btn-gray btn-block mb-2" data-toggle="button">Yêu Thích <i class="fas fa-heart ml-2"></i></button>
+                            <a href="{{route('get.user.wishlist', $product->id)}}"
+                                class="btn btn-gray btn-wishlist btn-block mb-2">Yêu Thích <i
+                                    class="fas fa-heart ml-2"></i></a>
                         </div>
                     </div>
 
@@ -72,19 +79,24 @@
                 <div class="custom-tab style-1">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true" aria-expanded="true">Thông tin</a>
+                            <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
+                                role="tab" aria-controls="description" aria-selected="true" aria-expanded="true">Thông
+                                tin</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false" aria-expanded="false">Đánh giá</a>
+                            <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
+                                aria-controls="reviews" aria-selected="false" aria-expanded="false">Đánh giá</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade active show" id="description" role="tabpanel" aria-labelledby="description-tab" aria-expanded="true">
+                        <div class="tab-pane fade active show" id="description" role="tabpanel"
+                            aria-labelledby="description-tab" aria-expanded="true">
                             <p>{{$product->noidung}}</p>
                         </div>
 
-                        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab" aria-expanded="false">
+                        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab"
+                            aria-expanded="false">
                             <div class="review-wrapper">
                                 <div class="review-wrapper-header">
                                 </div>
@@ -96,7 +108,9 @@
                                             <div class="reviews-box">
                                                 <div class="review-body">
                                                     <div class="review-avatar">
-                                                        <img alt="" src="{{ $value->customer->avatar ?? 'https://media.istockphoto.com/photos/no-image-available-picture-id531302789?s=612x612' }}" class="avatar avatar-140 photo">
+                                                        <img alt=""
+                                                            src="{{ $value->customer->avatar ?? 'https://media.istockphoto.com/photos/no-image-available-picture-id531302789?s=612x612' }}"
+                                                            class="avatar avatar-140 photo">
                                                     </div>
                                                     <div class="review-content">
                                                         <div class="review-info">
@@ -115,15 +129,22 @@
                                                         <p>{{$value->noidung}}</p>
                                                         <div class="col-sm-12">
 
-                                                            <a href="{{ route('get.comment',['product', $value->id_sanpham])}}" data-id="{{$value->id}}" class="reply_commment">Trả lời</a>
-                                                            <div class="review-wrapper-body hide form-rep form-rep-{{$value->id}}">
+                                                            <a href="{{ route('get.comment',['product', $value->id_sanpham])}}"
+                                                                data-id="{{$value->id}}" class="reply_commment">Trả
+                                                                lời</a>
+                                                            <div
+                                                                class="review-wrapper-body hide form-rep form-rep-{{$value->id}}">
                                                                 <div class="row">
 
                                                                     <div class="col-sm-12 form-group">
-                                                                        <textarea class="form-control height-110 content-{{$value->id}}" placeholder="Nội dung bình luận..."></textarea>
+                                                                        <textarea
+                                                                            class="form-control height-110 content-{{$value->id}}"
+                                                                            placeholder="Nội dung bình luận..."></textarea>
                                                                     </div>
                                                                     <div class="col-sm-12">
-                                                                        <a href="{{ route('get.comment',['product', $value->id_sanpham])}}" data-id="{{$value->id}}" class="btn btn-primary sendCommentsReply">Gửi</a>
+                                                                        <a href="{{ route('get.comment',['product', $value->id_sanpham])}}"
+                                                                            data-id="{{$value->id}}"
+                                                                            class="btn btn-primary sendCommentsReply">Gửi</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -135,7 +156,9 @@
                                                                     <div class="reviews-box">
                                                                         <div class="review-body">
                                                                             <div class="review-avatar">
-                                                                                <img alt="" src="{{ $reply->customer->avatar ?? 'https://media.istockphoto.com/photos/no-image-available-picture-id531302789?s=612x612' }}" class="avatar avatar-140 photo">
+                                                                                <img alt=""
+                                                                                    src="{{ $reply->customer->avatar ?? 'https://media.istockphoto.com/photos/no-image-available-picture-id531302789?s=612x612' }}"
+                                                                                    class="avatar avatar-140 photo">
                                                                             </div>
                                                                             <div class="review-content">
                                                                                 <div class="review-info">
@@ -152,7 +175,7 @@
                                                                                 </div>
 
                                                                                 <p>{{$reply->noidung}}</p>
-                                                                          
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -182,10 +205,12 @@
                                     <div class="row">
 
                                         <div class="col-sm-12 form-group">
-                                            <textarea class="form-control height-110 content-commment" placeholder="Nội dung bình luận..."></textarea>
+                                            <textarea class="form-control height-110 content-commment"
+                                                placeholder="Nội dung bình luận..."></textarea>
                                         </div>
                                         <div class="col-sm-12">
-                                            <a href="{{ route('get.comment',['product', $product->id])}}" class="btn btn-primary sendComments">Gửi</a>
+                                            <a href="{{ route('get.comment',['product', $product->id])}}"
+                                                class="btn btn-primary sendComments">Gửi</a>
                                         </div>
                                     </div>
                                 </div>
@@ -235,11 +260,13 @@
                             </div>
                             <div class="woo_product_caption center">
                                 <div class="woo_title">
-                                    <h4 class="woo_pro_title"><a href="{{route('detail', $value->slug)}}">{{$value->tensp}}</a></h4>
+                                    <h4 class="woo_pro_title"><a
+                                            href="{{route('detail', $value->slug)}}">{{$value->tensp}}</a></h4>
                                 </div>
                                 <div class="woo_price ">
                                     <h6>{{currency_format($value->giaban)}}<span class="less_price"></span></h6>
-                                    <a href="javascript:" class="btn-plus quickView" data-id="{{$value->id}}"><i class="fas fa-plus"></i></i></a>
+                                    <a href="javascript:" class="btn-plus quickView" data-id="{{$value->id}}"><i
+                                            class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                 </div>
                             </div>
 

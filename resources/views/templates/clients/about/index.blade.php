@@ -1,7 +1,7 @@
 @extends('templates.clients.frontend')
 @section('content')
 
-<div class="breadcrumbs_wrap dark mgt">
+<!-- <div class="breadcrumbs_wrap dark mgt">
 				<div class="container">
 					<div class="row align-items-center">
 						
@@ -20,7 +20,7 @@
 						
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- =========================== Breadcrumbs =================================== -->
 			
 			
@@ -33,27 +33,26 @@
 						<div class="col-lg-4 col-md-4">
 							<div class="contact-box">
 								<img src="assets/img/us-marker.png" class="mx-auto" alt="">
-								<h4>Global Headquarters</h4>
-								810 Clis Road,<br>
-								Indraprash NW11 0PU, India
+								<h4>Địa chỉ liên hệ</h4>
+								Đ. Lê Lợi, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh <br>
 							</div>
 						</div>
 						
 						<div class="col-lg-4 col-md-4">
 							<div class="contact-box">
 								<img src="assets/img/india-marker.png" class="mx-auto" alt="">
-								<h4>Evolphin India</h4>
-								virasat@gmail.com<br>
-								my.virasat@gmail.com
+								<h4>Email</h4>
+								drinksorders@gmail.com<br>
+								phanminhtri11800@gmail.com
 							</div>
 						</div>
 						
 						<div class="col-lg-4 col-md-4">
 							<div class="contact-box">
 								<img src="assets/img/uk-marker.png" class="mx-auto" alt="">
-								<h4>Evolphin Europe</h4>
-								91+ 123 456 9857<br>
-								91+ 258 548 5426
+								<h4>Điện thoại</h4>
+								033 420 2221<br>
+								033 420 2221
 							</div>
 						</div>
 						

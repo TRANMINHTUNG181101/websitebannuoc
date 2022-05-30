@@ -8,76 +8,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        * {
-            font-family: DejaVu Sans, sans-serif;
-        }
+    * {
+        font-family: DejaVu Sans, sans-serif;
+    }
 
-        .content {
-            text-align: center;
-            width: 100%;
-            margin: 0 auto;
-            margin-top: 50px;
-        }
+    .content {
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
 
-        .header span {
-            display: block;
-            margin-top: 10px;
-        }
+    .header span {
+        display: block;
+        margin-top: 10px;
+    }
 
-        .content .header h1 {
-            margin-bottom: 10px;
-        }
-        .content .header h2 {
-            margin-top: 10px;
-        }
-        .w-50 {
-            float: left;
-            width: 50%;
-        }
+    .content .header h1 {
+        margin-bottom: 10px;
+    }
 
-        .detail {
-            clear: both;
-        }
+    .content .header h2 {
+        margin-top: 10px;
+    }
 
-        .info ul {
-            list-style: none;
-            text-align: left;
-            padding: 0px;
-        }
+    .w-50 {
+        float: left;
+        width: 50%;
+    }
 
-        .info ul li {
-            margin: 10px 0px;
-            font-weight: bold;
-        }
+    .detail {
+        clear: both;
+    }
 
-        .info ul li span {
-            font-weight: 500;
-        }
-        .sum {
-            text-align: right;
-            margin-top: 20px;
-            padding-right: 60px;
-        }
-        .sum b{
-            float: left;
-        }
+    .info ul {
+        list-style: none;
+        text-align: left;
+        padding: 0px;
+    }
 
-        .sum .info-sum {
-            display: block;
-            padding: 10px;
-            border-bottom: 1px solid gray;
-        }
-        table tr td {
-            padding: 10px 0px;
-        }
-        .footer {
-            margin-top: 50px;
-        }
-        table tr th {
-            text-align: left;
-        }
-      
-     
+    .info ul li {
+        margin: 10px 0px;
+        font-weight: bold;
+    }
+
+    .info ul li span {
+        font-weight: 500;
+    }
+
+    .sum {
+        text-align: right;
+        margin-top: 20px;
+        padding-right: 60px;
+    }
+
+    .sum b {
+        float: left;
+    }
+
+    .sum .info-sum {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid gray;
+    }
+
+    table tr td {
+        padding: 10px 0px;
+    }
+
+    .footer {
+        margin-top: 50px;
+    }
+
+    table tr th {
+        text-align: left;
+    }
     </style>
 </head>
 
@@ -109,6 +114,7 @@
                     <tr>
                         <th>STT</th>
                         <th>Sản phẩm</th>
+                        <th>Size</th>
                         <th>Số lượng</th>
                         <th>Giá bán</th>
                     </tr>
@@ -121,6 +127,9 @@
                             {{ $key + 1}}
                         </td>
                         <td>{{ $value->product->tensp ?? "[]" }} ({{ $value->size->size_name }})</td>
+                        <td>
+                            {{ $value->size->size_name }}
+                        </td>
                         <td>
                             {{ $value->soluong }}
                         </td>
@@ -135,16 +144,29 @@
             <div class="d-flex space-r">
                 <div class="sum">
                     <div class="info-sum">
-                        <b> Tổng tiền sản phẩm</b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
+                        <b> Tổng tiền sản phẩm</b><span class="mrg-l10">
+                            {{currency_format($order->tongdonhang)}}</span>
                     </div>
+                    @if($order->Coupon)
                     <div class="info-sum">
-                        <b>Tiền phí vận chuyển </b><span class="mrg-l10"> 0đ</span>
+                        @if($order->Coupon->loaigiam === 1)
+                        <b>Giảm giá </b><span class="mrg-l10"> {{ $order->Coupon->giamgia}}%
+                            ( -
+                            {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                            )</span>
+                        @else
+                        <b>Giảm giá </b><span class="mrg-l10"> -
+                            {{currency_format($order->Coupon->giamgia)}}</span>
+                        @endif
                     </div>
+                    @endif
                     <div class="info-sum">
-                        <b>Giảm giá </b><span class="mrg-l10"> 0đ</span>
+                        <b>Tiền phí vận chuyển </b><span class="mrg-l10">
+                            + {{currency_format($order->Ship->feeship)}}</span>
                     </div>
-                    <div class="info-sum text-danger ">
-                        <b>Thành tiền </b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
+                    <div class="info-sum text-danger t-right">
+                        <b>Thành tiền </b><span class="mrg-l10">
+                            {{currency_format($order->tongtien)}}</span>
                     </div>
 
 

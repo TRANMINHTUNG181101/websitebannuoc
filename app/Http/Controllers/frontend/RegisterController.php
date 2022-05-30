@@ -25,6 +25,7 @@ class RegisterController extends Controller
             $data['diachi'] = $request->address;
             $data['ten'] = $request->ten;
             $data['token'] = $request->_token;
+            $data['trangthai'] = 0;
             if($customer = Customer::create($data)) {
                 Mail::send('templates.clients.account.verifyEmail', compact('customer'), function($email) use($customer){
                     $email->subject('Drinks - Web');
@@ -42,7 +43,7 @@ class RegisterController extends Controller
         if (Auth::guard('customer')->attempt(['email' => $email, 'password' => $password, 'trangthai' => 1])) {
             dd(get_user('customer'));
         } else {
-            dd('hi');
+
         }
     }
 
