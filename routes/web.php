@@ -191,6 +191,13 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('checkoutcomplete', 'CartController@checkoutComplete')->name('checkoutcomplete');
 
 
+    // tra cứu đơn hàng
+    Route::get('searchorder', 'HomeController@searchOrder')->name('search.order');
+    Route::post('resultsearchorder', 'HomeController@searchOrderResult')->name('result.searchOrder');
+
+
+
+
 
 
 

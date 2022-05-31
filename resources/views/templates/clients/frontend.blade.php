@@ -11,13 +11,13 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('frontend/assets/css/styles.css') }}" rel="stylesheet">
-    <script src="{{ asset('backend/assets/alert/alertify.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/assets/alert/alertify.min.js') }}"></script> -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/alertify.min.css')}}" />
+    <!-- <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/alertify.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/default.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/semantic.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/bootstrap.css') }}" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
 

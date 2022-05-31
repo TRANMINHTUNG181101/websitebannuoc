@@ -8,13 +8,12 @@
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
     <meta name="author" content="AdminKit">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-<<<<<<< HEAD
+
 
     <meta name="keywords"
         content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-=======
-    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
->>>>>>> 6fa96679fed2d853f6f194c5514b8e69f8a18118
+    <meta name="keywords"
+        content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -28,11 +27,8 @@
     <link rel="shortcut icon" href="{!! asset('admin_asset/img/icons/icon-48x48.png') !!}" />
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-=======
 
->>>>>>> 6fa96679fed2d853f6f194c5514b8e69f8a18118
     <title>Admin</title>
     <link href="{!! asset('admin_asset/bootstrap-5.1.3-dist/css/bootstrap.min.css') !!}" rel="stylesheet">
 
@@ -67,7 +63,7 @@
                             <span class="align-middle">Nguyen Lieu</span>
                         </a>
                     </li>
- 
+
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{route('products.show')}}">
                             <i class="align-middle" data-feather="user"></i>
@@ -125,22 +121,19 @@
             @yield('content')
         </div>
     </div>
- 
+
 
     <script src="{!! asset('admin_asset/js/app.js') !!}"></script>
     <script src="{!! asset('admin_asset/bootstrap-5.1.3-dist/js/bootstrap.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jquery-3.6.0.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
-<<<<<<< HEAD
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-=======
     <script src="{!! asset('admin_asset/toastr/toastr.min.js') !!}"></script>
 
 
-    
->>>>>>> 6fa96679fed2d853f6f194c5514b8e69f8a18118
+
     <link href="{!! asset('jsconfirm/jquery-confirm.min.css') !!}" rel="stylesheet">
     <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     {{-- <script>

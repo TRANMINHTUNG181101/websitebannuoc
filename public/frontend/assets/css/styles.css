@@ -626,6 +626,153 @@ ul:last-child {
     height: auto;
     padding: 5em 0;
 }
+/* progress */
+.progress-status {
+    margin: auto;
+    width: 100%;
+}
+.progress {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    height: 150px;
+    margin-top: 65px;
+}
+.progress ul {
+    padding: 0;
+    margin: 0;
+    padding-top: 15px;
+    z-index: 9999;
+    position: absolute;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.progress li .fa {
+    background: rgb(170, 169, 169);
+    color: black;
+    display: block;
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: all ease 0.3s;
+    line-height: 30px;
+    font-size: 15px;
+}
+.progress li.active .fa {
+    background-color: #7abf67;
+    background-image: linear-gradient(132deg, #7abf67 0%, #29ceae 100%);
+
+    color: #fff;
+}
+.progress li.active.cancelT .fa {
+    background-color: #fb8a5e;
+    background-image: linear-gradient(315deg, #fb8a5e 50%, #ff0000 99%);
+
+    color: #fff;
+}
+
+.progress li {
+    list-style: none;
+    float: left;
+    width: 25%;
+    text-align: center;
+    color: #aaa;
+    text-transform: uppercase;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all ease 0.2s;
+    vertical-align: bottom;
+    height: 60px;
+    position: relative;
+}
+.progress li.cancelT {
+    width: 50%;
+}
+
+.progress li.active.whiteT .fa {
+    opacity: 0;
+}
+
+.progress li .step-inner {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    font-size: 11px;
+}
+
+.progress li.active,
+.progress li:hover {
+    color: #444;
+}
+
+.progress li:after {
+    content: " ";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: #777;
+    margin: auto;
+    border: solid 7px #fff;
+    border-radius: 50%;
+    margin-top: 40px;
+    box-shadow: 0 2px 13px -1px rgba(0, 0, 0, 0.3);
+    transition: all ease 0.2s;
+}
+
+.progress li:hover:after {
+    background: #555;
+}
+
+.progress li.active:after {
+    border-color: #207893;
+}
+
+.progress .line {
+    width: 75%;
+    margin: auto;
+    background: #ccc;
+    height: 6px;
+    position: absolute;
+    left: 12%;
+    top: 50px;
+    z-index: 1;
+    border-radius: 50px;
+    transition: all ease 0.9s;
+}
+
+.progress .line.cancel {
+    background-color: #ff0000;
+    width: 50%;
+    left: 25%;
+}
+
+.progress .line-progress {
+    content: " ";
+    width: 2%;
+    height: 100%;
+    background: #207893;
+    background: linear-gradient(to right, #207893 0%, #2ea3b7 100%);
+    position: absolute;
+    z-index: 2;
+    border-radius: 50px;
+    transition: all ease 0.9s;
+}
+
+.progress .line-progress.load0 {
+    width: 0%;
+}
+.progress .line-progress.load33 {
+    width: 33.33%;
+}
+.progress .line-progress.load66 {
+    width: 66.66%;
+}
+.progress .line-progress.load100 {
+    width: 100%;
+}
 /*---------------- Global Element: data-overlay --------------*/
 [data-overlay] {
   position: relative;
@@ -1288,7 +1435,11 @@ label.btn {
 
 /*------------- GLobal Settings: Badge ----------------*/
 .badge {
-  font-weight: 400; }
+  font-weight: 600;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 4px;
+}
 
 .badge-xs {
   font-size: 9px; }
@@ -1301,13 +1452,13 @@ label.btn {
   transform: translate(0, -2px); }
 
 .badge-success {
-  background-color:#2ea033; }
+  background-color:#519200; }
 
 .badge-info {
-  background-color: #5dbf13; }
+  background-color: #7ea2cc; }
 
 .badge-primary {
-  background-color: #5dbf13; }
+  background-color: #00a8ff; }
 
 .badge-warning {
   background-color: #f77527; }
@@ -7429,7 +7580,7 @@ ul.digital_product_share li a {
 }
 .teams_description {
     font-size: 17px;
-    line-height: 1.7;
+    text-align: justify;
 }
 .reviews_caption {
     margin-top: 2rem;
@@ -9270,9 +9421,8 @@ ul.footer_social_links li a {
 		flex: 0 0 25%;
 	}
 	.teams_description {
-		font-size: 21px;
-		line-height: 1.7;
-		font-weight: 300;
+		font-size: 17px;
+		font-weight: 500;
 	}
 	nav.dashboard-nav {
 		max-width: 90%;
@@ -9862,15 +10012,11 @@ ul.tp-list li {
     min-width: 220px;
     text-align: left;
 }
-.user-dropdown a {
-    cursor: pointer;
-    font-size: 14px !important;
-    font-weight: normal !important;
-    color:black !important;
-
-}
-.user-dropdown a:hover {
-    color: #ffb141;
+.user-dropdown ul li a {
+    font-size: 15px !important;
+    font-weight: 500;
+    padding: 8px;
+    color: #000;
 }
 .user-dropdown.active {
     display: block;
@@ -9882,8 +10028,19 @@ ul.tp-list li {
     cursor: pointer;
 }
 .user-dropdown ul li {
-    padding-left: unset !important;
-    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    display: block;
+    border-radius: 4px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-dropdown ul li:hover {
+    background-color: #ffb675;
+    color: #fff;
 }
 .social {
     margin-top: 10px;
@@ -10718,3 +10875,81 @@ article.post-promotion {
     font-size: 17px;
     font-weight: 600;
 }
+
+.search-order-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 4px;
+    font-weight: 600;
+}
+
+.form-search-order {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-control-order {
+    background: transparent;
+    outline: none;
+    border: none;
+    padding: 8px;
+    min-width: 300px;
+    font-size: 16px;
+}
+
+.btn-form-search {
+    outline: none;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+.btn-form-search:hover {
+    background-color: #ffc05b;
+    color: #fff;
+}
+.btn-form-search:focus {
+    outline: none;
+    border: none;
+}
+
+.card-search {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding:0;
+}
+
+.card-search-header {
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 12px 12px;
+}
+
+.card-search-body {
+    margin: 12px 0;
+    font-size: 16px;
+}
+
+.text-search-ti {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text-search-con {
+    padding: 4px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #087eff;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.card-search-body img {
+    max-width: 50px;
+    border-radius: 4px;
+}
+
+

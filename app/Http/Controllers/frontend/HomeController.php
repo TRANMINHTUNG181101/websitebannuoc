@@ -5,6 +5,9 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Payment;
 use App\Models\Posts;
 use App\Models\Products;
 use Illuminate\Http\Request;
@@ -76,5 +79,25 @@ class HomeController extends Controller
     public function register()
     {
         return view('templates.clients.home.register');
+    }
+
+    public function searchOrderResult(Request $request)
+    {
+        $order = Order::where('madh', $request->keyWord)->first();
+        $html = '';
+        if ($order) {
+            $deatil = OrderDetail::where('id_donhang', $order->id)->get();
+            $payment = Payment::where('id_donhang', $order->id)->first();
+            $html = view('templates.clients.home.resultSearchOrder', ['order' => $order, 'orderDetail' => $deatil, 'payment' => $payment])->render();
+        } else {
+            $html = view('templates.clients.home.resultSearchOrder', ['order' => $order])->render();
+        }
+
+        return  Response()->json(['resultSearchOrder' => $html]);
+    }
+
+    public function searchOrder()
+    {
+        return view('templates.clients.home.searchOrder');
     }
 }

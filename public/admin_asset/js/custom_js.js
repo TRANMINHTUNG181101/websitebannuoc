@@ -72,7 +72,7 @@ $().ready(function() {
                 });
             },
             error: function(xhr, ajaxOptions, thrownError) {
-                alert("Fail to send ");
+                //alert("Fail to send ");
             },
         });
     }

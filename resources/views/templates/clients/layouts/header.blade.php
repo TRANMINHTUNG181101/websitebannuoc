@@ -91,12 +91,15 @@
                                         @else
                                         <i class="fas fa-user-circle"></i>
                                         <h6 class=" text-user text-overflow">Đăng nhập</h6>
-
                                         @endif
                                     </a>
                                     <div class="user-dropdown">
                                         <i class="fas fa-times dropexit"></i>
                                         <ul>
+                                            <li>
+                                                <i class="fa fa-clock" aria-hidden="true"></i>
+                                                <a href="{{ route('search.order')}}" class="ml-2">Tra cứu đơn hàng</a>
+                                            </li>
                                             @if( get_user('customer'))
                                             <li>
                                                 <i class="fas fa-user"></i>
@@ -115,6 +118,7 @@
                                             </li>
 
                                             @endif
+
 
                                         </ul>
                                     </div>

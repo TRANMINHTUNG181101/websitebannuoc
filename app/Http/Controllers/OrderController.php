@@ -131,8 +131,9 @@ class OrderController extends Controller
                 'order' => $order,
                 'orderDetail' => $orderDetail
             ];
+            $file = $order->madh . '.pdf';
             $pdf = PDF::loadView($this->url . 'pdf', $viewData);
-            return $pdf->stream();
+            return $pdf->stream($file);
         }
     }
 

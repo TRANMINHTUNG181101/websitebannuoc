@@ -514,7 +514,7 @@ a.close.disabled {
 }
 
 .content-order .card .card-header {
-    padding-bottom: 0px;
+    padding : 12px 12px;
 }
 
 .content-order .card tr td img {
@@ -642,6 +642,7 @@ a.close.disabled {
 .card .card-title {
     font-weight: bold;
     color: black;
+    font-family: "Quicksand", sans-serif !important;
 }
 
 /* table  */
@@ -708,7 +709,7 @@ a.close.disabled {
     position: relative;
     width: 90%;
     margin: auto;
-    height: 100px;
+    height: 150px;
     margin-top: 65px;
 }
 .progress ul {
@@ -718,7 +719,7 @@ a.close.disabled {
     z-index: 9999;
     position: absolute;
     width: 100%;
-    margin-top: -40px;
+    margin-top: 20px;
 }
 
 .progress li .fa {
@@ -800,13 +801,13 @@ a.close.disabled {
 }
 
 .progress li.active:after {
-    background: #207893;
+    border-color: #207893;
 }
 
 .progress .line {
     width: 75%;
     margin: auto;
-    background: #eee;
+    background: #ccc;
     height: 6px;
     position: absolute;
     left: 12%;
@@ -1247,4 +1248,47 @@ a.close.disabled {
     -webkit-box-orient: vertical;
 }
 
+.td-right {
+    text-align: right;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+.dropdown-cus {
+    position: relative;
+}
+
+.dropdown-cus.show  .dropdown-menu-cus{
+    visibility: visible;
+    opacity: 1;
+}
+
+.dropdown-menu-cus {
+    position: absolute;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    top: 110%;
+    right: 12%;
+    transition: visibility 0s, opacity .4s linear;
+}
+
+
+.dropdown-menu-cus .dropdown-item {
+    padding: 8px 8px;
+    font-size: 17px;
+    font-weight: 500;
+}
 

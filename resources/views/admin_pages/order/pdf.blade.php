@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Đơn hàng #{{$order->madh}}</title>
     <style>
     * {
         font-family: DejaVu Sans, sans-serif;
@@ -30,6 +30,10 @@
 
     .content .header h2 {
         margin-top: 10px;
+    }
+
+    .td-right {
+        text-align: right;
     }
 
     .w-50 {
@@ -56,32 +60,12 @@
         font-weight: 500;
     }
 
-    .sum {
-        text-align: right;
-        margin-top: 20px;
-        padding-right: 60px;
-    }
-
-    .sum b {
-        float: left;
-    }
-
-    .sum .info-sum {
-        display: block;
-        padding: 10px;
-        border-bottom: 1px solid gray;
-    }
-
     table tr td {
         padding: 10px 0px;
     }
 
     .footer {
         margin-top: 50px;
-    }
-
-    table tr th {
-        text-align: left;
     }
     </style>
 </head>
@@ -116,7 +100,7 @@
                         <th>Sản phẩm</th>
                         <th>Size</th>
                         <th>Số lượng</th>
-                        <th>Giá bán</th>
+                        <th class="td-right">Giá bán</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -133,45 +117,62 @@
                         <td>
                             {{ $value->soluong }}
                         </td>
-                        <td>
-                            {{currency_format($value->giaban)}}
-                        </td>
+                        <td class="td-right">{{currency_format($value->giaban)}} </td>
                     </tr>
                     @endforeach
                     @endif
+                    <tr class="td-right">
+                        <td colspan="4" class="td-right">
+                            <b> Tổng tiền sản phẩm:</b>
+                        </td>
+                        <td class="td-right">
+                            <span>
+                                {{currency_format($order->tongdonhang)}}</span>
+                        </td>
+                    </tr>
+                    <tr class="td-right">
+                        <td colspan="4">
+                            <b>Giảm giá:</b><span>
+                        </td>
+                        <td class="td-right">
+                            <span style="white-space: nowrap;">
+                                @if($order->Coupon)
+                                @if($order->Coupon->loaigiam === 1)
+                                <span> {{ $order->Coupon->giamgia}}%
+                                    ( -
+                                    {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                                    )</span>
+                                @else
+                                <span> -
+                                    {{currency_format($order->Coupon->giamgia)}}</span>
+                                @endif
+                                @else
+                                {{currency_format(0)}}
+                                @endif
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="td-right">
+                        <td colspan="4">
+                            <b>Tiền phí vận chuyển:</b>
+                        </td>
+                        <td class="td-right">
+                            <span>
+                                @if($order->id_feeship && $order->Ship->feeship)+
+                                {{currency_format($order->Ship->feeship)}}@else{{currency_format(0)}}@endif</span>
+                        </td>
+                    </tr>
+                    <tr class="td-right">
+                        <td colspan="4">
+                            <b>Thành tiền:</b>
+                        </td>
+                        <td class="td-right">
+                            <span>{{currency_format($order->tongtien)}}</span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <div class="d-flex space-r">
-                <div class="sum">
-                    <div class="info-sum">
-                        <b> Tổng tiền sản phẩm</b><span class="mrg-l10">
-                            {{currency_format($order->tongdonhang)}}</span>
-                    </div>
-                    @if($order->Coupon)
-                    <div class="info-sum">
-                        @if($order->Coupon->loaigiam === 1)
-                        <b>Giảm giá </b><span class="mrg-l10"> {{ $order->Coupon->giamgia}}%
-                            ( -
-                            {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
-                            )</span>
-                        @else
-                        <b>Giảm giá </b><span class="mrg-l10"> -
-                            {{currency_format($order->Coupon->giamgia)}}</span>
-                        @endif
-                    </div>
-                    @endif
-                    <div class="info-sum">
-                        <b>Tiền phí vận chuyển </b><span class="mrg-l10">
-                            + {{currency_format($order->Ship->feeship)}}</span>
-                    </div>
-                    <div class="info-sum text-danger t-right">
-                        <b>Thành tiền </b><span class="mrg-l10">
-                            {{currency_format($order->tongtien)}}</span>
-                    </div>
 
-
-                </div>
-            </div>
         </div>
 
         <div class="footer">

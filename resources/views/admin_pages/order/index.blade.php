@@ -110,11 +110,10 @@ alertify.success("{{session()->get('message')}}", 1);
 
 
 
-                                            <div class="dropdown action">
-                                                <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-                                                    type="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">Cập nhật</button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown-cus action dropdownMenuButtonCus">
+                                                <button class="btn btn-primary dropdown-toggle" type="button">Cập
+                                                    nhật</button>
+                                                <div class="dropdown-menu-cus">
                                                     <a class="dropdown-item"
                                                         href=" {{ route('get.action', ['process', $value->id])}}"><i
                                                             class="fa fa-refresh" aria-hidden="true"></i> Đã xử lí</a>
@@ -219,6 +218,7 @@ window.onload = () => {
     const checkbox = document.querySelector('.delAll');
     const allCheckBox = document.querySelectorAll('input[name="checkdel[]"]');
     const btnDel = document.querySelector('.submitDelAll');
+    const btnDropDown = document.querySelectorAll('.dropdownMenuButtonCus');
     checkbox.addEventListener('change', (e) => {
         let isCheck = e.target.checked;
         allCheckBox.forEach(item => {
@@ -249,6 +249,17 @@ window.onload = () => {
             }
         })
     })
+
+    if (btnDropDown) {
+        Array.from(btnDropDown).forEach(item => {
+            item.addEventListener('click', (e) => {
+                let menu = e.target.parentElement;
+                if (menu) {
+                    menu.classList.toggle('show');
+                }
+            })
+        })
+    }
 
 }
 </script>

@@ -161,7 +161,7 @@
                                     <th>Size</th>
                                     <th>Số lượng</th>
                                     <th>Giá gốc</th>
-                                    <th class="t-right">Giá bán</th>
+                                    <th class="td-right">Giá bán</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -185,46 +185,71 @@
                                         {{currency_format($value->giaban)}}
                                         @endif
                                     </td>
-                                    <td class="t-right">
+                                    <td class="td-right">
                                         {{currency_format($value->giaban)}}
                                     </td>
                                 </tr>
                                 @endforeach
                                 @endif
+                                <tr class="td-right">
+                                    <td colspan="4" class="td-right">
+                                        <b> Tổng tiền sản phẩm :</b>
+                                    </td>
+                                    <td class="td-right">
+                                        <span>
+                                            {{currency_format($order->tongdonhang)}}</span>
+                                    </td>
+                                </tr>
+                                <tr class="td-right">
+                                    <td colspan="4">
+                                        <b>Giảm giá :</b><span>
+                                    </td>
+                                    <td class="td-right">
+                                        <span class="no-wrap">
+                                            @if($order->Coupon)
+                                            @if($order->Coupon->loaigiam === 1)
+                                            <span> {{ $order->Coupon->giamgia}}%
+                                                ( -
+                                                {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                                                )</span>
+                                            @else
+                                            <span> -
+                                                {{currency_format($order->Coupon->giamgia)}}</span>
+                                            @endif
+                                            @else
+                                            {{currency_format(0)}}
+                                            @endif
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="td-right">
+                                    <td colspan="4">
+                                        <b>Tiền phí vận chuyển : </b>
+                                    </td>
+                                    <td class="td-right">
+                                        <span>
+                                            @if($order->id_feeship && $order->Ship->feeship)
+                                            + {{currency_format($order->Ship->feeship)}}
+                                            @else
+                                            {{currency_format(0)}}
+                                            @endif
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="td-right">
+                                    <td colspan="4">
+                                        <b>Thành tiền :</b>
+                                    </td>
+                                    <td class="td-right">
+                                        <span>
+                                            {{currency_format($order->tongtien)}}
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         {{ $orderDetail->links() }}
-                        <div class="d-flex space-r">
-                            <div class="sum">
-                                <div class="info-sum">
-                                    <b> Tổng tiền sản phẩm</b><span class="mrg-l10">
-                                        {{currency_format($order->tongdonhang)}}</span>
-                                </div>
-                                @if($order->Coupon)
-                                <div class="info-sum">
-                                    @if($order->Coupon->loaigiam === 1)
-                                    <b>Giảm giá </b><span class="mrg-l10"> {{ $order->Coupon->giamgia}}%
-                                        ( -
-                                        {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
-                                        )</span>
-                                    @else
-                                    <b>Giảm giá </b><span class="mrg-l10"> -
-                                        {{currency_format($order->Coupon->giamgia)}}</span>
-                                    @endif
-                                </div>
-                                @endif
-                                <div class="info-sum">
-                                    <b>Tiền phí vận chuyển </b><span class="mrg-l10">
-                                        + {{currency_format($order->Ship->feeship)}}</span>
-                                </div>
-                                <div class="info-sum text-danger t-right">
-                                    <b>Thành tiền </b><span class="mrg-l10">
-                                        {{currency_format($order->tongtien)}}</span>
-                                </div>
 
-
-                            </div>
-                        </div>
 
 
                     </div>
