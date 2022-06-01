@@ -389,6 +389,7 @@ window.onload = () => {
                                             'Xác nhận': {
                                                 btnClass: 'btn-orange',
                                                 action: function() {
+
                                                     submitOrder
                                                         .submit();
                                                 }
@@ -714,5 +715,6 @@ window.onload = () => {
 
 }
 </script>
+
 
 @stop

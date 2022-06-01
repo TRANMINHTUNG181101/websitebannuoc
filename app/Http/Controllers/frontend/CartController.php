@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 
@@ -116,20 +117,7 @@ class CartController extends Controller
     }
     public function delCart()
     {
-        $cart = Session('cart') ? Session('cart') : null;
-        foreach ($cart->products as $value) {
-            //lưu sản phẩm đơn hàng
-            $data['id_donhang'] = 1;
-            $data['id_sanpham'] = $value['productInfo']->id;
-            $data['soluong'] = $value['quanty'];
-            $data['id_size'] = $value['size']->id;
-            $data['giaban'] = $value['price'];
-            $data['giagoc'] = null;
-            if (count($value['productInfo']->Coupon) > 0) {
-                $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
-            }
-            echo '<pre>', var_dump($data), '</pre>';
-        }
+        $this->sendMail('RD80091');
     }
 
     public function InvoiceConfirm()
@@ -379,6 +367,24 @@ class CartController extends Controller
         }
     }
 
+    public function sendMail($madh)
+    {
+        $orderMail = Order::where('madh', $madh)->first();
+        if ($orderMail) {
+            $orderDetail = OrderDetail::where('id_donhang', $orderMail->id)->get();
+            $img_url = env('APP_URL_LINK');
+            $viewData = [
+                'img_url' => $img_url,
+                'order' => $orderMail,
+                'orderDetail' => $orderDetail
+            ];
+            Mail::send('templates.clients.cart.mailOrder', $viewData, function ($email) use ($orderMail) {
+                $email->subject('Drinks - Web');
+                $email->to($orderMail->email, ($orderMail->hoten) ? $orderMail->hoten : "");
+            });
+        }
+    }
+
     public function checkoutComplete(Request $request)
     {
         if ($request->vnp_Amount) {
@@ -417,6 +423,7 @@ class CartController extends Controller
             $payment->ngaythanhtoan = $request->vnp_PayDate;
             $payment->id_donhang = $donhang->id;
             $payment->save();
+            $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else if ($request->partnerCode && $request->resultCode == 0) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
@@ -453,9 +460,11 @@ class CartController extends Controller
             $payment->ngaythanhtoan = $request->responseTime;
             $payment->id_donhang = $donhang->id;
             $payment->save();
+            $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         }
         if ($request->madh) {
+            $this->sendMail($request->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
         }
 
@@ -542,6 +551,7 @@ class CartController extends Controller
             $payment->id_donhang = $donhang->id;
 
             $payment->save();
+            $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else {
             return redirect()

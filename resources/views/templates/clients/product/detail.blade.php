@@ -119,11 +119,13 @@
                                                                     {{$value->customer->ten}}
                                                                 </div>
                                                             </div>
+
                                                             <div class="review-comment-date">
                                                                 <div class="review-date">
                                                                     <span>{{ toTime($value->ngaybl)}}</span>
                                                                 </div>
                                                             </div>
+
                                                         </div>
 
                                                         <p>{{$value->noidung}}</p>
@@ -132,6 +134,10 @@
                                                             <a href="{{ route('get.comment',['product', $value->id_sanpham])}}"
                                                                 data-id="{{$value->id}}" class="reply_commment">Trả
                                                                 lời</a>
+                                                            @if($value->id_khachhang === get_user('customer', 'id'))
+                                                            <a href="{{ route('delete.comment', $value->id)}}"
+                                                                class="reply_commment delete">Xoá</a>
+                                                            @endif
                                                             <div
                                                                 class="review-wrapper-body hide form-rep form-rep-{{$value->id}}">
                                                                 <div class="row">
@@ -145,6 +151,7 @@
                                                                         <a href="{{ route('get.comment',['product', $value->id_sanpham])}}"
                                                                             data-id="{{$value->id}}"
                                                                             class="btn btn-primary sendCommentsReply">Gửi</a>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -175,7 +182,13 @@
                                                                                 </div>
 
                                                                                 <p>{{$reply->noidung}}</p>
-
+                                                                                <div class="col-sm-12">
+                                                                                    @if($reply->id_khachhang ===
+                                                                                    get_user('customer', 'id'))
+                                                                                    <a href="{{ route('delete.comment', $reply->id)}}"
+                                                                                        class="reply_commment delete">Xoá</a>
+                                                                                    @endif
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>

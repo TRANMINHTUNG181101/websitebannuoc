@@ -212,7 +212,7 @@ $(document).on('click', '.sendComments', function(e) {
 $(document).on('click', '.reply_commment', function(e) {
     e.preventDefault()
     let id_rep = $(this).data('id')
-    $('.form-rep-' + id_rep).slideToggle()
+    $('.form-rep-' + id_rep).slideToggle();
 })
 
 $(document).on('click', '.sendCommentsReply', function(e) {
@@ -243,6 +243,21 @@ $(document).on('click', '.sendCommentsReply', function(e) {
         toastr.error('Bình luận không được bỏ trống.')
     }
 
+})
+
+$(document).on('click', '.reply_commment.delete', function(e) {
+    e.preventDefault()
+    let url = $(this).attr('href');
+    let list_commment = $('.review-list');
+    $.ajax({
+        url: url,
+        type: 'get',
+        success: function(data) {
+            if (data) {
+                list_commment.html(data)
+            }
+        }
+    });
 })
 
 $(document).on('click', '.filter .toolbar .search', function() {

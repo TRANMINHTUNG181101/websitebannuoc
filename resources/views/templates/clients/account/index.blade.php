@@ -73,7 +73,7 @@
                                                 <div class="sendsms-block">
                                                     <input class="form-control" name="sodienthoai" type="number"
                                                         value="{{$user->sodienthoai}}">
-                                                    <div class="codeVerifly hide">
+                                                    <div class="codeVerifly hide_hide">
                                                         <span>Mã Xác Nhận (Kiểm tra điện thoại!)</span>
                                                         <input class="inputcode" min='0' size="1" max='9' type="number"
                                                             maxlength="1">
@@ -288,7 +288,7 @@ const sms = {
 
             } else {
                 if (this.isSend) {
-                    inputCode.classList.remove('hide');
+                    inputCode.classList.remove('hide_hide');
                     const valid = Array.from(inputs).every(input => input.value !== '' && true);
                     if (valid) {
                         const code = Array.from(inputs).reduce((prevValue, input, ) => {
@@ -356,8 +356,8 @@ const sms = {
             .then((confirmationResult) => {
                 window.confirmationResult = confirmationResult;
                 this.isSend = true;
-                inputCode.classList.remove('hide');
-                captcha.classList.add('hide');
+                inputCode.classList.remove('hide_hide');
+                captcha.classList.add('hide_hide');
                 inputSms.disabled = true;
                 btnSms.innerText = "Xác Nhận";
 
@@ -374,7 +374,7 @@ const sms = {
             divSendSms.classList.add('success');
             sms.isSuccess = true;
             inputSms.disabled = false;
-            inputCode.classList.add('hide');
+            inputCode.classList.add('hide_hide');
             btnSms.disabled = true;
             const user = result.user;
             console.log(user)

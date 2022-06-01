@@ -40,11 +40,19 @@ alertify.success("{{session()->get('message')}}", 1);
                     </form>
 
                 </div>
+
             </div>
             <div class="table form-submit">
                 <form action="{{route('dels')}}" method="post">
                     @csrf
-                    <button class="btn btn-danger submitDelAll" type="submit" disabled>Xoá đơn</button>
+                    <div class="action-order">
+                        <button class="btn btn-danger submitDelAll" type="submit" disabled>Xoá đơn</button>
+                        <a href=" {{ route('create.order')}}" class="btn btn-primary">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            Tạo đơn hàng
+                        </a>
+
+                    </div>
                     <table class="" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>

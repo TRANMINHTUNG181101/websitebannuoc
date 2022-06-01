@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\FeeShip;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf;
+use Facade\FlareClient\Http\Response;
 
 class OrderController extends Controller
 {
@@ -153,5 +155,17 @@ class OrderController extends Controller
             }
         }
         return redirect()->back();
+    }
+
+    public function createOrder()
+    {
+
+        return view($this->url . 'create');
+    }
+
+    public function getCustomer()
+    {
+        $customer = Customer::where('trangthai', 1)->get();
+        return response()->json(['customer' => $customer]);
     }
 }

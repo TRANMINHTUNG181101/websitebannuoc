@@ -87,6 +87,9 @@ Route::get('update/{madh}', 'OrderController@update')->name('get.update');
 Route::get('actionPayment/{action}/{id}', 'OrderController@actionPayment')->name('get.actionPayment');
 Route::get('print-order/{madh}', 'OrderController@print_order')->name('print.order');
 Route::post('dels', 'OrderController@dels')->name('dels');
+// tao mo don hang
+Route::get('createOrder', 'OrderController@createOrder')->name('create.order');
+Route::get('getCustomer', 'OrderController@getCustomer')->name('get.customer');
 
 
 // thêm mã khuyễn mãi
@@ -266,6 +269,7 @@ Route::group(['namespace' => 'frontend'], function () {
 
     //bình luận
     Route::post('comment/{type}/{id}', 'CommentController@comment')->name('get.comment');
+    Route::get('delete/{id}', 'CommentController@deleteComment')->name('delete.comment');
 
     //ma khuyen mai
 
