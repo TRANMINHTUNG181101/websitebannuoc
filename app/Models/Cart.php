@@ -27,6 +27,7 @@ class Cart
                 $newProduct = $this->products[$idcart];
             }
         }
+
         $newProduct['quanty'] += $sl;
         $newProduct['price']  = $newProduct['quanty'] * $product->giaban;
         $this->products[$idcart] = $newProduct;

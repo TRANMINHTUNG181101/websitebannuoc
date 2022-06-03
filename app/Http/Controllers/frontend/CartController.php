@@ -115,9 +115,10 @@ class CartController extends Controller
         $request->session()->put('cart', $newCart);
         return view('templates.clients.home.cart');
     }
-    public function delCart()
+    public function delCart(Request $request)
     {
-        $this->sendMail('RD80091');
+        $request->session()->forget('cartAD');
+        return view('admin_pages.order.itemCart');
     }
 
     public function InvoiceConfirm()

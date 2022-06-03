@@ -90,6 +90,7 @@ Route::post('dels', 'OrderController@dels')->name('dels');
 // tao mo don hang
 Route::get('createOrder', 'OrderController@createOrder')->name('create.order');
 Route::get('getCustomer', 'OrderController@getCustomer')->name('get.customer');
+Route::post('createcart', 'OrderController@createcart')->name('post.createcart');
 
 
 // thêm mã khuyễn mãi

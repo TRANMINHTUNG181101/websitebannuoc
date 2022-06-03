@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Products;
 use App\Models\Customer;
+use App\Models\District;
 use App\Models\FeeShip;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Payment;
+use App\Models\category;
+use App\Models\Province;
+use App\Models\Sizes;
+use App\Models\Ward;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Facade\FlareClient\Http\Response;
+use Svg\Tag\Rect;
 
 class OrderController extends Controller
 {
@@ -159,13 +167,55 @@ class OrderController extends Controller
 
     public function createOrder()
     {
-
-        return view($this->url . 'create');
+        $pro = Province::all();
+        $product = Products::where('trangthai', 1)->orderBy('id_loaisanpham')->get();
+        $category = Category::where('trangthai', 1)->get();
+        foreach ($product as $value) {
+            $product->size = $value->size;
+            $product->danhmuc = $value->danhmuc;
+        }
+        return view($this->url . 'create', ['province' => $pro, 'product'  => ($product), 'category'  => $category]);
     }
 
     public function getCustomer()
     {
         $customer = Customer::where('trangthai', 1)->get();
         return response()->json(['customer' => $customer]);
+    }
+
+    public function createcart(Request $request)
+    {
+        $inputData = $request->value;
+        foreach ($inputData as $value) {
+            $product = Products::find((int)$value['idProduct']);
+            $discount = 0;
+            if (count($product->Coupon) > 0) {
+                if ($product->Coupon[0]->loaigiam === 1) {
+                    $discount = $product->giaban *  $product->Coupon[0]->giamgia / 100;
+                } else {
+                    $discount = $product->Coupon[0]->giamgia;
+                }
+            }
+            $product->giagoc = $product->giaban;
+            $product->giaban = ($product->giaban - $discount < 0) ? 0 : $product->giaban - $discount;
+            foreach ($value['listSize'] as $idSize) {
+                if ($idSize) {
+                    $size = Sizes::find((int)$idSize);
+                    if ($product != null) {
+                        $oldCart = Session('cartAD') ? Session('cartAD') : null;
+                        $newCart = new Cart($oldCart);
+                        $idCart = $product->id;
+                        if ($oldCart) {
+                            $idCart = $newCart->checkCartProduct($product->id, (int)$idSize, $oldCart);
+                        }
+                        $newCart->addCart($product, $idCart, 1, $size);
+                        $request->session()->put('cartAD', $newCart);
+                    }
+                }
+            }
+        }
+
+        $html = view('admin_pages.order.itemCart')->render();
+        return  Response()->json(['html' => $html]);
     }
 }

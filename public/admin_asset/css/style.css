@@ -1251,6 +1251,13 @@ a.close.disabled {
 .td-right {
     text-align: right;
 }
+.td-left {
+    text-align: left;
+}
+
+.pr-10pt {
+    padding-right: 10% !important;
+}
 
 .no-wrap {
     white-space: nowrap;
@@ -1321,6 +1328,8 @@ a.close.disabled {
     background-color: transparent;
     border: 1px solid #0d6efd;
     cursor: pointer;
+    margin-bottom: 12px;
+
 }
 
 .btn-add-info:hover {
@@ -1329,15 +1338,36 @@ a.close.disabled {
 }
 
 .modal-order {
-    display: flex;
+    display: none;
 }
 
-.modal-order .modal_body {
+.modal-order-product {
+    display: none;
+}
+.modal-order-product .modal_body{
+    width: 75%;
+    overflow-y: unset;
+    top: 10px;
+}
+.modal-order-product .modal_body .modal-order-content {
+    padding: 12px;
+}
+
+.modal_body .table thead {
+    background-color: #f8f8f8;
+    border: 0;
+}
+
+
+
+.modal-s .modal_body {
     transform: translateX(-50%);
     left: 50%;
+    height: fit-content;
+    max-height: 600px;
 }
 
-.modal-order .modal_header {
+.modal-s .modal_header {
     border-bottom: none;
 }
 
@@ -1345,27 +1375,27 @@ a.close.disabled {
     display: flex;
 }
 
-.modal-order .modal_footer .btn {
+.modal-s .modal_footer .btn {
     min-width: 200px;
     padding: 4px 0;
     opacity: .8;
 }
 
-.modal-order .modal_footer .btn:hover {
+.modal-s .modal_footer .btn:hover {
     opacity: 1;
 }
 
-.modal-order .modal_footer {
+.modal-s .modal_footer {
     display: flex;
     gap: 12px;
     color: #fff;
     margin: 3px 8px;
 }
-.modal-order .modal_footer .btn.gray {
+.modal-s .modal_footer .btn.gray {
     background-color: #e2e2e2;
 }
 
-.modal-order .modal_header {
+.modal-s .modal_header {
     text-align: center;
 }
 
@@ -1425,4 +1455,161 @@ a.close.disabled {
     background-color: #1f81d8;
     color: #fff;
     cursor: pointer;
+}
+
+option {
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+.form_control.error-valid {
+    border-color: red;
+}
+
+.info-cus {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 500;
+    border-top: 1px solid #d1d1d1;
+    padding: 8px 8px 8px;
+}
+
+.editInfo {
+    display: none;
+    text-align: right;
+    font-size: 17px;
+    color: #0071e2;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.rowinfo.edit .btn-add-info {
+    display: none;
+}
+.rowinfo.edit .editInfo {
+    display: block;
+}
+
+
+
+.rowinfo.edit .text-info-user {
+    display: block;
+    margin-bottom: 12px;
+    width: 100%;
+    text-align: right;
+    word-break: break-word;
+    white-space: unset;
+}
+
+.rowinfo.edit span {
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.rowinfo.edit .info-cus input {
+    border: none;
+    text-align: right;
+}
+
+.size-product {
+    display: flex;
+    flex-direction: column;
+}
+
+.size-product .size > * {
+    cursor: pointer;
+}
+.size-product .size {
+    width: fit-content;
+    border: 1px solid transparent;
+    padding: 2px 4px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+}
+.size-product .size.valid {
+    color: red;
+    border-color: red;
+}
+
+
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.flex-20 {
+    display: flex;
+    gap: 20px;
+}
+
+.scroll-y {
+    overflow-y: scroll;
+    max-height: 400px;
+}
+.scroll-y::-webkit-scrollbar {
+    width: 5px;
+}
+.scroll-y::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius :4px;
+
+  }
+.scroll-y::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius :4px;
+
+  }
+
+.scroll-y table tbody.list-product {
+    border: none;
+}
+
+.scroll-y table th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f8f8;
+}
+
+.table-pro  tbody tr th {
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.price-old {
+    display: block;
+    text-decoration: line-through;
+    color: #ccc;
+}
+
+.arrow,
+.quanty-updown input {
+    border: 0;
+    outline: 0;
+    width: 40px;
+    height: 40px;
+
+    
+}
+.quanty-updown input {
+    text-align: center;
+    width: 60px;
+}
+.quanty-updown {
+    display: inline-flex;
+    border-radius: 4px;
+    border : 1px solid #eee;
+}
+
+.noc-valid {
+    font-size: 16px;
+    color: red;
+    text-align: center;
+    font-weight: 500;
+    display: none;
+}
+
+.noc-valid.show {
+    display: block;
 }
