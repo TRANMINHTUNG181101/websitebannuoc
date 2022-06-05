@@ -168,6 +168,7 @@ class OrderController extends Controller
     public function createOrder()
     {
         $pro = Province::all();
+        $pro = FeeShip::whereNotNull('province_id')->get();
         $product = Products::where('trangthai', 1)->orderBy('id_loaisanpham')->get();
         $category = Category::where('trangthai', 1)->get();
         foreach ($product as $value) {
@@ -217,5 +218,25 @@ class OrderController extends Controller
 
         $html = view('admin_pages.order.itemCart')->render();
         return  Response()->json(['html' => $html]);
+    }
+
+    public function deleteCartAd(Request $request)
+    {
+        $keyCart = $request->keyCart;
+        $oldCart = Session('cartAD') ? Session('cartAD') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->deleteCart($keyCart);
+        if (count($newCart->products) > 0) {
+            $request->session()->put('cartAD', $newCart);
+        } else {
+            $request->session()->forget('cartAD');
+        }
+        $html = view('admin_pages.order.itemCart')->render();
+        return  Response()->json(['html' => $html]);
+    }
+
+    public function saveOrderAd(Request $request)
+    {
+        dd($request->all());
     }
 }

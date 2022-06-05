@@ -4,7 +4,8 @@
 <div class="content-order">
     <div class="container-fluid p-0">
         <h1 class="h6 mb-3">Tạo mới đơn hàng</h1>
-        <form action="" class="form-submit">
+        <form action="{{ route('post.saveOrderAd')}}" method="post" class="form-submit">
+            @csrf
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
@@ -103,7 +104,8 @@
                                                 </span>
                                             </th>
                                             <th>
-                                                <a href="" id="deletecart" class="btn btn-danger mgr-5">
+                                                <a href="#" id="deletecart" data-id="{{$key}}"
+                                                    class="btn btn-danger mgr-5">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </a>
                                             </th>
@@ -170,10 +172,10 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <a href=" {{ route('create.order')}}" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         Lưu đơn hàng
-                    </a>
+                    </button>
                 </div>
             </div>
         </form>
@@ -231,9 +233,14 @@
                         <div class="form_group">
                             <label>Thành phố / Tỉnh: </label>
                             <select class="form_control province">
+                                <option value="">
+                                    Chọn Tỉnh / Thành phố
+                                </option>
                                 @if($province)
                                 @foreach($province as $value)
-                                <option value="{{$value->province_code}}">{{$value->province_name}}</option>
+                                <option value="{{$value->GetProvince->province_code}}">
+                                    {{$value->GetProvince->province_name}}
+                                </option>
                                 @endforeach
                                 @endif
                             </select>
@@ -361,8 +368,6 @@ window.onload = () => {
     const inputAutoProduct = document.querySelector('.searchProduct');
     const searchAutoProduct = document.querySelector('.searchAutoProduct');
     const searchAutoCategory = document.querySelector('.category');
-
-
 
 
 
@@ -553,6 +558,9 @@ window.onload = () => {
                 e.preventDefault();
                 if (hoten.value && email.value && sodienthoai.value && diachi.value && province
                     .value && district.value && ward.value) {
+                    let provinceText = province.options[province.selectedIndex].text;
+                    let districtText = district.options[district.selectedIndex].text;
+                    let wardText = ward.options[ward.selectedIndex].text;
                     document.querySelector('.content-info').innerHTML = `
                                 <div class="col-12 info-cus">
                                     <span> <i class="fa fa-id-card-o" aria-hidden="true"></i> Họ tên:</span>
@@ -576,8 +584,11 @@ window.onload = () => {
                                 </div>
                                 <div class="col-12 info-cus">
                                     <span><i class="fa fa-map-marker" aria-hidden="true"></i> Địa chỉ:</span>
-                                    <span class="text-info-user"> ${diachi.value}</span>
+                                    <span class="text-info-user"> ${diachi.value +', '+ wardText+', ' + districtText+', ' + provinceText}</span>
                                     <input hidden name="diachi" value='${diachi.value}' />
+                                    <input hidden name="province" value='${province.value}' />
+                                    <input hidden name="district" value='${district.value}' />
+                                    <input hidden name="ward" value='${ward.value}' />
                                 </div>`;
                     document.querySelector('.rowinfo').classList.add('edit');
 
@@ -629,9 +640,11 @@ window.onload = () => {
                 let checkbox = document.querySelectorAll('input[name="choose[]"]');
                 let checked = Array.from(checkbox).filter(item => item.checked);
                 let listProduct = [];
+                let isValid = false;
                 checked.forEach(item => {
                     let check = this.checkValidSize(item, item.dataset.id);
                     if (!check) {
+                        isValid = true;
                         return;
                     }
                     listProduct.push({
@@ -639,8 +652,14 @@ window.onload = () => {
                         'listSize': check
                     });
                 })
+                if (isValid) {
+                    return;
+                }
                 this.createCart(listProduct);
             }, false)
+
+
+
 
         },
         checkbox: function() {
@@ -710,12 +729,53 @@ window.onload = () => {
                     if (check) {
                         listProductOrder.innerHTML = check.html;
                         modalProduct.classList.remove('showmodal_order');
+                        this.addEventDelete();
                     }
                 } else {
                     alert('laasy du lieu that bai !!!')
                 }
             })();
         },
+        deleteItemCart: function(value) {
+            (async () => {
+                let url = "{{route('post.deletecart')}}";
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        'keyCart': value
+                    })
+                });
+                if (response && response.status === 200) {
+                    const check = await response.json();
+                    if (check) {
+                        listProductOrder.innerHTML = check.html;
+                        this.addEventDelete();
+                    }
+                } else {
+                    alert('laasy du lieu that bai !!!')
+                }
+            })();
+        },
+
+        addEventDelete: function() {
+            const deleteCart = document.querySelectorAll('#deletecart');
+            deleteCart.forEach(item => {
+                item.addEventListener('click', e => {
+                    e.preventDefault();
+                    let id = e.target.closest('#deletecart').dataset.id;
+                    if (id) {
+                        this.deleteItemCart(id);
+                    }
+                })
+            })
+
+        },
+
         start: function(product, category) {
             this.products = product;
             this.categories = category;

@@ -91,6 +91,8 @@ Route::post('dels', 'OrderController@dels')->name('dels');
 Route::get('createOrder', 'OrderController@createOrder')->name('create.order');
 Route::get('getCustomer', 'OrderController@getCustomer')->name('get.customer');
 Route::post('createcart', 'OrderController@createcart')->name('post.createcart');
+Route::post('deleteCartAd', 'OrderController@deleteCartAd')->name('post.deletecart');
+Route::post('saveOrderAd', 'OrderController@saveOrderAd')->name('post.saveOrderAd');
 
 
 // thêm mã khuyễn mãi

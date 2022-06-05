@@ -86,7 +86,7 @@ alertify.success("{{session()->get('message')}}", 1);
                                         </div>
                                     </div>
                                     <div class="border-body">
-                                        <div class="col-w">
+                                        <div class="col-w" style="width: 230px;">
                                             <ul>
                                                 <li>{{ $value->dienthoai}}</li>
                                                 <li>{{ $value->email}}</li>
