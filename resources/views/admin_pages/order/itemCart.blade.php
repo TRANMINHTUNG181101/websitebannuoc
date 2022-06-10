@@ -25,7 +25,8 @@
                 <div class="quanty-updown">
                     <button class="arrow down" data-id="{{$key}}"><i class="fa fa-minus"
                             aria-hidden="true"></i></button>
-                    <input class="arrow-input arrow-input-{{$key}}" min='1' max='100' value="{{$value['quanty']}}" />
+                    <input readonly class="arrow-input arrow-input-{{$key}}" min='1' max='100' data-key="{{$key}}"
+                        data-size="{{$value['size']->id}}" value="{{$value['quanty']}}" />
                     <button class="arrow up" data-id="{{$key}}"><i class="fa fa-plus" aria-hidden="true"></i></button>
 
                 </div>
@@ -64,21 +65,6 @@
             </td>
         </tr>
         <tr class="td-right">
-            <td colspan="4" class="pr-10pt">
-                <b>Giảm giá :</b><span class="">
-            </td>
-            <td class="td-left" colspan="2">
-                <span class="">
-                    @if(Session::get('cartAD')->coupon > 0)
-                    - {{currency_format(Session::get('cartAD')->coupon)}}
-                    {{Session::get('cartAD')->discount ? '( - '.Session::get('cartAD')->discount.')' : ''}}
-                    @else
-                    {{currency_format(0)}}
-                    @endif
-                </span>
-            </td>
-        </tr>
-        <tr class="td-right">
             <td colspan="4" class=" pr-10pt">
                 <b>Tiền phí vận chuyển : </b>
             </td>
@@ -99,7 +85,7 @@
             <td class="td-left" colspan="2">
                 <span class="">
                     <?php
-                    $price = (Session::get('cartAD')->totalPrice - Session::get('cartAD')->coupon + Session::get('cartAD')->feeShip);
+                    $price = (Session::get('cartAD')->totalPrice + Session::get('cartAD')->feeShip);
                     ?>
                     {{currency_format($price > 0 ? $price : 0)}}
                 </span>

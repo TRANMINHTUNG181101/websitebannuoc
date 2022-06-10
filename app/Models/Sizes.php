@@ -9,11 +9,12 @@ class Sizes extends Model
 {
     use HasFactory;
 
-    protected $table="sizes";
-    protected $fillable=[
-        'size_name','trang_thai'
+    protected $table = "sizes";
+    protected $fillable = [
+        'size_name', 'trang_thai', 'price'
     ];
-    public function sanpham(){
-        return $this->belongsToMany(Products::class,'size_pros','id_size','id_pro');
+    public function sanpham()
+    {
+        return $this->belongsToMany(Products::class, 'size_pros', 'id_size', 'id_pro');
     }
 }

@@ -17,9 +17,11 @@
                         <div class="form_group">
                             <label>Loại khuyến mãi</label>
                             <select name="loaikm" id="loaikm" class="form_control">
-                                <option value="1" {{ +$coupon->dieukien === 1 ? 'selected' : ''}}>Giảm giá cho từng sản
+                                <option value="1" {{ +$coupon->dieukien === 1 ? 'selected' : 'disabled'}}>Giảm giá cho
+                                    từng sản
                                     phẩm.</option>
-                                <option value="2" {{ +$coupon->dieukien === 2 ? 'selected' : ''}}>Tạo mã Coupon áp dụng
+                                <option value="2" {{ +$coupon->dieukien === 2 ? 'selected' : 'disabled'}}>Tạo mã Coupon
+                                    áp dụng
                                     cho tổng đơn hàng.</option>
                             </select>
                             @if($errors->first('loaikm'))
@@ -38,7 +40,7 @@
                             <div class="coupon_code hide">
                                 <div class="form_group">
                                     <label>Code</label>
-                                    <input name="code" value="{{$coupon->code}}" autocomplete='off'
+                                    <input readonly name="code" value="{{$coupon->code}}" autocomplete='off'
                                         class="form_control" />
                                     <span class="generate"><i class="fa fa-random" aria-hidden="true"></i></span>
                                 </div>
@@ -52,8 +54,10 @@
                             <div class="form_group">
                                 <label>Loại giảm</label>
                                 <select name="loaigiam" id="" class="form_control">
-                                    <option value="2" {{ +$coupon->loaigiam === 2 ? 'selected' : ''}}>Giảm tiền</option>
-                                    <option value="1" {{ +$coupon->loaigiam === 1 ? 'selected' : ''}}>Giảm %</option>
+                                    <option value="2" {{ +$coupon->loaigiam === 2 ? 'selected' : 'disabled'}}>Giảm tiền
+                                    </option>
+                                    <option value="1" {{ +$coupon->loaigiam === 1 ? 'selected' : 'disabled'}}>Giảm %
+                                    </option>
                                 </select>
                             </div>
                             @if($errors->first('loaigiam'))
@@ -61,8 +65,8 @@
                             @endif
                             <div class="form_group">
                                 <label>Tiền giảm</label>
-                                <input type="number" value="{{$coupon->giamgia}}" autocomplete='off' name="giamgia"
-                                    class="form_control" />
+                                <input readonly type="number" value="{{$coupon->giamgia}}" autocomplete='off'
+                                    name="giamgia" class="form_control" />
                             </div>
                             @if($errors->first('giamgia'))
                             <span class="error text-danger">{{ $errors->first('giamgia') }}</span>
@@ -70,7 +74,8 @@
                             <div class="group">
                                 <div class="form_group">
                                     <label>Bắt đầu</label>
-                                    <input name="ngaybd" type="date" class="form_control" min="<?= date('Y-m-d'); ?>"
+                                    <input readonly name="ngaybd" type="date" class="form_control"
+                                        min="<?= date('Y-m-d'); ?>"
                                         value=<?= date("Y-m-d", strtotime($coupon->ngaybd)); ?> />
                                     @if($errors->first('ngaybd'))
                                     <span class="error text-danger">{{ $errors->first('ngaybd') }}</span>
@@ -78,8 +83,9 @@
                                 </div>
                                 <div class="form_group">
                                     <label>Kết thúc</label>
-                                    <input name="ngaykt" type="date" class="form_control" min="<?= date('Y-m-d'); ?>"
-                                        value=<?= date("Y-m-d", strtotime($coupon->ngaybd)); ?> />
+                                    <input name="ngaykt" type="date" class="form_control"
+                                        min="<?= date('Y-m-d', strtotime($coupon->ngaybd)) ?>"
+                                        value=<?= date("Y-m-d", strtotime($coupon->ngaykt)); ?> />
                                     @if($errors->first('ngaykt'))
                                     <span class="error text-danger">{{ $errors->first('ngaykt') }}</span>
                                     @endif

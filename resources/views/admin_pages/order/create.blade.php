@@ -1,10 +1,9 @@
 @extends('templates.admins.layout')
 @section('content')
-
 <div class="content-order">
     <div class="container-fluid p-0">
         <h1 class="h6 mb-3">Tạo mới đơn hàng</h1>
-        <form action="{{ route('post.saveOrderAd')}}" method="post" class="form-submit">
+        <form action="{{ route('post.saveOrderAd')}}" method="post" class="form-submit submit-create-order">
             @csrf
             <div class="row">
                 <div class="col-md-8">
@@ -42,9 +41,13 @@
 
                             </div>
                         </div>
+                        @if($errors->first('hoten'))
+                        <span class="error text-danger">{{ $errors->first('hoten') }}</span>
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-12 mt-4">
+
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0"><i class="fa fa-info"></i> Sản phẩm đã chọn</h5>
@@ -79,7 +82,8 @@
                                                 <div class="quanty-updown">
                                                     <button class="arrow down" data-id="{{$key}}"><i class="fa fa-minus"
                                                             aria-hidden="true"></i></button>
-                                                    <input class="arrow-input arrow-input-{{$key}}" min='1' max='100'
+                                                    <input readonly class="arrow-input arrow-input-{{$key}}" min='1'
+                                                        max='100' data-key="{{$key}}" data-size="{{$value['size']->id}}"
                                                         value="{{$value['quanty']}}" />
                                                     <button class="arrow up" data-id="{{$key}}"><i class="fa fa-plus"
                                                             aria-hidden="true"></i></button>
@@ -96,11 +100,11 @@
                                             <th>
                                                 @if(count($value['productInfo']->Coupon) > 0)
                                                 <span class="price-old">
-                                                    {{ currency_format($value['productInfo']->giagoc)}}
+                                                    {{ currency_format($value['productInfo']->giagoc + $value['size']->price)}}
                                                 </span>
                                                 @endif
                                                 <span>
-                                                    {{ currency_format($value['productInfo']->giaban)}}
+                                                    {{ currency_format($value['productInfo']->giaban + $value['size']->price)}}
                                                 </span>
                                             </th>
                                             <th>
@@ -120,21 +124,7 @@
                                                     {{currency_format(Session::get('cartAD')->totalPrice)}}</span>
                                             </td>
                                         </tr>
-                                        <tr class="td-right">
-                                            <td colspan="4" class="pr-10pt">
-                                                <b>Giảm giá :</b><span class="">
-                                            </td>
-                                            <td class="td-left" colspan="2">
-                                                <span class="">
-                                                    @if(Session::get('cartAD')->coupon > 0)
-                                                    - {{currency_format(Session::get('cartAD')->coupon)}}
-                                                    {{Session::get('cartAD')->discount ? '( - '.Session::get('cartAD')->discount.')' : ''}}
-                                                    @else
-                                                    {{currency_format(0)}}
-                                                    @endif
-                                                </span>
-                                            </td>
-                                        </tr>
+
                                         <tr class="td-right">
                                             <td colspan="4" class=" pr-10pt">
                                                 <b>Tiền phí vận chuyển : </b>
@@ -156,7 +146,7 @@
                                             <td class="td-left" colspan="2">
                                                 <span class="">
                                                     <?php
-                                                    $price = (Session::get('cartAD')->totalPrice - Session::get('cartAD')->coupon + Session::get('cartAD')->feeShip);
+                                                    $price = (Session::get('cartAD')->totalPrice + Session::get('cartAD')->feeShip);
                                                     ?>
                                                     {{currency_format($price > 0 ? $price : 0)}}
                                                 </span>
@@ -167,6 +157,9 @@
                                 @endif
                             </div>
                         </div>
+                        @if($errors->first('sanpham'))
+                        <span class="error text-danger">{{ $errors->first('sanpham') }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -339,6 +332,7 @@
 window.onload = () => {
     const btnInfo = document.querySelector('.btn-add-info');
     const listProductOrder = document.querySelector('.list-prodcut-order');
+    const submitCreateOrder = document.querySelector('.submit-create-order');
 
     // modal san pham
     const modalProduct = document.querySelector('.modal-order-product');
@@ -368,12 +362,6 @@ window.onload = () => {
     const inputAutoProduct = document.querySelector('.searchProduct');
     const searchAutoProduct = document.querySelector('.searchAutoProduct');
     const searchAutoCategory = document.querySelector('.category');
-
-
-
-    const arrowUp = document.querySelectorAll('.up');
-    const arrowDown = document.querySelectorAll('.down');
-
 
 
 
@@ -486,7 +474,23 @@ window.onload = () => {
                                     <td>${item.danhmuc.tenloai}</td>
                                     <td>
                                         <div class="size-product">
+                                        ${item.size.length > 1 ?
+                                            `
                                             ${
+                                            item.size.map(size_item =>{
+                                            return (`
+                                            <div class="size">
+                                                <input type="checkbox" id="${item.id}${size_item.id}" data-id='${size_item.id}' name='size-${item.id}[]' />
+                                                <label style="user-select: none;" for="${item.id}${size_item.id}">${size_item.size_name}<span class="ml-2 price-plus">+${size_item.price.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}</span></
+                                                        label>
+                                            </div>
+                                            `)
+                                            }).join('')
+                                            }
+                                            ` 
+                                             : 
+                                             `
+                                             ${
                                             item.size.map(size_item =>{
                                             return (`
                                             <div class="size">
@@ -497,6 +501,9 @@ window.onload = () => {
                                             `)
                                             }).join('')
                                             }
+                                             `
+                                            }
+                                           
                                         </div>
                                     </td>
                                     <td>
@@ -556,7 +563,7 @@ window.onload = () => {
             // luu thoong tin khach hang
             btnSave.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (hoten.value && email.value && sodienthoai.value && diachi.value && province
+                if (hoten.value && email.value && sodienthoai.value && province
                     .value && district.value && ward.value) {
                     let provinceText = province.options[province.selectedIndex].text;
                     let districtText = district.options[district.selectedIndex].text;
@@ -660,7 +667,6 @@ window.onload = () => {
 
 
 
-
         },
         checkbox: function() {
             const checkbox = document.querySelector('.choose');
@@ -730,6 +736,7 @@ window.onload = () => {
                         listProductOrder.innerHTML = check.html;
                         modalProduct.classList.remove('showmodal_order');
                         this.addEventDelete();
+                        this.addCountProduct();
                     }
                 } else {
                     alert('laasy du lieu that bai !!!')
@@ -755,6 +762,7 @@ window.onload = () => {
                     if (check) {
                         listProductOrder.innerHTML = check.html;
                         this.addEventDelete();
+                        this.addCountProduct();
                     }
                 } else {
                     alert('laasy du lieu that bai !!!')
@@ -764,6 +772,9 @@ window.onload = () => {
 
         addEventDelete: function() {
             const deleteCart = document.querySelectorAll('#deletecart');
+            if (!deleteCart) {
+                return;
+            }
             deleteCart.forEach(item => {
                 item.addEventListener('click', e => {
                     e.preventDefault();
@@ -775,12 +786,95 @@ window.onload = () => {
             })
 
         },
+        addCountProduct: function() {
 
+            const arrowUp = document.querySelectorAll('.up');
+            const arrowDown = document.querySelectorAll('.down');
+
+            if (!arrowUp || !arrowDown) {
+                return;
+            }
+            Array.from(arrowUp).forEach(item => {
+                item.addEventListener('click', e => {
+                    e.preventDefault();
+                    let id = e.target.closest('.up').dataset.id;
+                    const arrowInput = document.querySelector(`.arrow-input-${id}`);
+                    let key = arrowInput.dataset.key;
+                    let size = arrowInput.dataset.size;
+                    let value = +arrowInput.value + 1;
+                    if (+value > 100) {
+                        return;
+                    } else {
+                        arrowInput.value = value;
+                    }
+                    this.updateCart(key, arrowInput.value, size);
+                })
+
+            })
+
+            Array.from(arrowDown).forEach(item => {
+                item.addEventListener('click', e => {
+                    e.preventDefault();
+                    let id = e.target.closest('.down').dataset.id;
+                    const arrowInput = document.querySelector(`.arrow-input-${id}`);
+                    let key = arrowInput.dataset.key;
+                    let size = arrowInput.dataset.size;
+                    let value = +arrowInput.value - 1;
+                    if (+value < 1) {
+                        return;
+                    } else {
+                        arrowInput.value = value;
+                    }
+                    this.updateCart(key, arrowInput.value, size);
+                })
+            })
+        },
+
+        updateCart: function(key, sl, size) {
+            if (!key || !sl || !size) {
+                return;
+            }
+            (async () => {
+                let url = "{{route('post.upCartAd')}}";
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        key,
+                        sl,
+                        size
+                    })
+                });
+                if (response && response.status === 200) {
+                    const check = await response.json();
+                    if (check) {
+                        listProductOrder.innerHTML = check.html;
+                        this.addEventDelete();
+                        this.addCountProduct();
+                    }
+                } else {
+                    alert('laasy du lieu that bai !!!')
+                }
+            })();
+
+
+        },
+
+        checkProductExist: function() {
+
+        },
         start: function(product, category) {
             this.products = product;
             this.categories = category;
             this.getData();
             this.handleEvent();
+            this.addEventDelete();
+            this.addCountProduct();
+            this.checkProductExist();
         }
     }
 
@@ -826,6 +920,24 @@ window.onload = () => {
             })
         });
     })
+    ward.addEventListener('change', e => {
+        let id = e.target.value;
+        if (!id) {
+            return;
+        }
+        (async () => {
+            let url = "{{asset('/getprice/')}}";
+            const response = await fetch(
+                `${url}/${id}`
+            );
+            if (response && response.status === 200) {
+                const check = await response.json();
+            } else {
+                alert('laasy du lieu that bai !!!')
+            }
+        })();
+
+    })
     const getDataLocation = (url, value, callback) => {
         (async () => {
             const response = await fetch(url + value);
@@ -840,39 +952,6 @@ window.onload = () => {
     }
 
 
-
-
-
-    // checkbox
-
-    Array.from(arrowUp).forEach(item => {
-        item.addEventListener('click', e => {
-            e.preventDefault();
-            let id = e.target.closest('.up').dataset.id;
-            const arrowInput = document.querySelector(`.arrow-input-${id}`);
-            let value = +arrowInput.value;
-            if (+value > 100) {
-                return;
-            } else {
-                arrowInput.value = value + 1;
-            }
-        })
-
-    })
-
-    Array.from(arrowDown).forEach(item => {
-        item.addEventListener('click', e => {
-            e.preventDefault();
-            let id = e.target.closest('.down').dataset.id;
-            const arrowInput = document.querySelector(`.arrow-input-${id}`);
-            let value = +arrowInput.value;
-            if (+value < 0) {
-                return;
-            } else {
-                arrowInput.value = value - 1;
-            }
-        })
-    })
 
 
 

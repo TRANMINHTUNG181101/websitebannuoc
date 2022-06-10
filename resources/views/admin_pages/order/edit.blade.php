@@ -178,9 +178,9 @@
                                     </td>
                                     <td>
                                         @if($value->giagoc)
-                                        {{currency_format($value->product->giaban)}}
+                                        {{currency_format($value->product->giaban + $value->size->price)}}
                                         <br />
-                                        {{'( - '.currency_format($value->getCoupon->giamgia, ($value->getCoupon->loaigiam === 2) ? 'đ' : '%').' )'}}
+                                        {{'Khuyễn mãi : ( - '.currency_format($value->getCoupon->giamgia, ($value->getCoupon->loaigiam === 2) ? 'đ' : '%').' )'}}
                                         @else
                                         {{currency_format($value->giaban)}}
                                         @endif
@@ -289,7 +289,7 @@
                                         {{$payment->ngaythanhtoan}}
                                         @endif
                                     </td>
-                                    <td>{{currency_format($payment->tongtien)}}</td>
+                                    <td>{{currency_format($payment->tongtien * 23187)}}</td>
                                     <td>
 
                                         @if($payment->trangthai == 1 )

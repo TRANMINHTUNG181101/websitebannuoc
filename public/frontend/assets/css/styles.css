@@ -10990,3 +10990,11 @@ article.post-promotion {
 .review-wrapper,.review-wrapper-body  {
     margin-top: 8px;
 }
+
+.price-plus {
+    background: #ff6b07;
+    padding: 2px 4px;
+    margin-left: 4px;
+    border-radius: 4px;
+    color: #fff;
+}

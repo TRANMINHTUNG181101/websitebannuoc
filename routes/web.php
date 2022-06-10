@@ -93,6 +93,8 @@ Route::get('getCustomer', 'OrderController@getCustomer')->name('get.customer');
 Route::post('createcart', 'OrderController@createcart')->name('post.createcart');
 Route::post('deleteCartAd', 'OrderController@deleteCartAd')->name('post.deletecart');
 Route::post('saveOrderAd', 'OrderController@saveOrderAd')->name('post.saveOrderAd');
+Route::post('updateCartAd', 'OrderController@upCartAd')->name('post.upCartAd');
+Route::get('checkProductExist', 'OrderController@checkProductExist')->name('get.checkProductExist');
 
 
 // thêm mã khuyễn mãi
@@ -134,6 +136,11 @@ Route::post('editSlideP/{id}', 'AdminController@postEdit')->name('post.edit.slid
 Route::get('deleteSlide/{id}', 'AdminController@deleteSlide')->name('delete.slide');
 Route::get('activeSlide/{id}', 'AdminController@activeSlide')->name('active.slide');
 Route::post('positionSlide/{id}', 'AdminController@positionSlide')->name('position.slide');
+
+
+// thông tin hệ thống
+Route::get('satic', 'AdminController@staticWeb')->name('get.static');
+Route::post('poststatic', 'AdminController@postStatic')->name('post.static');
 
 
 

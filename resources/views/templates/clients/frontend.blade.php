@@ -7,7 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>Drinks Order</title>
+    @isset($product)
+    <meta property="og:title" content="{{ $product->tensp ?? ''}}" />
+    <meta property="og:site_name" content="{{ $url_current ?? ''}}" />
+    <meta property="og:description" content="{{ $product->mota ?? ''}}" />
+    <meta property="og:url" content="{{ $url_current ?? ''}}" />
+    <meta property="og:image" content="{{$product->hinhanh ?  asset('uploads/product/'.$product->hinhanh) : '' }}" />
+    <meta property="og:type" content="website" />
+    @endisset
+
+    <title>{{ $setting->name ?? "Drinks Order"}}</title>
 
     <!-- Custom CSS -->
     <link href="{{ asset('frontend/assets/css/styles.css') }}" rel="stylesheet">
@@ -19,12 +28,6 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/semantic.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/bootstrap.css') }}" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
-
-
-
-
-
 
 </head>
 
@@ -54,7 +57,11 @@
         <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
 
         @include('templates.clients.layouts.footer')
-
+        <div id="fb-root"></div>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0&appId=1056375581823890&autoLogAppEvents=1"
+            nonce="JhpQ55Gl"></script>
         <!-- ============================================================== -->
         <!-- This page plugins -->
         <!-- ============================================================== -->

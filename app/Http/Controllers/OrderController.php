@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestSubmitOrder;
 use App\Models\Cart;
 use App\Models\Products;
 use App\Models\Customer;
@@ -19,6 +20,7 @@ use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Facade\FlareClient\Http\Response;
+use Illuminate\Support\Arr;
 use Svg\Tag\Rect;
 
 class OrderController extends Controller
@@ -165,8 +167,15 @@ class OrderController extends Controller
         return redirect()->back();
     }
 
-    public function createOrder()
+    public function createOrder(Request $request)
     {
+        if (Session('feeship')) {
+            $request->session()->forget('feeship');
+        }
+        if (Session('cartAD')) {
+            Session('cartAD')->feeShip = 0;
+        }
+
         $pro = Province::all();
         $pro = FeeShip::whereNotNull('province_id')->get();
         $product = Products::where('trangthai', 1)->orderBy('id_loaisanpham')->get();
@@ -186,6 +195,9 @@ class OrderController extends Controller
 
     public function createcart(Request $request)
     {
+        if (Session('cartAD')) {
+            $request->session()->forget('cartAD');
+        }
         $inputData = $request->value;
         foreach ($inputData as $value) {
             $product = Products::find((int)$value['idProduct']);
@@ -211,6 +223,11 @@ class OrderController extends Controller
                         }
                         $newCart->addCart($product, $idCart, 1, $size);
                         $request->session()->put('cartAD', $newCart);
+                        if (Session('feeship')) {
+                            Session('cartAD')->feeShip = (+Session('feeship')->feeship);
+                        } else {
+                            Session('cartAD')->feeShip = 0;
+                        }
                     }
                 }
             }
@@ -228,6 +245,11 @@ class OrderController extends Controller
         $newCart->deleteCart($keyCart);
         if (count($newCart->products) > 0) {
             $request->session()->put('cartAD', $newCart);
+            if (Session('feeship')) {
+                Session('cartAD')->feeShip = (+Session('feeship')->feeship);
+            } else {
+                Session('cartAD')->feeShip = 0;
+            }
         } else {
             $request->session()->forget('cartAD');
         }
@@ -235,8 +257,80 @@ class OrderController extends Controller
         return  Response()->json(['html' => $html]);
     }
 
-    public function saveOrderAd(Request $request)
+    public function upCartAd(Request $request)
     {
-        dd($request->all());
+        $size = Sizes::find($request->size);
+        $oldCart = Session('cartAD') ? Session('cartAD') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->updateCart($request->key, $request->sl, $size);
+        $request->session()->put('cartAD', $newCart);
+        if (Session('feeship')) {
+            Session('cartAD')->feeShip = (+Session('feeship')->feeship);
+        } else {
+            Session('cartAD')->feeShip = 0;
+        }
+        $html = view('admin_pages.order.itemCart')->render();
+        return  Response()->json(['html' => $html]);
+    }
+
+    public function saveOrderAd(RequestSubmitOrder $request)
+    {
+        $cart = Session('cartAD') ? Session('cartAD') : null;
+        if ($cart) {
+            $donhang = new Order;
+            $aray = ['DO', 'OD', 'DR', 'RD'];
+            $madh = Arr::random($aray) . rand(10000, 99999);
+            if ($request->id) {
+                $donhang['id_khachhang'] = $request->id;
+            }
+            $donhang['id_nhanvien'] = 1;
+            $donhang['madh'] = $madh;
+            $donhang['email'] = $request->email;
+            $donhang['hoten'] = $request->hoten;
+            $donhang['dienthoai'] = $request->sodienthoai;
+            $P = Province::where('province_code', $request->province)->first(['province_name']);
+            $D = District::where('district_code', $request->district)->first(['district_name']);
+            $W = Ward::where('ward_code', $request->ward)->first(['ward_name']);
+            $donhang['diachi'] = $request->diachi . ', ' . $W->ward_name . ', ' . $D->district_name . ', ' . $P->province_name;
+            $donhang['tongdonhang'] = $cart->totalPrice;
+            $donhang['tongtien'] = $cart->totalPrice;
+            if (Session('feeship')) {
+                $donhang['id_feeship'] = Session('feeship')->id;
+                $donhang['tongtien'] = $donhang['tongtien'] + Session('feeship')->feeship;
+            }
+            $donhang['ngaytao'] = Carbon::now('Asia/Ho_Chi_Minh');
+            $donhang['httt'] = 0;
+            $donhang['trangthaithanhtoan'] = 0;
+            $donhang->save();
+            if ($donhang) {
+                foreach ($cart->products as $value) {
+                    //lưu sản phẩm đơn hàng
+                    $data['id_donhang'] = $donhang->id;
+                    $data['id_sanpham'] = $value['productInfo']->id;
+                    $data['soluong'] = $value['quanty'];
+                    $data['id_size'] = $value['size']->id;
+                    $data['giaban'] = $value['price'];
+                    $data['giagoc'] = null;
+                    if (count($value['productInfo']->Coupon) > 0) {
+                        $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
+                    }
+
+                    OrderDetail::create($data);
+                }
+            }
+            $request->session()->forget('cartAD');
+            $request->session()->forget('feeship');
+            return redirect()->route('get.order');
+        } else {
+            $request->validate([
+                'sanpham' => 'required',
+            ], [
+                'sanpham.required' => "Chưa chọn sản phẩm nào.",
+            ]);
+        }
+    }
+
+    public function checkProductExist(Request $request)
+    {
     }
 }

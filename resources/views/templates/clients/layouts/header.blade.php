@@ -13,11 +13,11 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-lg-7 col-md-6 col-sm-6 col-4">
-                        <span class="t-14">ĐỊA CHỈ: Đ. Lê Lợi, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh - 033 420
-                            2221</span>
+                    <div class="col-lg-9 col-md-6 col-sm-6 col-4">
+                        <span class="t-14">ĐỊA CHỈ: {{ $setting->diachi ?? ""}} - ĐIỆN THOẠI :
+                            {{ $setting->dienthoai ?? ""}}</span>
                     </div>
-                    <div class="col-lg-5 col-md-6 col-sm-6 col-8">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-8">
                         <div class="topbar_menu">
                             <ul>
                                 <li><a href="order-tracking.html"><i class="fab fa-youtube"></i>Youtube</a></li>

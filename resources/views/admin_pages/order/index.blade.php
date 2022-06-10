@@ -83,6 +83,10 @@ alertify.success("{{session()->get('message')}}", 1);
                                             <span class="col-w"><i class="fa fa-users text-danger"></i>
                                                 Đơn hàng tạo bởi : <span
                                                     class="text-primary">{{ ($value->id_nhanvien) ? $value->id_nhanvien : 'Mua Online'}}</span></span>
+                                            <span class="col-w"><i class="fa fa-clock-o text-success"
+                                                    aria-hidden="true"></i>
+                                                Thời gian : <span
+                                                    class="time-order">{{ toTime($value->ngaytao)}}</span></span>
                                         </div>
                                     </div>
                                     <div class="border-body">

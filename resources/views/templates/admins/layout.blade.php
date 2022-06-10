@@ -77,12 +77,6 @@
                             <span class="align-middle">Don Vi San Pham</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('get.order') }}">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            <span class="align-middle">Đơn hàng</span>
-                        </a>
-                    </li>
 
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('get.admin.coupon') }}">
@@ -98,6 +92,28 @@
                         </a>
                     </li>
                     <li class="sidebar-header">
+                        Đơn hàng
+                    </li>
+                    <li class="sidebar-item list_order">
+
+                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span class="align-middle">Tiếp nhận <span class="count-order">1</span></span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span class="align-middle">Đang xử lí <span class="count-order">1</span></span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span class="align-middle">Đã huỷ <span class="count-order">1</span></span>
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
                         Trang tĩnh
                     </li>
                     <li class="sidebar-item">
@@ -108,17 +124,20 @@
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('get.shipping') }}">
-                            <i class="fa fa-truck" aria-hidden="true"></i>
-                            <span class="align-middle">Vận Chuyển</span>
+                        <a class="sidebar-link" href="{{ route('get.static') }}">
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                            <span class="align-middle">Website</span>
                         </a>
                     </li>
 
                 </ul>
             </div>
         </nav>
-        <div class="product-admin">
-            @yield('content')
+        <div class="main">
+            @include('templates.admins.nav-horizontal')
+            <div class="product-admin main">
+                @yield('content')
+            </div>
         </div>
     </div>
 

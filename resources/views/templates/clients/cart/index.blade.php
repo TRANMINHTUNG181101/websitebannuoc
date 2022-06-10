@@ -195,7 +195,7 @@
                                     </a>
                                     <span class="numberof_item">Số lượng : {{$value['quanty']}}</span>
                                     <span class="sizeof_item">Size : {{$value['size']->size_name}} -
-                                        {{ currency_format($value['productInfo']->giaban)}}</span>
+                                        {{ currency_format($value['productInfo']->giaban +$value['size']->price )}}</span>
                                     <a href="#" class="text-danger btn-cart-del" id="delItemCart"
                                         data-id="{{$key}}">Xoá</a>
                                 </div>

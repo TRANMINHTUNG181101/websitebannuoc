@@ -15,8 +15,8 @@ class CreateSizesTable extends Migration
     public function up()
     {
         Schema::create('sizes', function (Blueprint $table) {
-           $table->increments('id');
-            $table->string('size_name',255);
+            $table->increments('id');
+            $table->string('size_name', 255);
             $table->tinyInteger('trang_thai')->default(1);
             $table->timestamps();
         });
@@ -27,15 +27,11 @@ class CreateSizesTable extends Migration
                     'size_name' => "Nhỏ",
                 ],
                 [
-                    'size_name' => "Vừa",
-                ],
-                [
                     'size_name' => "Lớn",
                 ]
             )
 
         );
-
     }
 
     /**

@@ -111,14 +111,19 @@ class CartController extends Controller
         $size = Sizes::find($request->size);
         $oldCart = Session('cart') ? Session('cart') : null;
         $newCart = new Cart($oldCart);
-        $newCart->updateCart($request->key, $request->sl, $size);
+
+        $isExist = $newCart->checkProductUpdate($newCart, $request->id, $request->size, $request->key);
+        if ($isExist) {
+            $newCart->updateCart($request->key, $request->id, $size, $isExist);
+        } else {
+            $newCart->updateCart($request->key, $request->sl, $size);
+        }
         $request->session()->put('cart', $newCart);
         return view('templates.clients.home.cart');
     }
     public function delCart(Request $request)
     {
-        $request->session()->forget('cartAD');
-        return view('admin_pages.order.itemCart');
+        $urlWebsite = asset('checkoutcomplete/');
     }
 
     public function InvoiceConfirm()
@@ -149,11 +154,13 @@ class CartController extends Controller
     //lưu đơn hàng
     public function postPay(Request $request)
     {
+        $urlWebsite = asset('checkoutcomplete/');
         $cart = Session('cart') ? Session('cart') : null;
         if (Session('mDonHang')) {
             $request->session()->forget('mDonHang');
         }
         $donhang = new Order;
+
         if ($cart) {
 
             //mã đơn hàng
@@ -198,7 +205,7 @@ class CartController extends Controller
                 $provider->setApiCredentials(config('paypal'));
                 $paypalToken = $provider->getAccessToken();
 
-                $price = round($donhang['tongtien'] / 22830, 2);
+                $price = round($donhang['tongtien'] / 23187, 2);
                 $response = $provider->createOrder([
                     "intent" => "CAPTURE",
                     "application_context" => [
@@ -243,8 +250,8 @@ class CartController extends Controller
                 $orderInfo = "Thanh toán qua MoMo";
                 $amount = $donhang['tongtien'];
                 $orderId = time() . "";
-                $redirectUrl = "http://localhost/website_ban_nuoc/public/checkoutcomplete";
-                $ipnUrl = "http://localhost/website_ban_nuoc/public/checkoutcomplete";
+                $redirectUrl = $urlWebsite;
+                $ipnUrl = $urlWebsite;
                 $extraData = "";
                 $requestId = time() . "";
                 $requestType = "captureWallet";
@@ -276,7 +283,7 @@ class CartController extends Controller
             case 3:
                 # thanh toán vnpay
                 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                $vnp_Returnurl = "http://localhost/website_ban_nuoc/public/checkoutcomplete";
+                $vnp_Returnurl = $urlWebsite;
                 $vnp_TmnCode = "PR66IZJ3"; //Mã website tại VNPAY 
                 $vnp_HashSecret = "SOYGBHCVQDYTYQPIKKWFAETKMEVMZXUO"; //Chuỗi bí mật
 
@@ -357,7 +364,6 @@ class CartController extends Controller
                             if (count($value['productInfo']->Coupon) > 0) {
                                 $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
                             }
-
                             OrderDetail::create($data);
                         }
                     }

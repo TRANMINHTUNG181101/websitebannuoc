@@ -10,7 +10,7 @@
                 </div>
             </li>
             <li><span> <i class="fa fa-money" aria-hidden="true"></i> Thông tin thanh toán :</span>
-                @if($order->trangthaithanhtoan == 2 )
+                @if($order->trangthaithanhtoan == 0 )
                 <div class="badge badge-warning">Chờ thanh toán</div>
                 @else
                 <div class="badge badge-success">Đã thanh toán</div>

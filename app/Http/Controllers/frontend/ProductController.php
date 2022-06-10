@@ -20,7 +20,7 @@ class ProductController extends Controller
         ];
         return view('templates.clients.product.index', $viewData);
     }
-    public function detail($slug)
+    public function detail($slug, Request $request)
     {
         if ($slug) {
             $product = Products::where('slug', $slug)->first();
@@ -34,7 +34,8 @@ class ProductController extends Controller
             $viewData = [
                 'product' => $product,
                 'related' => $related,
-                'comments' => $comments
+                'comments' => $comments,
+                'url_current' => $request->url()
             ];
         }
         return view('templates.clients.product.detail', $viewData);

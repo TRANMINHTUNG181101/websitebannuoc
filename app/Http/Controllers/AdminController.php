@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestStatic;
 use App\Http\Requests\SlideRequest;
 use App\Models\Image;
+use App\Models\StaticSetting;
 use Illuminate\Http\Request;
+
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 class AdminController extends Controller
 {
@@ -91,6 +95,33 @@ class AdminController extends Controller
         $slide->vitri = $request->vitri;
         $slide->save();
 
+        return redirect()->back();
+    }
+
+    public function staticWeb()
+    {
+        $options = StaticSetting::first();
+        if ($options) {
+            return view('admin_pages.static.index', ['setting' => json_decode($options->options)]);
+        } else {
+            return view('admin_pages.static.index');
+        }
+    }
+    public function postStatic(RequestStatic $request)
+    {
+        $setting = (object) array(
+            'name' => $request->ten,
+            'email' => $request->email,
+            'dienthoai' => $request->dienthoai,
+            'diachi' => $request->diachi,
+            'iframemap' => trim($request->iframemap),
+        );
+        $options = StaticSetting::first();
+        if ($options) {
+            $options->update(['options' => json_encode($setting)]);
+        } else {
+            StaticSetting::create(['options' => json_encode($setting)]);
+        }
         return redirect()->back();
     }
 }

@@ -16,7 +16,7 @@ class CouponController extends Controller
     protected $url = 'admin_pages.coupon.';
     function index()
     {
-        $ldate = Carbon::now()->toDateTimeString();
+        $ldate = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $upCoupon = Coupon::where('ngaykt', '<', $ldate)->update(['trangthai' => 2]);
         $coupon = Coupon::all();
         $viewData = [
@@ -121,6 +121,11 @@ class CouponController extends Controller
     public function editpost($id, RequestCoupon $request)
     {
         $coupon = Coupon::find($id);
+        $dateold = Carbon::parse($coupon->ngaykt)->format('Y-m-d');
+        $datenow = Carbon::now('Asia/Ho_Chi_Minh')->format("Y-m-d");
+        if ($dateold != $request->ngaykt && $request->ngaykt < $datenow) {
+            return back()->withErrors(['ngaykt' => 'Ngày kêt thúc không nhỏ hơn ngày hiện tại']);
+        }
         $coupon->ten = $request->ten;
         $coupon->mota = $request->mota;
         $coupon->code = $request->code;

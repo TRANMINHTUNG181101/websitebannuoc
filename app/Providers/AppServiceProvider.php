@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\StaticSetting;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Paginator::useBootstrap();
-
+        $options = StaticSetting::first();
+        if ($options) {
+            View::share('setting', json_decode($options->options));
+        }
     }
 }

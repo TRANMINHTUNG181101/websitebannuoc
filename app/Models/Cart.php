@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use PhpParser\Node\Expr\FuncCall;
+
 class Cart
 {
     public $products = null;
@@ -29,9 +31,9 @@ class Cart
         }
 
         $newProduct['quanty'] += $sl;
-        $newProduct['price']  = $newProduct['quanty'] * $product->giaban;
+        $newProduct['price']  = $newProduct['quanty'] * ($product->giaban + $size->price);
         $this->products[$idcart] = $newProduct;
-        $this->totalPrice += $product->giaban * $sl;
+        $this->totalPrice += ($product->giaban + $size->price) * $sl;
         $this->totalQuanty += $sl;
     }
     public function deleteCart($keyCart)
@@ -40,23 +42,36 @@ class Cart
         $this->totalPrice -= $this->products[$keyCart]['price'];
         unset($this->products[$keyCart]);
     }
-    public function updateCart($key, $sl, $size)
+    public function updateCart($key, $sl, $size, $keyNew = null)
     {
-        $this->totalQuanty -= $this->products[$key]['quanty'];
-        $this->totalPrice -= $this->products[$key]['price'];
+        if ($keyNew) {
+            $this->totalQuanty -= $this->products[$key]['quanty'];
+            $this->totalPrice -= $this->products[$key]['price'];
 
-        $this->products[$key]['size'] = $size;
-        $this->products[$key]['quanty'] = $sl;
-        $this->products[$key]['price'] = $sl * $this->products[$key]['productInfo']->gianban;
+            $this->products[$keyNew]['quanty'] += $sl;
+            $this->products[$keyNew]['price'] += $sl * ($this->products[$keyNew]['productInfo']->giaban + $this->products[$keyNew]['size']->price);
 
-        $this->totalQuanty += $this->products[$key]['quanty'];
-        $this->totalPrice += $this->products[$key]['price'];
+
+            $this->totalQuanty = $this->products[$keyNew]['quanty'];
+            $this->totalPrice = $this->products[$keyNew]['price'];
+            unset($this->products[$key]);
+        } else {
+
+            $this->totalQuanty -= $this->products[$key]['quanty'];
+            $this->totalPrice -= $this->products[$key]['price'];
+
+            $this->products[$key]['size'] = $size;
+            $this->products[$key]['quanty'] = $sl;
+            $this->products[$key]['price'] = $sl * ($this->products[$key]['productInfo']->giaban + $this->products[$key]['size']->price);
+            $this->totalQuanty += $this->products[$key]['quanty'];
+            $this->totalPrice += $this->products[$key]['price'];
+        }
     }
     public function checkCartProduct($id, $size, $cart)
     {
         $i = 0;
         foreach ($cart->products as $key => $value) {
-            if ($value['productInfo']->id == $id) {
+            if ($key == $id) {
                 $i++;
             }
             if ($value['productInfo']->id == $id && $value['size']->id == $size) {
@@ -67,6 +82,27 @@ class Cart
             return $id . $size;
         } else {
             return $id;
+        }
+    }
+
+    public function checkProductUpdate($cart, $id, $size, $key)
+    {
+        if ($this->products[$key]['size']->id == $size) {
+            return null;
+        } else {
+            foreach ($cart->products as $key => $value) {
+                if ($value['productInfo']->id == $id && $value['size']->id == $size) {
+                    return $key;
+                }
+            }
+            return null;
+        }
+    }
+
+    public function unsetKey($key)
+    {
+        if ($key) {
+            unset($this->products[$key]);
         }
     }
 }
