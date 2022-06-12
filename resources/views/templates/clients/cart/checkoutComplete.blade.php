@@ -2,19 +2,7 @@
 @section('content')
 
 <!-- =========================== Breadcrumbs =================================== -->
-<div class="breadcrumbs_wrap gray">
-    <div class="container">
-        <div class="row align-items-center">
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="text-center">
-                    <h2 class="breadcrumbs_title">Đặt hàng thành công</h2>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
 <section>
     <div class="container">
         <div class="row justify-content-center">

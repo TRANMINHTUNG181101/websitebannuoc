@@ -79,7 +79,7 @@ Route::get('/logoutAdmin', 'LoginController@logout')->name('auth.logout');
 
 
 //xử lí đơn hàng
-Route::get('order', 'OrderController@index')->name('get.order');
+Route::get('order/{orderStatus}', 'OrderController@index')->name('get.order');
 Route::get('delorder/{id}', 'OrderController@del')->name('get.del');
 Route::get('viewDetail/{id}', 'OrderController@viewDetail')->name('get.viewDetail');
 Route::get('action/{action}/{id}', 'OrderController@action')->name('get.action');

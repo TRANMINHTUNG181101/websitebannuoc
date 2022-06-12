@@ -79,14 +79,14 @@
                         </div>
                     </div>
 
-                    <div class="social row mt-4">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="fb-like" data-href="{{$url_current}}" data-width="" data-layout="button"
-                                data-action="like" data-size="small" data-share="false"></div>
+                    <div class="social mt-4 d-flex align-items-center">
+                        <div class="item-social">
+                            <div class="fb-like" data-href="{{$url_current}}" data-width="100px" data-layout="standard"
+                                data-action="like" data-size="large" data-share="false"></div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="fb-share-button" data-href="{{$url_current}}" data-layout="button_count"
-                                data-size="small"><a target="_blank"
+                        <div class="item-social ml-2">
+                            <div class="fb-share-button" data-href="{{$url_current}}" data-width=""
+                                data-layout=" button_count" data-size="large"><a target="_blank"
                                     href="https://www.facebook.com/sharer/sharer.php?u={{$url_current}}&amp;src=sdkpreparse"
                                     class="fb-xfbml-parse-ignore">Chia sẻ</a></div>
                         </div>
@@ -111,6 +111,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
                                     aria-controls="reviews" aria-selected="false" aria-expanded="false">Đánh giá</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="reviews-faceboook-tab" data-toggle="tab"
+                                    href="#reviews-faceboook" role="tab" aria-controls="reviews-faceboook"
+                                    aria-selected="false" aria-expanded="false">Bình luận</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -264,6 +269,14 @@
                                 </div>
 
                             </div>
+                            <div class="tab-pane fade " id="reviews-faceboook" role="tabpanel"
+                                aria-labelledby="reviews-faceboook" aria-expanded="true">
+                                <p>
+                                <div class="fb-comments" data-href="{{$url_current}}" data-width="" data-numposts="5">
+                                </div>
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                 </div>

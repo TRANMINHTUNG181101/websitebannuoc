@@ -10,7 +10,8 @@
                     <th>Sản phẩm</th>
                     <th>Size</th>
                     <th>Số lượng</th>
-                    <th class="td-right">Giá bán</th>
+                    <th>Giá gốc</th>
+                    <th class="td-right">Tổng</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,8 +33,11 @@
                     <td>
                         {{ $value['quanty'] }}
                     </td>
+                    <td>
+                        {{ currency_format($value['size']->price + $value['productInfo']->giaban) }}
+                    </td>
                     <td class="td-right">
-                        {{currency_format($value['productInfo']->giaban)}}
+                        {{currency_format($value['price'])}}
                     </td>
                 </tr>
                 <?php $count++; ?>
@@ -43,7 +47,7 @@
                     <td colspan="4" class="td-right">
                         <b> Tổng tiền sản phẩm :</b>
                     </td>
-                    <td class="td-right">
+                    <td colspan="2" class="td-right">
                         <span class="mrg-l10">
                             {{currency_format(Session::get('cart')->totalPrice)}}</span>
                     </td>
@@ -52,7 +56,7 @@
                     <td colspan="4">
                         <b>Giảm giá :</b><span class="mrg-l10">
                     </td>
-                    <td class="td-right">
+                    <td colspan="2" class="td-right">
                         <span class="mrg-l10">
                             @if(Session::get('cart')->coupon > 0)
                             - {{currency_format(Session::get('cart')->coupon)}}
@@ -67,7 +71,7 @@
                     <td colspan="4">
                         <b>Tiền phí vận chuyển : </b>
                     </td>
-                    <td class="td-right">
+                    <td colspan="2" class="td-right">
                         <span class="mrg-l10">
                             @if(Session::get('cart')->feeShip)
                             + {{currency_format(Session::get('cart')->feeShip)}}
@@ -81,7 +85,7 @@
                     <td colspan="4">
                         <b>Thành tiền :</b>
                     </td>
-                    <td class="td-right">
+                    <td colspan="2" class="td-right">
                         <span class="mrg-l10">
                             <?php
                             $price = (Session::get('cart')->totalPrice - Session::get('cart')->coupon + Session::get('cart')->feeShip);

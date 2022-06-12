@@ -26,9 +26,27 @@ use Svg\Tag\Rect;
 class OrderController extends Controller
 {
     protected $url = 'admin_pages.order.';
-    public function index(Request $request)
+    public function index($orderStatus = 'all', Request $request)
     {
-        $order = Order::WhereNotNull('id');
+        $order = null;
+        switch ($orderStatus) {
+            case 'receive':
+                $order = Order::where('trangthai', 1);
+                break;
+            case 'cancel':
+                $order = Order::where('trangthai', -1);
+                break;
+            case 'success':
+                $order = Order::where('trangthai', 4);
+                break;
+            case 'process':
+                $order = Order::whereNotIn('trangthai', [1, 4, -1]);
+                break;
+
+            default:
+                $order = Order::whereNotNull('id');
+                break;
+        }
         if ($request->content) {
             $order->where('hoten', 'like', '%' . $request->content . '%')
                 ->orWhere('madh', 'like', '%' . $request->content . '%');
@@ -39,8 +57,10 @@ class OrderController extends Controller
         if ($request->status && $request->status != 10) {
             $order->where('trangthai', $request->status);
         }
+
         $order = $order->orderByDesc('id')->paginate(5);
         $viewData = [
+            'orderStatus' => $orderStatus,
             'order' => $order,
             'query' => $request->query()
         ];

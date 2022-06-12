@@ -16,6 +16,7 @@ alertify.success("{{session()->get('message')}}", 1);
                             <input type="text" class="form-control" value="{{ Request::get('content')}}" name="content"
                                 placeholder="Tên hoặc mã đơn hàng">
                         </div>
+                        @if($orderStatus && $orderStatus === 'all')
                         <div class="dis-inline">
                             <select class="form-control" name="status">
                                 <option value="10">Trạng thái</option>
@@ -27,6 +28,7 @@ alertify.success("{{session()->get('message')}}", 1);
                                 <option value="-1" {{Request::get('status') == -1 ? "selected" : ""}}>Đã huỷ</option>
                             </select>
                         </div>
+                        @endif
                         <div class="dis-inline">
                             <select class="form-control" name="payment">
                                 <option value="10">Thanh toán</option>
@@ -38,6 +40,7 @@ alertify.success("{{session()->get('message')}}", 1);
                         </div>
                         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                     </form>
+
 
                 </div>
 
@@ -163,6 +166,11 @@ alertify.success("{{session()->get('message')}}", 1);
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                            <tr>
+                                <th colspan="7" style="text-align: center;padding: 12px 1px;">Không có đơn hàng nào.
+                                </th>
+                            </tr>
                             @endif
                         </tbody>
 

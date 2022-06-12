@@ -123,7 +123,8 @@ class CartController extends Controller
     }
     public function delCart(Request $request)
     {
-        $urlWebsite = asset('checkoutcomplete/');
+        $detail = OrderDetail::find(66);
+        dd($detail->getCoupon->giamgia);
     }
 
     public function InvoiceConfirm()

@@ -27,6 +27,10 @@
 <body class="grocery-theme">
 
     <body>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0&appId=1056375581823890&autoLogAppEvents=1"
+            nonce="JhpQ55Gl"></script>
         @include('templates.clients.layouts.header')
         @yield('content')
 
@@ -50,10 +54,7 @@
         <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
 
         @include('templates.clients.layouts.footer')
-        <div id="fb-root"></div>
-        <script async defer crossorigin="anonymous"
-            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0&appId=1056375581823890&autoLogAppEvents=1"
-            nonce="JhpQ55Gl"></script>
+
         <!-- ============================================================== -->
         <!-- This page plugins -->
         <!-- ============================================================== -->

@@ -40,7 +40,8 @@
             <th>Sản phẩm</th>
             <th>Size</th>
             <th>Số lượng</th>
-            <th class="t-right">Giá bán</th>
+            <th>Giá bán</th>
+            <th class="t-right">Tổng</th>
         </tr>
     </thead>
     <tbody>
@@ -55,8 +56,17 @@
             <td>
                 {{ $value->soluong }}
             </td>
+            <td>
+                <?php
+                $giaban = $value->product->giaban + $value->size->price;
+                if ($value->giagoc) {
+                    $giaban = $giaban - $value->getCoupon->giamgia;
+                }
+                ?>
+                {{ currency_format(($giaban > 0 ) ? $giaban : 0)}}
+            </td>
             <td class="t-right">
-                {{currency_format($value->giaban)}}
+                {{currency_format($value->giaban )}}
             </td>
         </tr>
         @endforeach
@@ -65,7 +75,7 @@
             <td colspan="4" class="td-right">
                 <b> Tổng tiền sản phẩm :</b>
             </td>
-            <td class="td-right">
+            <td colspan="2" class="td-right">
                 <span>
                     {{currency_format($order->tongdonhang)}}</span>
             </td>
@@ -74,7 +84,7 @@
             <td colspan="4">
                 <b>Giảm giá :</b><span>
             </td>
-            <td class="td-right">
+            <td colspan="2" class="td-right">
                 <span class="no-wrap">
                     @if($order->Coupon)
                     @if($order->Coupon->loaigiam === 1)
@@ -96,7 +106,7 @@
             <td colspan="4">
                 <b>Tiền phí vận chuyển : </b>
             </td>
-            <td class="td-right">
+            <td colspan="2" class="td-right">
                 <span>
                     @if($order->id_feeship && $order->Ship->feeship)
                     + {{currency_format($order->Ship->feeship)}}
@@ -110,7 +120,7 @@
             <td colspan="4">
                 <b>Thành tiền :</b>
             </td>
-            <td class="td-right">
+            <td colspan="2" class="td-right">
                 <span>
                     {{currency_format($order->tongtien)}}
                 </span>

@@ -60,6 +60,11 @@
         font-weight: 500;
     }
 
+    table tr th {
+        text-align: left;
+        padding: 10px 0px;
+    }
+
     table tr td {
         padding: 10px 0px;
     }
@@ -73,10 +78,10 @@
 <body>
     <div class="content">
         <div class="header">
-            <h1>DRINKS ORDERS</h1>
+            <h1>{{ $setting->name ?? "Drinks Order"}}</h1>
             <h2>HOÁ ĐƠN THANH TOÁN</h2>
-            <span>Địa chỉ : Đ. Lê Lợi, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh</span>
-            <span>Điện thoại :<b> 033 420 2221</b></span>
+            <span>Địa chỉ :{{ $setting->diachi ?? "Thành Phố Hồ Chí Minh"}}</span>
+            <span>Điện thoại :<b>{{ $setting->dienthoai ?? "0334202221"}}</b></span>
         </div>
         <div class="info">
             <div class="w-50">
@@ -100,7 +105,8 @@
                         <th>Sản phẩm</th>
                         <th>Size</th>
                         <th>Số lượng</th>
-                        <th class="td-right">Giá bán</th>
+                        <th>Giá bán</th>
+                        <th class="td-right">Tổng</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,7 +123,18 @@
                         <td>
                             {{ $value->soluong }}
                         </td>
-                        <td class="td-right">{{currency_format($value->giaban)}} </td>
+                        <td>
+                            <?php
+                            $giaban = $value->product->giaban + $value->size->price;
+                            if ($value->giagoc) {
+                                $giaban = $giaban - $value->getCoupon->giamgia;
+                            }
+                            ?>
+                            {{ currency_format(($giaban > 0 ) ? $giaban : 0)}}
+                        </td>
+                        <td class="td-right">
+                            {{currency_format($value->giaban )}}
+                        </td>
                     </tr>
                     @endforeach
                     @endif
@@ -125,7 +142,7 @@
                         <td colspan="4" class="td-right">
                             <b> Tổng tiền sản phẩm:</b>
                         </td>
-                        <td class="td-right">
+                        <td colspan="2" class="td-right">
                             <span>
                                 {{currency_format($order->tongdonhang)}}</span>
                         </td>
@@ -134,7 +151,7 @@
                         <td colspan="4">
                             <b>Giảm giá:</b><span>
                         </td>
-                        <td class="td-right">
+                        <td colspan="2" class="td-right">
                             <span style="white-space: nowrap;">
                                 @if($order->Coupon)
                                 @if($order->Coupon->loaigiam === 1)
@@ -156,7 +173,7 @@
                         <td colspan="4">
                             <b>Tiền phí vận chuyển:</b>
                         </td>
-                        <td class="td-right">
+                        <td colspan="2" class="td-right">
                             <span>
                                 @if($order->id_feeship && $order->Ship->feeship)+
                                 {{currency_format($order->Ship->feeship)}}@else{{currency_format(0)}}@endif</span>
@@ -166,7 +183,7 @@
                         <td colspan="4">
                             <b>Thành tiền:</b>
                         </td>
-                        <td class="td-right">
+                        <td colspan="2" class="td-right">
                             <span>{{currency_format($order->tongtien)}}</span>
                         </td>
                     </tr>

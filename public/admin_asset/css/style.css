@@ -1630,9 +1630,25 @@ input[type="checkbox"] {
     color: #fff;
 }
 .count-order {
-    background: red;
     padding: 2px 14px;
     border-radius: 3px;
     font-weight: 600;
     font-size: 16px;
+    margin-left: 4px;
+}
+
+.count-order.cancel {
+    background-color: #e74a3b;
+}
+.count-order.receive {
+    background-color: #36b9cc;
+}
+.count-order.success {
+    background-color: #1cc88a;
+}
+.count-order.process {
+    background-color: #f6c23e;
+}
+.count-order.all {
+    background-color: #5fb546;
 }

@@ -96,21 +96,38 @@
                     </li>
                     <li class="sidebar-item list_order">
 
-                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                        <a class="sidebar-link" href="{{ route('get.order','all') }}">
                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            <span class="align-middle">Tiếp nhận <span class="count-order">1</span></span>
+                            <span class="align-middle">Tất cả <span class="count-order all">{{$all ?? 0}}</span></span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item list_order">
+
+                        <a class="sidebar-link" href="{{ route('get.order', 'receive') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span class="align-middle">Tiếp nhận <span
+                                    class="count-order receive">{{$receive ?? 0}}</span></span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                        <a class="sidebar-link" href="{{ route('get.order', 'process') }}">
                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            <span class="align-middle">Đang xử lí <span class="count-order">1</span></span>
+                            <span class="align-middle">Đang xử lí <span
+                                    class="count-order process">{{$process ?? 0}}</span></span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('get.order') }}">
+                        <a class="sidebar-link" href="{{ route('get.order', 'success') }}">
                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            <span class="align-middle">Đã huỷ <span class="count-order">1</span></span>
+                            <span class="align-middle">Hoàn thành<span
+                                    class="count-order success">{{$success ?? 0}}</span></span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.order', 'cancel') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span class="align-middle">Đã huỷ <span
+                                    class="count-order cancel">{{$cancel ?? 0}}</span></span>
                         </a>
                     </li>
                     <li class="sidebar-header">

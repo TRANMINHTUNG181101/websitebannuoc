@@ -9323,7 +9323,7 @@ ul.footer_social_links li a {
 }
 .header_nav.header-fixed{
     position: fixed;
-    z-index: 999;
+    z-index: 999999;
     width: 100%;
     top: 0;
     -webkit-transition: 0.2s ease-in;
