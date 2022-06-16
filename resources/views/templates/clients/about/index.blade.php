@@ -1,5 +1,28 @@
 @extends('templates.clients.frontend')
 @section('content')
+@if(count($errors) > 0)
+<script>
+window.onload = () => {
+    toastr.error("Lỗi liên hệ.", '', {
+        "closeButton": true,
+    });
+}
+</script>
+@endif
+@if(session()->has('errorContact'))
+<script>
+window.onload = () => {
+    toastr.error("{{session()->get('errorContact')}}");
+}
+</script>
+@endif
+@if(session()->has('successContact'))
+<script>
+window.onload = () => {
+    toastr.success("{{session()->get('successContact')}}");
+}
+</script>
+@endif
 <section>
     <div class="container">
         <div class="row">
@@ -146,7 +169,7 @@
                 <div class="contact-box">
                     <img src="assets/img/us-marker.png" class="mx-auto" alt="">
                     <h4>Địa chỉ liên hệ</h4>
-                    Đ. Lê Lợi, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh <br>
+                    {{ $setting->diachi ?? ""}}<br>
                 </div>
             </div>
 
@@ -154,8 +177,7 @@
                 <div class="contact-box">
                     <img src="assets/img/india-marker.png" class="mx-auto" alt="">
                     <h4>Email</h4>
-                    drinksorders@gmail.com<br>
-                    phanminhtri11800@gmail.com
+                    {{ $setting->email ?? ""}}<br>
                 </div>
             </div>
 
@@ -163,8 +185,7 @@
                 <div class="contact-box">
                     <img src="assets/img/uk-marker.png" class="mx-auto" alt="">
                     <h4>Điện thoại</h4>
-                    033 420 2221<br>
-                    033 420 2221
+                    {{ $setting->dienthoai ?? ""}}<br>
                 </div>
             </div>
 
@@ -178,29 +199,41 @@
 
             <div class="col-lg-7 col-md-12">
                 <div class="contact-form">
-                    <form>
-
+                    <form action="{{ route('send.contact')}}" method="post">
+                        @csrf
                         <div class="form-row">
-
                             <div class="form-group col-md-6">
                                 <label>Tên</label>
-                                <input type="email" class="form-control" placeholder="Tên">
+                                <input type="text" name="ten" class="form-control" placeholder="Tên">
+                                @if($errors->first('ten'))
+                                <span class="error text-danger">{{ $errors->first('ten') }}</span>
+                                @endif
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Email">
+                                <input type="email" name="email" class="form-control" placeholder="Email">
+                                @if($errors->first('email'))
+                                <span class="error text-danger">{{ $errors->first('email') }}</span>
+                                @endif
                             </div>
                         </div>
 
                         <div class="form-group col-lg-12 col-md-12">
                             <label>Tiêu đề</label>
-                            <input type="text" class="form-control" placeholder="Tiêu dề">
+                            <input type="text" name="tieude" class="form-control" placeholder="Tiêu dề">
+                            @if($errors->first('tieude'))
+                            <span class="error text-danger">{{ $errors->first('tieude') }}</span>
+                            @endif
                         </div>
 
                         <div class="form-group col-lg-12 col-md-12">
-                            <label>Ghi chú</label>
-                            <textarea class="form-control" placeholder="Ghi chú"></textarea>
+                            <label>Nội dung</label>
+                            <textarea rows="6" style="height: unset;" class="form-control" name="noidung"
+                                placeholder="Nội dung"></textarea>
+                            @if($errors->first('noidung'))
+                            <span class="error text-danger">{{ $errors->first('noidung') }}</span>
+                            @endif
                         </div>
 
                         <div class="form-group col-lg-12 col-md-12">

@@ -75,13 +75,16 @@
             <div class="col-lg-9 col-md-12">
 
                 <!-- Banner -->
+                @if($banner && isset($banner))
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
                         <div class="min_banner mb-5">
-                            <img src="{{ asset('img/banner1.jpg')}}" class="img-fluid rounded" alt="" />
+                            <img src="{{ asset('uploads/slide/'. $banner->hinhanh) }}" class="img-fluid rounded"
+                                alt="" />
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="row filter">
                     <div class="col-lg-12 col-md-12">
                         <div class="toolbar toolbar-products">

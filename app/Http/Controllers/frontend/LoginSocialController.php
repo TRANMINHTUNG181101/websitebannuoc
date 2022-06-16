@@ -42,7 +42,7 @@ class LoginSocialController extends Controller
             $cus = Customer::where('email', $request->email)->first();
             if ($cus) {
                 if ($cus->trangthai == 0) {
-                    return Response::json(['loginAcc' => 'Tài khoản chưa được kích hoạt. <br>Vui lòng nhấn <a href="">vào đây </a>để kích hoạt']);
+                    return Response::json(['loginAcc' => 'Tài khoản chưa được kích hoạt. <br>Vui lòng nhấn <a href="' . route('re.sendMail', $cus->email) . '">vào đây </a>để kích hoạt']);
                 } else {
                     return Response::json(['loginAcc' => 'Mật khẩu không chính xác.']);
                 }

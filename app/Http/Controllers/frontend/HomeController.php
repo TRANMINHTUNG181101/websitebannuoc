@@ -47,13 +47,18 @@ class HomeController extends Controller
             ->orderBy('vitri')
             ->get();
 
+        //banner 
+        $banner = Image::where('trangthai', 1)
+            ->where('loai', 'bannerHome')
+            ->first();
         $viewData = [
             'product' => $product,
             'danhmuc' => $danhmuc,
             'productnew' => $productnew,
             'baiviet' => $posts,
             'promotion' => $stack,
-            'slide' => $slide
+            'slide' => $slide,
+            'banner' => $banner,
         ];
         return view('templates.clients.home.index', $viewData);
     }

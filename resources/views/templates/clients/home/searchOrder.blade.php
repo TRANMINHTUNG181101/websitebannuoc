@@ -1,7 +1,7 @@
 @extends('templates.clients.frontend')
 @section('content')
 
-<section class="gray">
+<section class="gray" style="min-height: 40vh;">
     <div class="container">
         <div class="row justify-content-center">
             <h3 class="search-order-title">

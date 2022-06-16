@@ -340,7 +340,7 @@ class OrderController extends Controller
             }
             $request->session()->forget('cartAD');
             $request->session()->forget('feeship');
-            return redirect()->route('get.order');
+            return redirect()->route('get.order', 'receive');
         } else {
             $request->validate([
                 'sanpham' => 'required',

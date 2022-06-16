@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestStatic;
 use App\Http\Requests\SlideRequest;
+use App\Models\Contact;
 use App\Models\Image;
 use App\Models\StaticSetting;
+use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\In;
+use Svg\Tag\Rect;
 
 use function Symfony\Component\VarDumper\Dumper\esc;
 
@@ -122,6 +126,91 @@ class AdminController extends Controller
         } else {
             StaticSetting::create(['options' => json_encode($setting)]);
         }
+        return redirect()->back();
+    }
+
+    public function getBanner()
+    {
+        $bannerHome = Image::where('loai', 'bannerHome')->first();
+        $bannerProduct = Image::where('loai', 'bannerProduct')->first();
+        $viewData = [
+            'bannerHome' => $bannerHome,
+            'bannerProduct' => $bannerProduct
+        ];
+        return view('admin_pages.static.banner', $viewData);
+    }
+    public function createBanner($img, $imgfile, $type)
+    {
+        $img->ten = 'banner';
+        $img->loai = $type;
+        $image = $imgfile;
+        if ($image) {
+            $newImage = rand(1, 9999999) . '.' . $image->getClientOriginalExtension();
+            $image->move('uploads/slide', $newImage);
+            $img->hinhanh = $newImage;
+        }
+        $img->save();
+    }
+    public function postBanner(Request $request)
+    {
+        if ($request->bannerHome) {
+            $bannerHome = Image::where('loai', 'bannerHome')->first();
+            if (!$bannerHome) {
+                $bannerHome = new Image;
+            } else {
+                $urlImg =  'uploads/slide/' . $bannerHome->hinhanh;
+                if (file_exists($urlImg)) {
+                    unlink($urlImg);
+                }
+            }
+            $this->createBanner($bannerHome, $request->file('bannerHome'), 'bannerHome');
+        }
+        if ($request->bannerProduct) {
+            $bannerProduct = Image::where('loai', 'bannerProduct')->first();
+            if (!$bannerProduct) {
+                $bannerProduct = new Image;
+            } else {
+                $urlImg =  'uploads/slide/' . $bannerProduct->hinhanh;
+                if (file_exists($urlImg)) {
+                    unlink($urlImg);
+                }
+            }
+            $this->createBanner($bannerProduct, $request->file('bannerProduct'), 'bannerProduct');
+        }
+        return redirect()->back();
+    }
+
+    public function delBanner($id)
+    {
+        $banner = Image::find($id);
+        $urlImg =  'uploads/slide/' . $banner->hinhanh;
+        if (file_exists($urlImg)) {
+            unlink($urlImg);
+        }
+        $banner->delete();
+        return redirect()->back();
+    }
+    public function bannerShow($id)
+    {
+        $banner = Image::find($id);
+        $banner->trangthai = $banner->trangthai === 1 ? 2 : 1;
+        $banner->save();
+        return redirect()->back();
+    }
+
+    public function contact()
+    {
+        $contact = Contact::all();
+        return view('admin_pages.contact.index', ['contact' => $contact]);
+    }
+    public function edit($id)
+    {
+        $contact = Contact::find($id);
+        return view('admin_pages.contact.edit', ['contact' => $contact]);
+    }
+    public function delete($id)
+    {
+        Contact::find($id)->delete();
         return redirect()->back();
     }
 }

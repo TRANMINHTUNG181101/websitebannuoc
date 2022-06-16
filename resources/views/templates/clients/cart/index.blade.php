@@ -389,7 +389,15 @@ window.onload = () => {
                                             'Xác nhận': {
                                                 btnClass: 'btn-orange',
                                                 action: function() {
-
+                                                    console.log($(
+                                                            '.preloader'
+                                                        )
+                                                        .length)
+                                                    if ($('.preloader')
+                                                        .length) {
+                                                        $('.preloader')
+                                                            .show();
+                                                    }
                                                     submitOrder
                                                         .submit();
                                                 }
@@ -569,9 +577,10 @@ window.onload = () => {
             }
         },
         getLocation: function() {
+            let url = "{{ route('get.db.province')}}";
             (async () => {
                 const response = await fetch(
-                    'https://vapi.vnappmob.com/api/province');
+                    url);
                 if (response && response.status === 200) {
                     const province = await response.json();
                     this.dataLocation['province'] = province.results;
@@ -582,12 +591,13 @@ window.onload = () => {
             })();
         },
         getDistrict: function(provine, block) {
+            let url = "{{ asset('/')}}";
             (async () => {
                 const response = await fetch(
-                    `https://vapi.vnappmob.com/api/province/district/${provine}`);
+                    `${url}province/district/${provine}`);
                 if (response && response.status === 200) {
                     const district = await response.json();
-                    this.dataLocation['district'] = district.results;
+                    this.dataLocation['district'] = district;
                     this.renderProvince(this.dataLocation.district, 'district', block);
                 } else {
                     alert('laasy du lieu that bai !!!')
@@ -596,12 +606,13 @@ window.onload = () => {
         },
 
         getWard: function(district, block) {
+            let url = "{{ asset('/')}}";
             (async () => {
                 const response = await fetch(
-                    `https://vapi.vnappmob.com/api/province/ward/${district}`);
+                    `${url}province/ward/${district}`);
                 if (response && response.status === 200) {
                     const ward = await response.json();
-                    this.dataLocation['ward'] = ward.results;
+                    this.dataLocation['ward'] = ward;
                     this.renderProvince(this.dataLocation.ward, 'ward', block);
                 } else {
                     alert('laasy du lieu that bai !!!')
@@ -610,12 +621,13 @@ window.onload = () => {
         },
 
         getLocation: function() {
+            let url = "{{ route('get.db.province')}}";
             (async () => {
                 const response = await fetch(
-                    'https://vapi.vnappmob.com/api/province');
+                    url);
                 if (response && response.status === 200) {
                     const province = await response.json();
-                    this.dataLocation['province'] = province.results;
+                    this.dataLocation['province'] = province;
                     this.renderProvince(this.dataLocation.province, 'province');
                 } else {
                     alert('laasy du lieu that bai !!!')
@@ -628,7 +640,7 @@ window.onload = () => {
                 html = data.map(province => {
                     return (
                         `
-                            <li class="search_item" data-id='${province[`${type}_id`]}'>
+                            <li class="search_item" data-id='${province[`${type}_code`]}'>
                                 ${province[`${type}_name`]}
                             </li>
                         `
@@ -643,15 +655,18 @@ window.onload = () => {
                 listProvinces.forEach(prov => {
                     prov.onclick = (e) => {
                         e.preventDefault();
+                        console.log(this.dataLocation);
+
                         let id = e.target.dataset.id;
-                        let pro = this.dataLocation[`${type}`].find(pro => pro[`${type}_id`] ===
+                        let pro = this.dataLocation[`${type}`].find(pro => pro[
+                                `${type}_code`] ===
                             id);
                         document.querySelector(`.${type} input[name="${type}"]`).value = pro[
-                            `${type}_id`];
+                            `${type}_code`];
                         document.querySelector(`.${type} .input_search`).value = pro[
                             `${type}_name`];
                         document.querySelector(`.${type} .input_search`).setAttribute(
-                            'data-id', pro[`${type}_id`])
+                            'data-id', pro[`${type}_code`])
 
                         if (type === 'ward') {
                             (async () => {

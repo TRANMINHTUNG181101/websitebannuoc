@@ -123,8 +123,8 @@ class CartController extends Controller
     }
     public function delCart(Request $request)
     {
-        $detail = OrderDetail::find(66);
-        dd($detail->getCoupon->giamgia);
+        sleep(10);
+        return 1;
     }
 
     public function InvoiceConfirm()
@@ -395,7 +395,11 @@ class CartController extends Controller
 
     public function checkoutComplete(Request $request)
     {
-        if ($request->vnp_Amount) {
+        if ($request->madh) {
+            $this->sendMail($request->madh);
+            return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
+        }
+        if ($request->vnp_Amount && $request->vnp_ResponseCode == '00') {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
             $donhang['trangthaithanhtoan'] = 1;
@@ -470,11 +474,10 @@ class CartController extends Controller
             $payment->save();
             $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
+        } else {
+            return redirect()->route('get.cart');
         }
-        if ($request->madh) {
-            $this->sendMail($request->madh);
-            return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
-        }
+
 
         return redirect()->back();
     }

@@ -41,6 +41,6 @@ class Products extends Model
 
     public function Coupon()
     {
-        return $this->belongsToMany(Coupon::class, 'products_coupon', 'id_product', 'id_coupon');
+        return $this->belongsToMany(Coupon::class, 'products_coupon', 'id_product', 'id_coupon')->where('trangthai', 1);
     }
 }

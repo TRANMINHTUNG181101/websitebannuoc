@@ -71,8 +71,8 @@
                             <th style=" text-align: left;">Sản phẩm</th>
                             <th style=" text-align: left;">Size</th>
                             <th style=" text-align: left;">Số lượng</th>
-                            <th style=" text-align: left;">Giá gốc</th>
-                            <th style="text-align: right;">Giá bán</th>
+                            <th style=" text-align: left;">Giá bán</th>
+                            <th style="text-align: right;">Tổng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,13 +90,13 @@
                                 {{ $value->soluong }}
                             </td>
                             <td style="padding: 4px 0;">
-                                @if($value->giagoc)
-                                {{currency_format($value->product->giaban)}}
-                                <br />
-                                {{'( - '.currency_format($value->getCoupon->giamgia, ($value->getCoupon->loaigiam === 2) ? 'đ' : '%').' )'}}
-                                @else
-                                {{currency_format($value->giaban)}}
-                                @endif
+                                <?php
+                                $giaban = $value->product->giaban + $value->size->price;
+                                if ($value->giagoc) {
+                                    $giaban = $giaban - $value->getCoupon->giamgia;
+                                }
+                                ?>
+                                {{ currency_format(($giaban > 0 ) ? $giaban : 0)}}
                             </td>
                             <td style="text-align: right;">
                                 {{currency_format($value->giaban)}}
@@ -113,28 +113,25 @@
                                     {{currency_format($order->tongdonhang)}}</span>
                             </td>
                         </tr>
+                        @if($order->Coupon)
                         <tr style="text-align: right;margin:8px 0;">
                             <td colspan="4">
                                 <b>Giảm giá :</b><span>
                             </td>
                             <td style="text-align: right;">
                                 <span class="no-wrap">
-                                    @if($order->Coupon)
                                     @if($order->Coupon->loaigiam === 1)
-                                    <span> {{ $order->Coupon->giamgia}}%
+                                    <span>{{ $order->Coupon->giamgia}}%
                                         ( -
                                         {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
                                         )</span>
                                     @else
-                                    <span> -
-                                        {{currency_format($order->Coupon->giamgia)}}</span>
-                                    @endif
-                                    @else
-                                    {{currency_format(0)}}
+                                    <span>-{{currency_format($order->Coupon->giamgia)}}</span>
                                     @endif
                                 </span>
                             </td>
                         </tr>
+                        @endif
                         <tr style="text-align: right;margin:8px 0;">
                             <td colspan="4">
                                 <b>Tiền phí vận chuyển : </b>

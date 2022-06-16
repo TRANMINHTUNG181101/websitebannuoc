@@ -52,21 +52,21 @@
                             {{currency_format(Session::get('cart')->totalPrice)}}</span>
                     </td>
                 </tr>
+                @if(Session::get('cart')->coupon > 0)
                 <tr class="td-right">
                     <td colspan="4">
                         <b>Giảm giá :</b><span class="mrg-l10">
                     </td>
                     <td colspan="2" class="td-right">
                         <span class="mrg-l10">
-                            @if(Session::get('cart')->coupon > 0)
                             - {{currency_format(Session::get('cart')->coupon)}}
                             {{Session::get('cart')->discount ? '( - '.Session::get('cart')->discount.')' : ''}}
                             @else
                             {{currency_format(0)}}
-                            @endif
                         </span>
                     </td>
                 </tr>
+                @endif
                 <tr class="td-right">
                     <td colspan="4">
                         <b>Tiền phí vận chuyển : </b>

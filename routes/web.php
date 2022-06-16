@@ -141,7 +141,15 @@ Route::post('positionSlide/{id}', 'AdminController@positionSlide')->name('positi
 // thông tin hệ thống
 Route::get('satic', 'AdminController@staticWeb')->name('get.static');
 Route::post('poststatic', 'AdminController@postStatic')->name('post.static');
+Route::get('banner', 'AdminController@getBanner')->name('get.banner');
+Route::post('postbanner', 'AdminController@postBanner')->name('post.banner');
+Route::get('delBanner/{id}', 'AdminController@delBanner')->name('del.banner');
+Route::get('bannerShow/{id}', 'AdminController@bannerShow')->name('show.banner');
 
+// lien he
+Route::get('contact', 'AdminController@contact')->name('get.contact');
+Route::get('editContact{id}', 'AdminController@edit')->name('detail.contact');
+Route::get('delete{id}', 'AdminController@delete')->name('delete.contact');
 
 
 
@@ -234,6 +242,7 @@ Route::group(['namespace' => 'frontend'], function () {
 
 
     Route::get('about',  'AboutController@index')->name('about');
+    Route::post('contact',  'AboutController@contact')->name('send.contact');
 
 
     Route::get('products',  'ProductController@index')->name('product');
@@ -260,6 +269,7 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('register', 'RegisterController@index')->name('get.register');
     Route::post('Pregister', 'RegisterController@register')->name('post.register');
     Route::get('active/{customer}/{token}', 'RegisterController@active')->name('register.active');
+    Route::get('reActive/{email}', 'RegisterController@reSendMail')->name('re.sendMail');
 
 
     //đăng nhập
@@ -289,4 +299,11 @@ Route::group(['namespace' => 'frontend'], function () {
 
     // tat ca khuyen mai
     Route::get('promotion', 'CouponController@getAllPromotion')->name('get.all.promotion');
+
+
+    // lay danh sach tinh huyen xa
+
+    Route::get('province', 'LocationController@getProvince')->name('get.db.province');
+    Route::get('province/district/{province}', 'LocationController@getDistrict')->name('get.db.district');
+    Route::get('province/ward/{district}', 'LocationController@getWard')->name('get.db.ward');
 });

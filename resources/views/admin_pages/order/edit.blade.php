@@ -200,13 +200,13 @@
                                             {{currency_format($order->tongdonhang)}}</span>
                                     </td>
                                 </tr>
+                                @if($order->Coupon)
                                 <tr class="td-right">
                                     <td colspan="4">
                                         <b>Giảm giá :</b><span>
                                     </td>
                                     <td class="td-right">
                                         <span class="no-wrap">
-                                            @if($order->Coupon)
                                             @if($order->Coupon->loaigiam === 1)
                                             <span> {{ $order->Coupon->giamgia}}%
                                                 ( -
@@ -216,12 +216,11 @@
                                             <span> -
                                                 {{currency_format($order->Coupon->giamgia)}}</span>
                                             @endif
-                                            @else
-                                            {{currency_format(0)}}
-                                            @endif
+
                                         </span>
                                     </td>
                                 </tr>
+                                @endif
                                 <tr class="td-right">
                                     <td colspan="4">
                                         <b>Tiền phí vận chuyển : </b>

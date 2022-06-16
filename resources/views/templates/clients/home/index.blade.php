@@ -122,15 +122,16 @@
 
 <section class="pt-0 ">
     <div class="container">
+        @if($banner && isset($banner))
         <div class="row align-items-center offer_flix ">
-
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="ordering">
-                    <img src="{{ asset('frontend/img/post2.jpg') }}" class="img-fluid" alt="" />
+                    <img src="{{ asset('uploads/slide/'. $banner->hinhanh) }}" class="img-fluid" alt="" />
                 </div>
             </div>
 
         </div>
+        @endif
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="sec-heading-flex ">

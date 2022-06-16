@@ -10,7 +10,7 @@
 
 
     <title>{{ $setting->name ?? "Drinks Order"}}</title>
-
+    <link rel="icon" href="{{ asset('img/logo.png')}}" type="image/gif" sizes="16x16">
     <!-- Custom CSS -->
     <link href="{{ asset('frontend/assets/css/styles.css') }}" rel="stylesheet">
     <!-- <script src="{{ asset('backend/assets/alert/alertify.min.js') }}"></script> -->

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Comments;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\Products;
 
@@ -14,9 +15,14 @@ class ProductController extends Controller
     {
         $product = Products::where('trangthai', 1)->get();
         $danhmuc = Category::where('trangthai', 1)->get();
+
+        $banner = Image::where('trangthai', 1)
+            ->where('loai', 'bannerProduct')
+            ->first();
         $viewData = [
             'product' => $product,
             'danhmuc' => $danhmuc,
+            'banner' => $banner
         ];
         return view('templates.clients.product.index', $viewData);
     }

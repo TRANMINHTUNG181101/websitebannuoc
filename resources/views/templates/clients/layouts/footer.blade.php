@@ -54,9 +54,9 @@
 
                         <div class="address_infos">
                             <ul>
-                                <li><i class="fas fa-map-marker-alt"></i>TP. Hồ Chí Minh<br></li>
-                                <li><i class="fas fa-phone-square"></i>033 420 2221</li>
-                                <li><i class="fas fa-envelope"></i>pmt111100@gmail.com</li>
+                                <li><i class="fas fa-map-marker-alt"></i>{{ $setting->diachi ?? ""}}<br></li>
+                                <li><i class="fas fa-phone-square"></i>{{ $setting->dienthoai ?? ""}}</li>
+                                <li><i class="fas fa-envelope"></i>{{ $setting->email ?? ""}}</li>
                             </ul>
                         </div>
 
@@ -89,20 +89,20 @@
                     <div class="footer_widget">
                         <h4 class="widget_title">Giới thiệu</h4>
                         <ul class="footer-menu">
-                            <li><a href="#">Về Chúng Tôi</a></li>
-                            <li><a href="#">Sản phẩm</a></li>
-                            <li><a href="#">Khuyến mãi</a></li>
-                            <li><a href="#">Tin tức</a></li>
+                            <li><a href="{{ route('about')}}">Về Chúng Tôi</a></li>
+                            <li><a href="{{ route('product')}}">Sản phẩm</a></li>
+                            <li><a href="{{ route('get.all.promotion')}}">Khuyến mãi</a></li>
+                            <li><a href="{{ route('get.posts')}}">Tin tức</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-2">
-                    <!-- <iframe
+                    <iframe
                         src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=340&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId=1056375581823890"
-                        width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                        width="340" height="" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
                         allowfullscreen="true"
-                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe> -->
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                 </div>
 
 

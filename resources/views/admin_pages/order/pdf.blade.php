@@ -147,28 +147,22 @@
                                 {{currency_format($order->tongdonhang)}}</span>
                         </td>
                     </tr>
+                    @if($order->Coupon)
                     <tr class="td-right">
                         <td colspan="4">
                             <b>Giảm giá:</b><span>
                         </td>
                         <td colspan="2" class="td-right">
                             <span style="white-space: nowrap;">
-                                @if($order->Coupon)
                                 @if($order->Coupon->loaigiam === 1)
                                 <span> {{ $order->Coupon->giamgia}}%
-                                    ( -
-                                    {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                                    ( -{{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
                                     )</span>
                                 @else
-                                <span> -
-                                    {{currency_format($order->Coupon->giamgia)}}</span>
-                                @endif
-                                @else
-                                {{currency_format(0)}}
-                                @endif
-                            </span>
+                                <span>- {{currency_format($order->Coupon->giamgia) }}</span>@endif</span>
                         </td>
                     </tr>
+                    @endif
                     <tr class="td-right">
                         <td colspan="4">
                             <b>Tiền phí vận chuyển:</b>

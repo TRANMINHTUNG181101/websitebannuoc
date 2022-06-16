@@ -1652,3 +1652,9 @@ input[type="checkbox"] {
 .count-order.all {
     background-color: #5fb546;
 }
+
+.action-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -91,6 +91,7 @@
                             <span class="align-middle">Vận Chuyển</span>
                         </a>
                     </li>
+
                     <li class="sidebar-header">
                         Đơn hàng
                     </li>
@@ -104,32 +105,42 @@
                     <li class="sidebar-item list_order">
 
                         <a class="sidebar-link" href="{{ route('get.order', 'receive') }}">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <i class="fa fa-spinner" aria-hidden="true"></i>
                             <span class="align-middle">Tiếp nhận <span
                                     class="count-order receive">{{$receive ?? 0}}</span></span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('get.order', 'process') }}">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
                             <span class="align-middle">Đang xử lí <span
                                     class="count-order process">{{$process ?? 0}}</span></span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('get.order', 'success') }}">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             <span class="align-middle">Hoàn thành<span
                                     class="count-order success">{{$success ?? 0}}</span></span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('get.order', 'cancel') }}">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <i class="fa fa-ban" aria-hidden="true"></i>
                             <span class="align-middle">Đã huỷ <span
                                     class="count-order cancel">{{$cancel ?? 0}}</span></span>
                         </a>
                     </li>
+                    <li class="sidebar-header">
+                        Tin liên hệ
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.contact') }}">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            <span class="align-middle">Liên hệ</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-header">
                         Trang tĩnh
                     </li>
@@ -147,6 +158,12 @@
                         </a>
                     </li>
 
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.banner') }}">
+                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                            <span class="align-middle">Banner</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
