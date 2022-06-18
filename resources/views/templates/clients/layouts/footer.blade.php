@@ -98,11 +98,11 @@
                 </div>
 
                 <div class="col-lg-4 col-md-2">
-                    <iframe
+                    <!-- <iframe
                         src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=340&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId=1056375581823890"
                         width="340" height="" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
                         allowfullscreen="true"
-                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe> -->
                 </div>
 
 

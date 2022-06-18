@@ -181,6 +181,15 @@
     <script src="{!! asset('admin_asset/js/jquery-3.6.0.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js')}}"></script>
+    <script src="{{ asset('ckfinder/ckfinder.js')}}"></script>
+    <script>
+    CKEDITOR.replace('contentEmail', {
+        filebrowserBrowseUrl: '{{ asset("/ckfinder/ckfinder.html")}}',
+        filebrowserUploadUrl: '{{ asset("/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files")}}',
+    });
+    CKEDITOR.config.allowedContent = true;
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="{!! asset('admin_asset/toastr/toastr.min.js') !!}"></script>

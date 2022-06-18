@@ -9,6 +9,7 @@ use App\Models\Image;
 use App\Models\StaticSetting;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\In;
 use Svg\Tag\Rect;
 
@@ -200,7 +201,7 @@ class AdminController extends Controller
 
     public function contact()
     {
-        $contact = Contact::all();
+        $contact = Contact::paginate(10);
         return view('admin_pages.contact.index', ['contact' => $contact]);
     }
     public function edit($id)
@@ -212,5 +213,61 @@ class AdminController extends Controller
     {
         Contact::find($id)->delete();
         return redirect()->back();
+    }
+    public function sendmail(Request $request)
+    {
+        $contact = Contact::find($request->id);
+        $request->validate([
+            'tieudemail' => 'required',
+            'noidungmail' => 'required',
+        ], [
+            'tieudemail.required' => "Tiêu đề không được bỏ trống.",
+            'noidungmail.required' => "Nội dung không được bỏ trống.",
+        ]);
+
+        try {
+            Mail::send('admin_pages.contact.email', ['data' => $request->noidungmail], function ($email) use ($contact) {
+                $email->subject('Drinks - Web');
+                $email->to($contact->email, ($contact->ten) ? $contact->ten : "");
+            });
+            $contact->trangthai = 1;
+            $contact->save();
+            return redirect()->route('get.contact');
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back();
+        }
+    }
+
+    public function sendmailAll(Request $request)
+    {
+        $request->validate([
+            'tieudemail' => 'required',
+            'noidungmail' => 'required',
+        ], [
+            'tieudemail.required' => "Tiêu đề không được bỏ trống.",
+            'noidungmail.required' => "Nội dung không được bỏ trống.",
+        ]);
+        if (!$request->checks) {
+            return redirect()->back()->with('errorSendMail', 'Chưa chọn gmail để gửi.');
+        }
+        $contact = Contact::whereIn('id', $request->checks)->get();
+        $data = [];
+        foreach ($contact as $value) {
+            $data['email'][] = $value->email;
+        }
+        try {
+            Mail::send('admin_pages.contact.email', ['data' => $request->noidungmail], function ($email) use ($data) {
+                $email->subject('Drinks - Web');
+                $email->to($data['email'], 'Gửi liên hệ khách hàng.');
+            });
+            Contact::whereIn('id', $request->checks)->update(['trangthai' => 1]);
+            return redirect()->back()->with('successSendMail', 'Đã gửi mail liên hệ thành công.');
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('errorSendMail', 'Gửi mail thất bại.');
+        }
     }
 }

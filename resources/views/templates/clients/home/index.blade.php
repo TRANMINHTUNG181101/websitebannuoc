@@ -1,6 +1,5 @@
 @extends('templates.clients.frontend')
 @section('content')
-
 <div class="slideshow bg-pink">
     <div class="owl-carousel category-slider owl-slide">
         @if(count($slide))

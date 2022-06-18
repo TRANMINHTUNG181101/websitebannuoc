@@ -22,6 +22,6 @@ class AboutController extends Controller
         if ($contact) {
             return redirect()->back()->with('successContact', 'Đã gửi liên thệ thành công.');
         }
-        return redirect()->back()->with('errorContact', 'Gửi liên hệ thất bại.');
+        return redirect()->back()->with('successContact', 'Đã gửi liên thệ thành công.');
     }
 }

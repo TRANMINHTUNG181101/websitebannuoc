@@ -148,11 +148,10 @@ Route::get('bannerShow/{id}', 'AdminController@bannerShow')->name('show.banner')
 
 // lien he
 Route::get('contact', 'AdminController@contact')->name('get.contact');
-Route::get('editContact{id}', 'AdminController@edit')->name('detail.contact');
-Route::get('delete{id}', 'AdminController@delete')->name('delete.contact');
-
-
-
+Route::get('editContact/{id}', 'AdminController@edit')->name('detail.contact');
+Route::get('deleteContact/{id}', 'AdminController@delete')->name('delete.contact');
+Route::post('sendmailcontact', 'AdminController@sendmail')->name('sendmail.contact');
+Route::post('sendallMail', 'AdminController@sendmailAll')->name('sendmail.all.contact');
 
 
 
