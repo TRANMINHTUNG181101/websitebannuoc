@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -30,14 +29,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'facebook' => [
-        'client_id' => '1056375581823890', 
-        'client_secret' => '0f4ab3ad93f8b5d53606b758bd53c8a7',  
-        'redirect' => 'http://localhost/website_ban_nuoc/public/callback/facebook' 
+        'client_id' => '1056375581823890',
+        'client_secret' => '0f4ab3ad93f8b5d53606b758bd53c8a7',
+        'redirect' => 'http://127.0.0.1:8000/callback/facebook'
     ],
     'google' => [
         'client_id' => '872153443222-flgmpsqdshqa8lmsgpl0l5gnqopbrepe.apps.googleusercontent.com',
         'client_secret' => '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',
-        'redirect' => 'http://localhost/website_ban_nuoc/public/callback/google' 
+        'redirect' => 'http://127.0.0.1:8000/callback/google'
     ],
 
 ];

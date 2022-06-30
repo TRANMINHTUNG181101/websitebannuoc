@@ -1,5 +1,6 @@
 @extends('templates.admins.layout')
 @section('content')
+
 <div class="content-order">
     <div class="container-fluid p-0">
         <h1 class="h6 mb-3">Đơn hàng #{{$order->madh}}</h1>
@@ -36,25 +37,26 @@
                             <div class="progress">
                                 <ul>
                                     @if($order->trangthai == -1)
-                                    <li class="step step01  whiteT {{ ($order->trangthai >= -1 ) ? 'active cancelT' : ''}}">
+                                    <li
+                                        class="step step01  whiteT {{ ($order->trangthai >= -1 ) ? 'active cancelT' : ''}}">
                                         <i class="fa fa-check" aria-hidden="true"></i>
                                         <div class="step-inner"></div>
-                                    </li> 
-                                        <li class="step step02 {{ ($order->trangthai >= -1 ) ? 'active cancelT' : ''}}">
+                                    </li>
+                                    <li class="step step02 {{ ($order->trangthai >= -1 ) ? 'active cancelT' : ''}}">
                                         <i class="fa fa-ban" aria-hidden="true"></i>
                                         <div class="step-inner">Đã huỷ</div>
                                     </li>
                                     @else
                                     <li class="step step01  {{ ($order->trangthai >= 1 ) ? 'active' : ''}}">
-                                    <i class="fa fa-spinner" aria-hidden="true"></i>
+                                        <i class="fa fa-spinner" aria-hidden="true"></i>
                                         <div class="step-inner">Chờ xác nhận</div>
                                     </li>
                                     <li class="step step02 {{ ($order->trangthai >= 2 ) ? 'active' : ''}}">
-                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
                                         <div class="step-inner">Đang xử lí</div>
                                     </li>
                                     <li class="step step03 {{ ($order->trangthai >= 3 ) ? 'active' : ''}}">
-                                    <i class="fa fa-truck" aria-hidden="true"></i>
+                                        <i class="fa fa-truck" aria-hidden="true"></i>
                                         <div class="step-inner">Đang vận chuyển</div>
                                     </li>
                                     <li class="step step04 {{ ($order->trangthai >= 4 ) ? 'active' : ''}}">
@@ -65,7 +67,8 @@
                                 </ul>
 
                                 <div class="line {{ $order->trangthai == -1  ? 'cancel' : ''}}">
-                                    <div class="line-progress {{ $order->getStatus($order->trangthai)['progress']}}"></div>
+                                    <div class="line-progress {{ $order->getStatus($order->trangthai)['progress']}}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -81,8 +84,9 @@
                                 <ul>
                                     <li><span>Tên khách hàng :</span> {{$order->hoten}}</li>
                                     <li><span>Email :</span> {{$order->email}}</li>
-                                    <li><span> <i class="fa fa-money" aria-hidden="true"></i> Thông tin thanh toán :</span>
-                                        @if($order->trangthaithanhtoan == 1 )
+                                    <li><span> <i class="fa fa-money" aria-hidden="true"></i> Thông tin thanh toán
+                                            :</span>
+                                        @if($order->trangthaithanhtoan == 2 )
                                         <div class="badge badge-warning">Chờ thanh toán</div>
                                         @else
                                         <div class="badge badge-success">Đã thanh toán</div>
@@ -111,19 +115,31 @@
                     <div class="card-body">
                         <div class="form-style mb-3">
                             <label for="StatusOrder">Trạng thái đơn hàng</label>
-                            <select name="" id="StatusOrder" class="form-control" data-statusOld="{{$order->trangthai}}">
-                                <option value="1" {{  $order->trangthai == 1 ? "selected" : ""}} data-href="{{ route('get.action', ['receive', $order->id])}}">Tiếp nhận</option>
-                                <option value="2" {{  $order->trangthai == 2 ? "selected" : ""}} data-href="{{ route('get.action', ['process', $order->id])}}">Đang xử lí</option>
-                                <option value="3" {{  $order->trangthai == 3 ? "selected" : ""}} data-href="{{ route('get.action', ['transport', $order->id])}}">Đang vận chuyển</option>
-                                <option value="4" {{  $order->trangthai == 4 ? "selected" : ""}} data-href="{{ route('get.action', ['success', $order->id])}}">Đã giao</option>
-                                <option value="-1" {{  $order->trangthai == -1 ? "selected" : ""}} data-href="{{ route('get.action', ['cancel', $order->id])}}">Đã huỷ</option>
+                            <select name="" id="StatusOrder" class="form-control"
+                                data-statusOld="{{$order->trangthai}}">
+                                <option value="1" {{  $order->trangthai == 1 ? "selected" : ""}}
+                                    data-href="{{ route('get.action', ['receive', $order->id])}}">Tiếp nhận</option>
+                                <option value="2" {{  $order->trangthai == 2 ? "selected" : ""}}
+                                    data-href="{{ route('get.action', ['process', $order->id])}}">Đang xử lí</option>
+                                <option value="3" {{  $order->trangthai == 3 ? "selected" : ""}}
+                                    data-href="{{ route('get.action', ['transport', $order->id])}}">Đang vận chuyển
+                                </option>
+                                <option value="4" {{  $order->trangthai == 4 ? "selected" : ""}}
+                                    data-href="{{ route('get.action', ['success', $order->id])}}">Đã giao</option>
+                                <option value="-1" {{  $order->trangthai == -1 ? "selected" : ""}}
+                                    data-href="{{ route('get.action', ['cancel', $order->id])}}">Đã huỷ</option>
                             </select>
                         </div>
                         <div class="form-style mb-3">
                             <label for="PaymentStatus">Trạng thái thanh toán</label>
-                            <select name="" id="PaymentStatus" class="form-control" data-statusoldPay="{{$order->trangthaithanhtoan}}">
-                                <option value="2" {{  $order->trangthaithanhtoan == 2 ? "selected" : ""}} data-href="{{ route('get.actionPayment', ['success', $order->id])}}">Đã thanh toán</option>
-                                <option value="1" {{  $order->trangthaithanhtoan == 1 ? "selected" : ""}} data-href="{{ route('get.actionPayment', ['process', $order->id])}}">Chờ thanh toán</option>
+                            <select name="" id="PaymentStatus" class="form-control"
+                                data-statusoldPay="{{$order->trangthaithanhtoan}}">
+                                <option value="1" {{  $order->trangthaithanhtoan == 1 ? "selected" : ""}}
+                                    data-href="{{ route('get.actionPayment', ['success', $order->id])}}">Đã thanh toán
+                                </option>
+                                <option value="2" {{  $order->trangthaithanhtoan == 2 ? "selected" : ""}}
+                                    data-href="{{ route('get.actionPayment', ['process', $order->id])}}">Chờ thanh toán
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -144,7 +160,8 @@
                                     <th>Sản phẩm</th>
                                     <th>Size</th>
                                     <th>Số lượng</th>
-                                    <th class="t-right">Giá bán</th>
+                                    <th>Giá gốc</th>
+                                    <th class="td-right">Giá bán</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -152,39 +169,86 @@
                                 @foreach($orderDetail as $value)
                                 <tr>
                                     <td>
-                                        <img src="{{ asset('uploads/product/'.$value->product->hinhanh)}}" class="img-fluid" alt="" /> {{ $value->product->tensp ?? "[]" }}
+                                        <img src="{{ asset('uploads/product/'.$value->product->hinhanh)}}"
+                                            class="img-fluid" alt="" /> {{ $value->product->tensp ?? "[]" }}
                                     </td>
                                     <td>{{ $value->size->size_name }}</td>
                                     <td>
                                         {{ $value->soluong }}
                                     </td>
-                                    <td class="t-right">
+                                    <td>
+                                        @if($value->giagoc)
+                                        {{currency_format($value->product->giaban + $value->size->price)}}
+                                        <br />
+                                        {{'Khuyễn mãi : ( - '.currency_format($value->getCoupon->giamgia, ($value->getCoupon->loaigiam === 2) ? 'đ' : '%').' )'}}
+                                        @else
+                                        {{currency_format($value->giaban)}}
+                                        @endif
+                                    </td>
+                                    <td class="td-right">
                                         {{currency_format($value->giaban)}}
                                     </td>
                                 </tr>
                                 @endforeach
                                 @endif
+                                <tr class="td-right">
+                                    <td colspan="4" class="td-right">
+                                        <b> Tổng tiền sản phẩm :</b>
+                                    </td>
+                                    <td class="td-right">
+                                        <span>
+                                            {{currency_format($order->tongdonhang)}}</span>
+                                    </td>
+                                </tr>
+                                @if($order->Coupon)
+                                <tr class="td-right">
+                                    <td colspan="4">
+                                        <b>Giảm giá :</b><span>
+                                    </td>
+                                    <td class="td-right">
+                                        <span class="no-wrap">
+                                            @if($order->Coupon->loaigiam === 1)
+                                            <span> {{ $order->Coupon->giamgia}}%
+                                                ( -
+                                                {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                                                )</span>
+                                            @else
+                                            <span> -
+                                                {{currency_format($order->Coupon->giamgia)}}</span>
+                                            @endif
+
+                                        </span>
+                                    </td>
+                                </tr>
+                                @endif
+                                <tr class="td-right">
+                                    <td colspan="4">
+                                        <b>Tiền phí vận chuyển : </b>
+                                    </td>
+                                    <td class="td-right">
+                                        <span>
+                                            @if($order->id_feeship && $order->Ship->feeship)
+                                            + {{currency_format($order->Ship->feeship)}}
+                                            @else
+                                            {{currency_format(0)}}
+                                            @endif
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="td-right">
+                                    <td colspan="4">
+                                        <b>Thành tiền :</b>
+                                    </td>
+                                    <td class="td-right">
+                                        <span>
+                                            {{currency_format($order->tongtien)}}
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         {{ $orderDetail->links() }}
-                        <div class="d-flex space-r">
-                            <div class="sum">
-                                <div class="info-sum">
-                                    <b> Tổng tiền sản phẩm</b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
-                                </div>
-                                <div class="info-sum">
-                                    <b>Tiền phí vận chuyển </b><span class="mrg-l10"> 0đ</span>
-                                </div>
-                                <div class="info-sum">
-                                    <b>Giảm giá </b><span class="mrg-l10"> 0đ</span>
-                                </div>
-                                <div class="info-sum text-danger t-right">
-                                    <b>Thành tiền </b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
-                                </div>
 
-
-                            </div>
-                        </div>
 
 
                     </div>
@@ -203,7 +267,7 @@
                         <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>Thòi gian</th>
+                                    <th>Thời gian</th>
                                     <th>Số tiền</th>
                                     <th>Trạng thái</th>
                                     <th>Mã giao dịch</th>
@@ -215,10 +279,18 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        {{ $payment->ngaythanhtoan ?? "[]" }}
+                                        <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); ?>
+                                        @if($payment->Donhang->httt === 3)
+                                        <?= date("d-m-Y H:i:s", strtotime($payment->ngaythanhtoan)) ?>
+                                        @elseif ($payment->Donhang->httt === 2)
+                                        <?= date("d-m-Y H:i:s ", substr($payment->ngaythanhtoan, 0, 10)) ?>
+                                        @else
+                                        {{$payment->ngaythanhtoan}}
+                                        @endif
                                     </td>
-                                    <td>{{currency_format($payment->tongtien)}}</td>
+                                    <td>{{currency_format($payment->tongtien * 23187)}}</td>
                                     <td>
+
                                         @if($payment->trangthai == 1 )
                                         <div class="badge badge-success">Thành công</div>
                                         @else
@@ -251,61 +323,61 @@
 </div>
 
 <script>
-    $('#StatusOrder').on('change', function() {
-        let array = ['Chờ xác nhận', 'Đang xử lí', 'Đang vận chuyển', 'Đã giao', 'Đã huỷ'];
-        let status = ($(this).val() == -1) ? 5 : $(this).val()
-        let statusOld = ($(this).data('statusold') == -1) ? 5 : $(this).data('statusold')
-        let href = $(this).find(':selected').data('href')
-        $.confirm({
-            type: 'blue',
-            title: 'TRẠNG THÁI ĐƠN HÀNG',
-            content: `Vui lòng xác nhận đơn hàng chuyển từ <span class="text-danger"> ${array[statusOld - 1]} </span> sang <span class="text-danger"> ${array[status - 1]} </span>.`,
-            buttons: {
-                'Xác nhận': {
-                    text: 'Xác nhận',
-                    keys: ['enter'],
-                    btnClass: 'btn-blue',
-                    action: function() {
-                        window.location.href = href
-                    },
+$('#StatusOrder').on('change', function() {
+    let array = ['Chờ xác nhận', 'Đang xử lí', 'Đang vận chuyển', 'Đã giao', 'Đã huỷ'];
+    let status = ($(this).val() == -1) ? 5 : $(this).val()
+    let statusOld = ($(this).data('statusold') == -1) ? 5 : $(this).data('statusold')
+    let href = $(this).find(':selected').data('href')
+    $.confirm({
+        type: 'blue',
+        title: 'TRẠNG THÁI ĐƠN HÀNG',
+        content: `Vui lòng xác nhận đơn hàng chuyển từ <span class="text-danger"> ${array[statusOld - 1]} </span> sang <span class="text-danger"> ${array[status - 1]} </span>.`,
+        buttons: {
+            'Xác nhận': {
+                text: 'Xác nhận',
+                keys: ['enter'],
+                btnClass: 'btn-blue',
+                action: function() {
+                    window.location.href = href
                 },
-                Huỷ: function() {
-
-                }
+            },
+            Huỷ: function() {
 
             }
-        });
 
+        }
     });
 
+});
 
-    $('#PaymentStatus').on('change', function() {
-        let array = ['Chờ thanh toán', 'Đã thanh toán'];
-        let statusOld = $(this).data('statusoldpay')
-        let status = $(this).val()
-        let href = $(this).find(':selected').data('href')
 
-        $.confirm({
-            type: 'blue',
-            animation: 'zoom',
-            closeAnimation: 'scaleX',
-            title: 'TRẠNG THÁI THANH TOÁN',
-            content: `Vui lòng xác nhận đơn hàng chuyển từ <span class="text-danger"> ${array[statusOld - 1]} </span> sang <span class="text-danger"> ${array[status - 1]} </span>.`,
-            buttons: {
-                'Xác nhận': {
-                    text: 'Xác nhận',
-                    keys: ['enter'],
-                    btnClass: 'btn-blue',
-                    action: function() {
-                        window.location.href = href
-                    },
+$('#PaymentStatus').on('change', function() {
+    let array = ['Chờ thanh toán', 'Đã thanh toán'];
+    let statusOld = $(this).data('statusoldpay')
+    let status = $(this).val()
+    let href = $(this).find(':selected').data('href')
+
+    $.confirm({
+        type: 'blue',
+        animation: 'zoom',
+        closeAnimation: 'scaleX',
+        title: 'TRẠNG THÁI THANH TOÁN',
+        content: `Vui lòng xác nhận đơn hàng chuyển từ <span class="text-danger"> ${array[statusOld - 1]} </span> sang <span class="text-danger"> ${array[status - 1]} </span>.`,
+        buttons: {
+            'Xác nhận': {
+                text: 'Xác nhận',
+                keys: ['enter'],
+                btnClass: 'btn-blue',
+                action: function() {
+                    window.location.href = href
                 },
-                Huỷ: function() {
+            },
+            Huỷ: function() {
 
-                }
             }
-        });
-
+        }
     });
+
+});
 </script>
 @stop

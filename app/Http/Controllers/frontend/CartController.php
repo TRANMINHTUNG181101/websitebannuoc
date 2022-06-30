@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\ChitietDH;
 use App\Models\Comments;
+use App\Models\Coupon;
+use App\Models\District;
 use App\Models\Donhang;
 use App\Models\Order;
 use App\Models\Order_statisticals;
@@ -13,14 +15,17 @@ use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\Products;
 use App\Models\Sale_statisticals;
+use App\Models\Province;
 use App\Models\Sizes;
+use App\Models\Ward;
+use App\Models\Wishlist;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
-
-
 use PhpParser\Node\Expr\FuncCall;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -30,6 +35,15 @@ class CartController extends Controller
     {
 
         $product = Products::find((int)$request->id);
+        $discount = 0;
+        if (count($product->Coupon) > 0) {
+            if ($product->Coupon[0]->loaigiam === 1) {
+                $discount = $product->giaban *  $product->Coupon[0]->giamgia / 100;
+            } else {
+                $discount = $product->Coupon[0]->giamgia;
+            }
+        }
+        $product->giaban = ($product->giaban - $discount < 0) ? 0 : $product->giaban - $discount;
         $size = Sizes::find($request->size);
         if ($product != null) {
             $oldCart = Session('cart') ? Session('cart') : null;
@@ -56,8 +70,14 @@ class CartController extends Controller
         return view('templates.clients.home.cart');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        if (Session('coupon')) {
+            $request->session()->forget('coupon');
+        }
+        if (Session('feeship')) {
+            $request->session()->forget('feeship');
+        }
         return view('templates.clients.cart.index');
     }
     public function upCart(Request $request)
@@ -67,6 +87,15 @@ class CartController extends Controller
             if ($oldCart) {
                 $id = $oldCart->products[$request->keyCart]['productInfo']->id;
                 $product = Products::find($id);
+                $discount = 0;
+                if (count($product->Coupon) > 0) {
+                    if ($product->Coupon[0]->loaigiam === 1) {
+                        $discount = $product->giaban *  $product->Coupon[0]->giamgia / 100;
+                    } else {
+                        $discount = $product->Coupon[0]->giamgia;
+                    }
+                }
+                $product->giaban = ($product->giaban - $discount < 0) ? 0 : $product->giaban - $discount;
                 $viewData = [
                     'keyCart' => $request->keyCart,
                     'product' => $product,
@@ -83,13 +112,18 @@ class CartController extends Controller
         $size = Sizes::find($request->size);
         $oldCart = Session('cart') ? Session('cart') : null;
         $newCart = new Cart($oldCart);
-        $newCart->updateCart($request->key, $request->sl, $size);
+
+        $isExist = $newCart->checkProductUpdate($newCart, $request->id, $request->size, $request->key);
+        if ($isExist) {
+            $newCart->updateCart($request->key, $request->id, $size, $isExist);
+        } else {
+            $newCart->updateCart($request->key, $request->sl, $size);
+        }
         $request->session()->put('cart', $newCart);
         return view('templates.clients.home.cart');
     }
-    public function delCart()
+    public function delCart(Request $request)
     {
-
         // $cartt = session('cart');
 
         // foreach ($cartt->products as $value) {
@@ -114,6 +148,33 @@ class CartController extends Controller
         //     $orde->save();
         //     }
         // }
+        sleep(10);
+        return 1;
+    }
+
+    public function InvoiceConfirm()
+    {
+        if (Session('cart')) {
+            if (Session('feeship')) {
+                Session('cart')->feeShip = (+Session('feeship')->feeship);
+            } else {
+                Session('cart')->feeShip = 0;
+            }
+            if (Session('coupon')) {
+
+                if (+Session('coupon')->loaigiam === 1) {
+                    Session('cart')->coupon = Session('cart')->totalPrice * Session('coupon')->giamgia / 100;
+                    Session('cart')->discount = Session('coupon')->giamgia . '%';
+                } else {
+                    Session('cart')->coupon = Session('cart')->totalPrice - Session('coupon')->giamgia;
+                    Session('cart')->discount = Session('coupon')->giamgia . 'đ';
+                }
+            } else {
+                Session('cart')->coupon = 0;
+            }
+            $html = view('templates.clients.cart.invoice')->render();
+            return  Response()->json(['invoice' => $html]);
+        }
     }
 
     //lưu đơn hàng
@@ -142,11 +203,14 @@ class CartController extends Controller
 
         #region postpay
 
+
+        $urlWebsite = asset('checkoutcomplete/');
         $cart = Session('cart') ? Session('cart') : null;
         if (Session('mDonHang')) {
             $request->session()->forget('mDonHang');
         }
         $donhang = new Order;
+
         if ($cart) {
 
             //mã đơn hàng
@@ -159,10 +223,26 @@ class CartController extends Controller
             $donhang['email'] = $request->email;
             $donhang['hoten'] = $request->name;
             $donhang['dienthoai'] = $request->phone;
-            $donhang['diachi'] = $request->address;
+            $P = Province::where('province_code', $request->province)->first(['province_name']);
+            $D = District::where('district_code', $request->district)->first(['district_name']);
+            $W = Ward::where('ward_code', $request->ward)->first(['ward_name']);
+            $donhang['diachi'] = $request->address . ', ' . $W->ward_name . ', ' . $D->district_name . ', ' . $P->province_name;
             $donhang['ghichu'] = $request->note;
+            $donhang['tongdonhang'] = $cart->totalPrice;
             $donhang['tongtien'] = $cart->totalPrice;
-            $donhang['ngaytao'] = Carbon::now();
+            if (Session('coupon')) {
+                $donhang['id_coupon'] = Session('coupon')->id;
+                if (Session('coupon')->loaigiam === 1) {
+                    $donhang['tongtien'] = $donhang['tongtien'] - ($donhang['tongtien'] * Session('coupon')->giamgia / 100);
+                } else {
+                    $donhang['tongtien'] = $donhang['tongtien'] - Session('coupon')->giamgia;
+                }
+            }
+            if (Session('feeship')) {
+                $donhang['id_feeship'] = Session('feeship')->id;
+                $donhang['tongtien'] = $donhang['tongtien'] + Session('feeship')->feeship;
+            }
+            $donhang['ngaytao'] = Carbon::now('Asia/Ho_Chi_Minh');
             $donhang['httt'] = $request->payment;
         } else {
             return redirect()->route('product');
@@ -175,7 +255,7 @@ class CartController extends Controller
                 $provider->setApiCredentials(config('paypal'));
                 $paypalToken = $provider->getAccessToken();
 
-                $price = round($cart->totalPrice / 22830, 2);
+                $price = round($donhang['tongtien'] / 23187, 2);
                 $response = $provider->createOrder([
                     "intent" => "CAPTURE",
                     "application_context" => [
@@ -214,14 +294,14 @@ class CartController extends Controller
                 $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
 
 
-                $partnerCode = 'MOMO';
-                $accessKey = 'F8BBA842ECF85';
-                $secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
+                $partnerCode = 'MOMOBKUN20180529'; //MOMO
+                $accessKey = 'klm05TvNBzhg7h7j'; //F8BBA842ECF85
+                $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa'; //K951B6PE1waDMi640xX08PD3vg6EkVlz
                 $orderInfo = "Thanh toán qua MoMo";
-                $amount = $cart->totalPrice;
+                $amount = $donhang['tongtien'];
                 $orderId = time() . "";
-                $redirectUrl = "http://localhost/website_ban_nuoc/public/checkoutcomplete";
-                $ipnUrl = "http://localhost/website_ban_nuoc/public/checkoutcomplete";
+                $redirectUrl = $urlWebsite;
+                $ipnUrl = $urlWebsite;
                 $extraData = "";
                 $requestId = time() . "";
                 $requestType = "captureWallet";
@@ -254,13 +334,14 @@ class CartController extends Controller
                 # thanh toán vnpay
                 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
                 $vnp_Returnurl = "http://127.0.0.1:8000/checkoutcomplete";
+                $vnp_Returnurl = $urlWebsite;
                 $vnp_TmnCode = "PR66IZJ3"; //Mã website tại VNPAY 
                 $vnp_HashSecret = "SOYGBHCVQDYTYQPIKKWFAETKMEVMZXUO"; //Chuỗi bí mật
 
                 $vnp_TxnRef = time() . ""; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
                 $vnp_OrderInfo = 'Thanh toán đơn hàng VNPAY';
                 $vnp_OrderType = '3';
-                $vnp_Amount = $cart->totalPrice * 100;
+                $vnp_Amount = $donhang['tongtien'] * 100;
                 $vnp_Locale = 'vn';
                 $vnp_BankCode = 'NCB';
                 $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -320,18 +401,20 @@ class CartController extends Controller
                 # thanh toán tiền mặt
                 $cart = Session('cart') ? Session('cart') : null;
                 if ($cart) {
+                    $donhang['trangthaithanhtoan'] = 0;
                     $donhang->save();
                     if ($donhang) {
                         foreach ($cart->products as $value) {
-
-
                             //lưu sản phẩm đơn hàng
                             $data['id_donhang'] = $donhang->id;
                             $data['id_sanpham'] = $value['productInfo']->id;
                             $data['soluong'] = $value['quanty'];
                             $data['id_size'] = $value['size']->id;
                             $data['giaban'] = $value['price'];
-
+                            $data['giagoc'] = null;
+                            if (count($value['productInfo']->Coupon) > 0) {
+                                $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
+                            }
                             OrderDetail::create($data);
                         }
                     }
@@ -343,9 +426,31 @@ class CartController extends Controller
         #endregion 
     }
 
+    public function sendMail($madh)
+    {
+        $orderMail = Order::where('madh', $madh)->first();
+        if ($orderMail) {
+            $orderDetail = OrderDetail::where('id_donhang', $orderMail->id)->get();
+            $img_url = env('APP_URL_LINK');
+            $viewData = [
+                'img_url' => $img_url,
+                'order' => $orderMail,
+                'orderDetail' => $orderDetail
+            ];
+            Mail::send('templates.clients.cart.mailOrder', $viewData, function ($email) use ($orderMail) {
+                $email->subject('Drinks - Web');
+                $email->to($orderMail->email, ($orderMail->hoten) ? $orderMail->hoten : "");
+            });
+        }
+    }
+
     public function checkoutComplete(Request $request)
     {
-        if ($request->vnp_Amount) {
+        if ($request->madh) {
+            $this->sendMail($request->madh);
+            return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
+        }
+        if ($request->vnp_Amount && $request->vnp_ResponseCode == '00') {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
             $donhang['trangthaithanhtoan'] = 1;
@@ -358,6 +463,10 @@ class CartController extends Controller
                     $data['soluong'] = $value['quanty'];
                     $data['id_size'] = $value['size']->id;
                     $data['giaban'] = $value['price'];
+                    $data['giagoc'] = null;
+                    if (count($value['productInfo']->Coupon) > 0) {
+                        $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
+                    }
 
 
                     $orderStaticals = new Order_statisticals();
@@ -395,6 +504,9 @@ class CartController extends Controller
 
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else if ($request->partnerCode) {
+            $this->sendMail($donhang->madh);
+            return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
+        } else if ($request->partnerCode && $request->resultCode == 0) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
             $donhang['trangthaithanhtoan'] = 1;
@@ -407,6 +519,10 @@ class CartController extends Controller
                     $data['soluong'] = $value['quanty'];
                     $data['id_size'] = $value['size']->id;
                     $data['giaban'] = $value['price'];
+                    $data['giagoc'] = null;
+                    if (count($value['productInfo']->Coupon) > 0) {
+                        $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
+                    }
 
                     OrderDetail::create($data);
                 }
@@ -434,11 +550,15 @@ class CartController extends Controller
             $saleStatisticals->tien_don_hang = $request->amount;
             $saleStatisticals->save();
 
+            $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
+        } else {
+            return redirect()->route('get.cart');
         }
         if ($request->madh) {
             return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
         }
+        return redirect()->back();
     }
 
 
@@ -480,7 +600,6 @@ class CartController extends Controller
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            dd($response);
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
             $donhang['trangthaithanhtoan'] = 1;
@@ -493,12 +612,36 @@ class CartController extends Controller
                     $data['soluong'] = $value['quanty'];
                     $data['id_size'] = $value['size']->id;
                     $data['giaban'] = $value['price'];
+                    $data['giagoc'] = null;
+                    if (count($value['productInfo']->Coupon) > 0) {
+                        $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
+                    }
 
                     OrderDetail::create($data);
                 }
             }
             $request->session()->forget('cart');
             $request->session()->forget('mDonHang');
+            if (Session('feeship')) {
+                $request->session()->forget('feeship');
+            }
+            if (Session('coupon')) {
+                $request->session()->forget('coupon');
+            }
+            //lưu thanh toán
+
+            $payment = new Payment;
+            $payment->tongtien = $response['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
+            $payment->mancc = 'Paypal';
+            $payment->loaithanhtoan = 'Paypal';
+            $payment->sohoadon = $response['purchase_units'][0]['payments']['captures'][0]['id'];
+            $payment->magiaodich = $response['id'];
+            $payment->noidung = 'Thanh toán Paypal';
+            $payment->ngaythanhtoan = $response['purchase_units'][0]['payments']['captures'][0]['create_time'];
+            $payment->id_donhang = $donhang->id;
+
+            $payment->save();
+            $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else {
             return redirect()

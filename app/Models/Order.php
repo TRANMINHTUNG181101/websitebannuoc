@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
     protected $table = 'orders';
-    protected $fillable = ['hoten','madh','tongtien', 'diachi', 'dienthoai', 'ghichu', 'trangthai', 'id_nhanvien', 'id_khachhang', 'email', 'ngaytao', 'httt','trangthaithanhtoan'];
+    protected $fillable = ['hoten', 'madh', 'tongdonhang', 'tongtien', 'id_coupon', 'id_feeship', 'diachi', 'dienthoai', 'ghichu', 'trangthai', 'id_nhanvien', 'id_khachhang', 'email', 'ngaytao', 'httt', 'trangthaithanhtoan'];
     protected $status = [
         '1' => [
             'class' => 'info',
@@ -39,7 +39,18 @@ class Order extends Model
         ],
     ];
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return Arr::get($this->status, $this->trangthai, 'N/A');
+    }
+
+    public function Ship()
+    {
+        return $this->hasOne(FeeShip::class, 'id', 'id_feeship');
+    }
+
+    public function Coupon()
+    {
+        return $this->hasOne(Coupon::class, 'id', 'id_coupon');
     }
 }

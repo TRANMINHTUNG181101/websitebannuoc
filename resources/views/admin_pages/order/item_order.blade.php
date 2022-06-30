@@ -9,6 +9,14 @@
                     {{ $order->getStatus($order->trangthai)['name']}}
                 </div>
             </li>
+            <li><span> <i class="fa fa-money" aria-hidden="true"></i> Thông tin thanh toán :</span>
+                @if($order->trangthaithanhtoan == 0 )
+                <div class="badge badge-warning">Chờ thanh toán</div>
+                @else
+                <div class="badge badge-success">Đã thanh toán</div>
+                @endif
+
+            </li>
 
         </ul>
     </div>
@@ -32,7 +40,8 @@
             <th>Sản phẩm</th>
             <th>Size</th>
             <th>Số lượng</th>
-            <th class="t-right">Giá bán</th>
+            <th>Giá bán</th>
+            <th class="t-right">Tổng</th>
         </tr>
     </thead>
     <tbody>
@@ -47,29 +56,73 @@
             <td>
                 {{ $value->soluong }}
             </td>
+            <td>
+                <?php
+                $giaban = $value->product->giaban + $value->size->price;
+                if ($value->giagoc) {
+                    $giaban = $giaban - $value->getCoupon->giamgia;
+                }
+                ?>
+                {{ currency_format(($giaban > 0 ) ? $giaban : 0)}}
+            </td>
             <td class="t-right">
-                {{currency_format($value->giaban)}}
+                {{currency_format($value->giaban )}}
             </td>
         </tr>
         @endforeach
         @endif
+        <tr class="td-right">
+            <td colspan="4" class="td-right">
+                <b> Tổng tiền sản phẩm :</b>
+            </td>
+            <td colspan="2" class="td-right">
+                <span>
+                    {{currency_format($order->tongdonhang)}}</span>
+            </td>
+        </tr>
+        @if($order->Coupon)
+        <tr class="td-right">
+            <td colspan="4">
+                <b>Giảm giá :</b><span>
+            </td>
+            <td colspan="2" class="td-right">
+                <span class="no-wrap">
+                    @if($order->Coupon->loaigiam === 1)
+                    <span> {{ $order->Coupon->giamgia}}%
+                        ( -
+                        {{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                        )</span>
+                    @else
+                    <span> -
+                        {{currency_format($order->Coupon->giamgia)}}</span>
+                    @endif
+                </span>
+            </td>
+        </tr>
+        @endif
+        <tr class="td-right">
+            <td colspan="4">
+                <b>Tiền phí vận chuyển : </b>
+            </td>
+            <td colspan="2" class="td-right">
+                <span>
+                    @if($order->id_feeship && $order->Ship->feeship)
+                    + {{currency_format($order->Ship->feeship)}}
+                    @else
+                    {{currency_format(0)}}
+                    @endif
+                </span>
+            </td>
+        </tr>
+        <tr class="td-right">
+            <td colspan="4">
+                <b>Thành tiền :</b>
+            </td>
+            <td colspan="2" class="td-right">
+                <span>
+                    {{currency_format($order->tongtien)}}
+                </span>
+            </td>
+        </tr>
     </tbody>
 </table>
-<div class="d-flex space-r">
-    <div class="sum">
-        <div class="info-sum">
-            <b> Tổng tiền sản phẩm</b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
-        </div>
-        <div class="info-sum">
-            <b>Tiền phí vận chuyển </b><span class="mrg-l10"> 0đ</span>
-        </div>
-        <div class="info-sum">
-            <b>Giảm giá </b><span class="mrg-l10"> 0đ</span>
-        </div>
-        <div class="info-sum text-danger">
-            <b>Thành tiền </b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
-        </div>
-
-
-    </div>
-</div>

@@ -4,6 +4,10 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Image;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Payment;
 use App\Models\Posts;
 use App\Models\Products;
 use Illuminate\Http\Request;
@@ -22,20 +26,47 @@ class HomeController extends Controller
         //sản phẩm mới 
         $productnew = Products::where('trangthai', 1)
             ->orderBy('id')
+
             ->limit(6)
+            ->get()
+            ->limit(8)
             ->get();
+
+        //sản phẩm khuyến mãi
+        $promotion = Products::where('trangthai', 1)->get();
+        $stack = $promotion->filter(function ($item) {
+            return count($item->Coupon) > 0;
+        })->values();
+
+
         $danhmuc = Category::where('trangthai', 1)->get();
 
         //bài viết 
         $posts = Posts::where('trangthai', 1)
+            ->where('hot', 1)
             ->orderBy('id')
-            ->limit(4)
+            ->limit(8)
             ->get();
+
+
+        // slide
+        $slide = Image::where('trangthai', 1)
+            ->where('loai', 'slide')
+            ->orderBy('vitri')
+            ->get();
+
+        //banner 
+        $banner = Image::where('trangthai', 1)
+            ->where('loai', 'bannerHome')
+            ->first();
         $viewData = [
             'product' => $product,
             'danhmuc' => $danhmuc,
             'productnew' => $productnew,
-            'baiviet' => $posts
+            'baiviet' => $posts,
+            'promotion' => $stack,
+            'slide' => $slide,
+            'banner' => $banner,
         ];
         return view('templates.clients.home.index', $viewData);
     }

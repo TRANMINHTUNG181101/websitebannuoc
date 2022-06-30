@@ -4,7 +4,7 @@ $(function() {
 	//Loader	
 	$(function preloaderLoad() {
         if($('.preloader').length){
-            $('.preloader').delay(200).fadeOut(300);
+            $('.preloader').delay(500).fadeOut(200);
         }
         $(".preloader_disabler").on('click', function() {
             $("#preloader").hide();
@@ -303,6 +303,7 @@ $(function() {
 		items:7,
 		loop:false,
 		margin:10,
+		autoHeight: true,
 		nav:false,
 		autoplay : false,
 		dots:false,
@@ -315,13 +316,13 @@ $(function() {
 				items:2
 			},
 			1000:{
-				items:4
+				items:6
 			},
 			1200:{
-				items:5
+				items:6
 			},
 			1400:{
-				items:5
+				items:6
 			}
 		}
 	});
@@ -342,13 +343,13 @@ $(function() {
 				items:2
 			},
 			1000:{
-				items:4
+				items:6
 			},
 			1200:{
-				items:4
+				items:6
 			},
 			1400:{
-				items:4
+				items:6
 			}
 		}
 	});
@@ -387,6 +388,7 @@ $(function() {
 		items:1,
 		loop:false,
 		margin:10,
+		autoHeight: true,
 		nav:true,
 		dots:false,
 		navText: ["<i class='fas fa-angle-left'></i>", "<i class='fas fa-angle-right'></i>"],

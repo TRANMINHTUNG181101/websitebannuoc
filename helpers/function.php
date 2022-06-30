@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -22,6 +21,15 @@ if (!function_exists('currency_format')) {
         }
     }
 }
+
+if (!function_exists('getURL')) {
+
+    function getURL()
+    {
+        return asset('/');
+    }
+}
+
 if (!function_exists('get_user')) {
     function get_user($type, $field = 'id')
     {
@@ -32,7 +40,7 @@ if (!function_exists('get_user')) {
 if (!function_exists('format_date')) {
     function format_date($date)
     {
-        $t = Carbon::create($date)->format('d/m/Y H:m:s');
+        $t = Carbon::create($date)->format('d/m/Y H:i:s');
         return $t;
     }
 }
@@ -46,4 +54,3 @@ if (!function_exists('toTime')) {
         return $dt->diffForHumans($now);
     }
 }
-?>

@@ -121,8 +121,15 @@ body {
     text-align: left;
 }
 
+<<<<<<< HEAD
 input[type="text"] {
     background-color: #1a2226;
+=======
+input[type=text] {
+    /* background-color: #1A2226; */
+    background-color: #fff;
+    cursor: pointer;
+>>>>>>> 2a8540a8c58e0b0f43ac8a2ea60393f0b04431e3
     border: none;
     border-bottom: 2px solid #0db8de;
     border-top: 0px;

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Products;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -38,9 +42,9 @@ class LoginSocialController extends Controller
             $cus = Customer::where('email', $request->email)->first();
             if ($cus) {
                 if ($cus->trangthai == 0) {
-                    return Response::json(['loginAcc' => 'Tài khoản chưa được kích hoạt. <br>Vui lòng nhấn <a href="">vào đây </a>để kích hoạt']);
+                    return Response::json(['loginAcc' => 'Tài khoản chưa được kích hoạt. <br>Vui lòng nhấn <a href="' . route('re.sendMail', $cus->email) . '">vào đây </a>để kích hoạt']);
                 } else {
-                return Response::json(['loginAcc' => 'Mật khẩu không chính xác.']);
+                    return Response::json(['loginAcc' => 'Mật khẩu không chính xác.']);
                 }
             } else {
                 return Response::json(['loginAcc' => 'Email không tồn tại.']);
@@ -68,15 +72,15 @@ class LoginSocialController extends Controller
     }
     public function CreateUser($users, $provider)
     {
-            $account = Customer::create([
-                'ten' => $users->name,
-                'email' => $users->email,
-                'password' =>  Hash::make($provider),
-                'id_social' => $users->id,
-                'type_social' => $provider,
-                'sodienthoai' => '',
-                'trangthai' => 1
-            ]);
+        $account = Customer::create([
+            'ten' => $users->name,
+            'email' => $users->email,
+            'password' =>  Hash::make($provider),
+            'id_social' => $users->id,
+            'type_social' => $provider,
+            'sodienthoai' => '',
+            'trangthai' => 1
+        ]);
         $account->save();
 
         $account_name = Customer::where('id', $account->id)->first();
@@ -88,16 +92,34 @@ class LoginSocialController extends Controller
         return redirect()->route('get.home');
     }
 
-    public function getInfo()
+    public function getInfo($nav)
     {
 
         $id =  get_user('customer', 'id') ? get_user('customer', 'id') : null;
+
         if ($id) {
+            $order = Order::where('id_khachhang', $id)->orderByDesc('trangthai')->get();
             $user = Customer::find($id);
+            $wislist = Products::whereHas('wishlist', function ($query) use ($id) {
+                $query->where('id_khachhang', $id);
+            })->get();
         }
-        return view('client.account.index', ['user' => $user]);
+        $viewData = [
+            'order' => $order,
+            'user' => $user,
+            'wishlist' => $wislist,
+            'main' => $nav
+        ];
+        return view('templates.clients.account.index', $viewData);
     }
 
-
-  
+    public function update_user(UpdateUserRequest $request)
+    {
+        $user = Customer::find($request->id);
+        if ($user) {
+            $user->update($request->except('id', '_token'));
+            return redirect()->route('get.infouser', 'info')->with('messageUpdate', 'Đã cập nhật thông tin !');
+        }
+        return redirect()->route('get.infouser', 'info');
+    }
 }

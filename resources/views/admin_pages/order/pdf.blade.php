@@ -6,88 +6,82 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Đơn hàng #{{$order->madh}}</title>
     <style>
-        * {
-            font-family: DejaVu Sans, sans-serif;
-        }
+    * {
+        font-family: DejaVu Sans, sans-serif;
+    }
 
-        .content {
-            text-align: center;
-            width: 100%;
-            margin: 0 auto;
-            margin-top: 50px;
-        }
+    .content {
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
 
-        .header span {
-            display: block;
-            margin-top: 10px;
-        }
+    .header span {
+        display: block;
+        margin-top: 10px;
+    }
 
-        .content .header h1 {
-            margin-bottom: 10px;
-        }
-        .content .header h2 {
-            margin-top: 10px;
-        }
-        .w-50 {
-            float: left;
-            width: 50%;
-        }
+    .content .header h1 {
+        margin-bottom: 10px;
+    }
 
-        .detail {
-            clear: both;
-        }
+    .content .header h2 {
+        margin-top: 10px;
+    }
 
-        .info ul {
-            list-style: none;
-            text-align: left;
-            padding: 0px;
-        }
+    .td-right {
+        text-align: right;
+    }
 
-        .info ul li {
-            margin: 10px 0px;
-            font-weight: bold;
-        }
+    .w-50 {
+        float: left;
+        width: 50%;
+    }
 
-        .info ul li span {
-            font-weight: 500;
-        }
-        .sum {
-            text-align: right;
-            margin-top: 20px;
-            padding-right: 60px;
-        }
-        .sum b{
-            float: left;
-        }
+    .detail {
+        clear: both;
+    }
 
-        .sum .info-sum {
-            display: block;
-            padding: 10px;
-            border-bottom: 1px solid gray;
-        }
-        table tr td {
-            padding: 10px 0px;
-        }
-        .footer {
-            margin-top: 50px;
-        }
-        table tr th {
-            text-align: left;
-        }
-      
-     
+    .info ul {
+        list-style: none;
+        text-align: left;
+        padding: 0px;
+    }
+
+    .info ul li {
+        margin: 10px 0px;
+        font-weight: bold;
+    }
+
+    .info ul li span {
+        font-weight: 500;
+    }
+
+    table tr th {
+        text-align: left;
+        padding: 10px 0px;
+    }
+
+    table tr td {
+        padding: 10px 0px;
+    }
+
+    .footer {
+        margin-top: 50px;
+    }
     </style>
 </head>
 
 <body>
     <div class="content">
         <div class="header">
-            <h1>DRINKS ORDERS</h1>
+            <h1>{{ $setting->name ?? "Drinks Order"}}</h1>
             <h2>HOÁ ĐƠN THANH TOÁN</h2>
-            <span>Địa chỉ : Đ. Lê Lợi, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh</span>
-            <span>Điện thoại :<b> 033 420 2221</b></span>
+            <span>Địa chỉ :{{ $setting->diachi ?? "Thành Phố Hồ Chí Minh"}}</span>
+            <span>Điện thoại :<b>{{ $setting->dienthoai ?? "0334202221"}}</b></span>
         </div>
         <div class="info">
             <div class="w-50">
@@ -109,8 +103,10 @@
                     <tr>
                         <th>STT</th>
                         <th>Sản phẩm</th>
+                        <th>Size</th>
                         <th>Số lượng</th>
                         <th>Giá bán</th>
+                        <th class="td-right">Tổng</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,34 +118,72 @@
                         </td>
                         <td>{{ $value->product->tensp ?? "[]" }} ({{ $value->size->size_name }})</td>
                         <td>
+                            {{ $value->size->size_name }}
+                        </td>
+                        <td>
                             {{ $value->soluong }}
                         </td>
                         <td>
-                            {{currency_format($value->giaban)}}
+                            <?php
+                            $giaban = $value->product->giaban + $value->size->price;
+                            if ($value->giagoc) {
+                                $giaban = $giaban - $value->getCoupon->giamgia;
+                            }
+                            ?>
+                            {{ currency_format(($giaban > 0 ) ? $giaban : 0)}}
+                        </td>
+                        <td class="td-right">
+                            {{currency_format($value->giaban )}}
                         </td>
                     </tr>
                     @endforeach
                     @endif
+                    <tr class="td-right">
+                        <td colspan="4" class="td-right">
+                            <b> Tổng tiền sản phẩm:</b>
+                        </td>
+                        <td colspan="2" class="td-right">
+                            <span>
+                                {{currency_format($order->tongdonhang)}}</span>
+                        </td>
+                    </tr>
+                    @if($order->Coupon)
+                    <tr class="td-right">
+                        <td colspan="4">
+                            <b>Giảm giá:</b><span>
+                        </td>
+                        <td colspan="2" class="td-right">
+                            <span style="white-space: nowrap;">
+                                @if($order->Coupon->loaigiam === 1)
+                                <span> {{ $order->Coupon->giamgia}}%
+                                    ( -{{currency_format($order->tongdonhang *  $order->Coupon->giamgia / 100)}}
+                                    )</span>
+                                @else
+                                <span>- {{currency_format($order->Coupon->giamgia) }}</span>@endif</span>
+                        </td>
+                    </tr>
+                    @endif
+                    <tr class="td-right">
+                        <td colspan="4">
+                            <b>Tiền phí vận chuyển:</b>
+                        </td>
+                        <td colspan="2" class="td-right">
+                            <span>
+                                @if($order->id_feeship && $order->Ship->feeship)+
+                                {{currency_format($order->Ship->feeship)}}@else{{currency_format(0)}}@endif</span>
+                        </td>
+                    </tr>
+                    <tr class="td-right">
+                        <td colspan="4">
+                            <b>Thành tiền:</b>
+                        </td>
+                        <td colspan="2" class="td-right">
+                            <span>{{currency_format($order->tongtien)}}</span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <div class="d-flex space-r">
-                <div class="sum">
-                    <div class="info-sum">
-                        <b> Tổng tiền sản phẩm</b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
-                    </div>
-                    <div class="info-sum">
-                        <b>Tiền phí vận chuyển </b><span class="mrg-l10"> 0đ</span>
-                    </div>
-                    <div class="info-sum">
-                        <b>Giảm giá </b><span class="mrg-l10"> 0đ</span>
-                    </div>
-                    <div class="info-sum text-danger ">
-                        <b>Thành tiền </b><span class="mrg-l10"> {{currency_format($order->tongtien)}}</span>
-                    </div>
 
-
-                </div>
-            </div>
         </div>
 
         <div class="footer">

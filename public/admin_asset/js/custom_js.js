@@ -75,7 +75,13 @@ $().ready(function () {
                     },
                 });
             },
+<<<<<<< HEAD
             error: function (xhr, ajaxOptions, thrownError) {},
+=======
+            error: function(xhr, ajaxOptions, thrownError) {
+                //alert("Fail to send ");
+            },
+>>>>>>> 2a8540a8c58e0b0f43ac8a2ea60393f0b04431e3
         });
     }
 

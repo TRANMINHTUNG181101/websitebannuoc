@@ -4,6 +4,13 @@
 </script>
 @endif
 
+@if(session()->has('messageUpdate'))
+<script>
+    toastr.info("{{session()->get('messageUpdate')}}", "Thông báo");
+</script>
+@endif
+
+
 @if(session()->has('activeAcc'))
 <script>
     $.confirm({
