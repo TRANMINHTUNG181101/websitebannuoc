@@ -30,8 +30,11 @@
                 <div class="form-group">
                     <label for=""><strong>kich thuoc</strong></label><br>
                     @foreach ($size as $s)
-                        <label for=""><input type="checkbox" name="sizePro[]" id="sizeChoose"
-                                value="{{ $s->id }}">{{ $s->size_name }}</label>
+                        <div class="size-choose">
+                            <label for=""></label>
+                            <input type="checkbox" name="sizePro[]" id="sizeChoose"
+                                value="{{ $s->id }}">{{ $s->size_name }}
+                        </div>
                     @endforeach
 
                     @if ($errors->first('sizeChoose'))

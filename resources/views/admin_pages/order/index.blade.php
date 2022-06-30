@@ -94,7 +94,7 @@
 
                                         <div class="dropdown action">
                                             <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cập nhật</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">           
                                                 <a class="dropdown-item" href=" {{ route('get.action', ['process', $value->id])}}"><i class="fa fa-refresh" aria-hidden="true"></i> Đã xử lí</a>
                                                 <a class="dropdown-item" href="{{ route('get.action', ['transport', $value->id])}}"><i class="fa fa-truck" aria-hidden="true"></i> Đang vận chuyển</a>
                                                 <a class="dropdown-item" href="{{ route('get.action', ['success', $value->id])}}"><i class="fa fa-check" aria-hidden="true"></i> Đã giao</a>

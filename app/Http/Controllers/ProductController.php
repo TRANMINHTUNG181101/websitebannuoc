@@ -67,28 +67,15 @@ class ProductController extends Controller
         return redirect('admin/san-pham');
     }
 
+
+
+    //update product
     public function updateProduct()
     {
     }
+
     public function editProductView()
     {
         $spham = Products::all();
     }
-
-    public function sendData()
-    {
-        $nameOrder = DB::select("select ten_san_pham_order,so_luot_dat from order_statisticals");
-
-        $newArrName = array();
-        $newArrNum = array();
-        for ($i = 0; $i < count($nameOrder); $i++) {
-            array_push($newArrName, $nameOrder[$i]->ten_san_pham_order);
-            array_push($newArrNum, $nameOrder[$i]->so_luot_dat);
-        }
-        return response()->json([
-            'top_sale_name' => $newArrName,
-            'top_sale_num' => $newArrNum,
-        ]);
-    }
-    
 }

@@ -13,10 +13,12 @@ class CreateSaleStatisticalsTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('sale_statisticals', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('ngay_ban');
-            $table->integer('doanh_so');
+            $table->integerIncrements('id');
+            $table->date('ngay_ban');
+            $table->integer('id_don_hang');
+            $table->integer('tien_don_hang');
             $table->tinyInteger('trang_thai')->default(1);
             $table->timestamps();
         });

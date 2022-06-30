@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             <tbody>
-           @foreach ($nglieu as $item)
+                {{-- @foreach ($nglieu as $item)
            <td>{{$item->id}}</td>
            <td>{{$item->ten_nglieu}}</td>
            <td>{{$item->gia_nhap}}</td>
@@ -60,16 +60,16 @@
            <td>{{$item->ngay_het_han}}</td>
            <td>{{$item->trang_thai}}</td>
            <td>del</td>
-           @endforeach
+           @endforeach --}}
             </tbody>
         </table>
     </div>
-    <span>{{ $nglieu->links() }}</span>
+    {{-- <span>{{ $nglieu->links() }}</span>
     <style>
         .w-5{
             display: none;
         }
-    </style>
+    </style> --}}
 
     <!-- Modal Add new materials-->
     <div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel"
@@ -145,56 +145,55 @@
     {{-- End - Delete Modal --}}
 
 
-{{-- Edit material --}}
-<div class="modal fade" id="editMaterialModal" tabindex="-1" aria-labelledby="editMaterialModalLabel"
-aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="titleAddMaterial">Sửa nguyên liệu mới</h5>
-        </div>
-        <div class="modal-body">
-            <form method="POST" action="#" id="form-addmalt">
-                <div class="form-group">
-                    <label for="tennguyenlieu1" class="">Ten nguyen lieu</label>
-                    <div class="">
-                        <input type="text" class="form-control" id="inputNameMal">
-                    </div>
+    {{-- Edit material --}}
+    <div class="modal fade" id="editMaterialModal" tabindex="-1" aria-labelledby="editMaterialModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleAddMaterial">Sửa nguyên liệu mới</h5>
                 </div>
-                <div class="form-group">
-                    <label for="" class="">Don vi nguyen lieu</label>
-                    <div class="">
-                        <select name="" id="selectUnit"></select>
-                    </div>
+                <div class="modal-body">
+                    <form method="POST" action="#" id="form-addmalt">
+                        <div class="form-group">
+                            <label for="tennguyenlieu1" class="">Ten nguyen lieu</label>
+                            <div class="">
+                                <input type="text" class="form-control" id="inputNameMal">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="">Don vi nguyen lieu</label>
+                            <div class="">
+                                <select name="" id="selectUnit"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="">So luong</label>
+                            <div class="">
+                                <input type="text" class="form-control" id="soluong">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="">Giá nhap</label>
+                            <div class="">
+                                <input type="text" class="form-control" id="gia_nhap">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="">Ngay het han</label>
+                            <div class="">
+                                <input type="date" class="form-control" id="ngay_het_han">
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="" class="">So luong</label>
-                    <div class="">
-                        <input type="text" class="form-control" id="soluong" >
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btn-add-mal">Save changes</button>
                 </div>
-                <div class="form-group">
-                    <label for="" class="">Giá nhap</label>
-                    <div class="">
-                        <input type="text" class="form-control" id="gia_nhap" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="" class="">Ngay het han</label>
-                    <div class="">
-                        <input type="date" class="form-control" id="ngay_het_han" >
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="btn-add-mal">Save changes</button>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
-{{-- End Material --}}
-    
+    {{-- End Material --}}
 @endsection

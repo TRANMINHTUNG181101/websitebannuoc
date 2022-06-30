@@ -14,11 +14,11 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5",
-        "yoeunes/toastr": "^1.2"
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.5",
-        "srmklive/paypal": "~3.0"
+        "maatwebsite/excel": "^3.1",
+        "srmklive/paypal": "~3.0",
+        "yoeunes/toastr": "^1.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -37,7 +37,7 @@
         "files": [
             "helpers/create_id.php",
             "helpers/checkinput.php",
-            "helpers/convert_Vi_En.php"
+            "helpers/convert_Vi_En.php",
             "helpers/autoload.php"
 
         ]

@@ -8,11 +8,14 @@ use App\Models\ChitietDH;
 use App\Models\Comments;
 use App\Models\Donhang;
 use App\Models\Order;
+use App\Models\Order_statisticals;
 use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\Products;
+use App\Models\Sale_statisticals;
 use App\Models\Sizes;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
@@ -86,12 +89,59 @@ class CartController extends Controller
     }
     public function delCart()
     {
-        return redirect()->route('get.home')->with('activeAcc', 'Mã xác thực đã được gửi đến email của bạn, Vui lòng kiểm tra email xác thực tài khoản để có thể đăng nhập.');
+
+        // $cartt = session('cart');
+
+        // foreach ($cartt->products as $value) {
+
+        //      $selectDT = Order_statisticals::where('ten_san_pham_order', $value['productInfo']->id)->first();
+        //     $nameOr = DB::select("select tensp from products where id=" . $value['productInfo']->id);
+        //     $product = Products::find($value['productInfo']->id);
+        //     if ($selectDT == null) {
+        //     $orderS = new Order_statisticals();
+        //     $orderS->ten_san_pham_order = $product->id;
+        //     $orderS->so_luot_dat = $value['quanty'];
+        //     $orderS->save();
+        //     } else {
+        //     $orde = Order_statisticals::findOrFail($selectDT->id);
+
+        //     // $quatyOrder = DB::select("select so_luot_dat from order_statisticals where ten_san_pham_order='" . $value['productInfo']->id . "'");
+
+        //     // $newQuanty = $quatyOrder[0]->so_luot_dat + $value['quanty'];
+        //     $orde->so_luot_dat = $orde->so_luot_dat + $value['quanty'];
+
+        //     //Order_statisticals::where('ten_san_pham_order', $value['productInfo']->id)->update(array('so_luot_dat' => $newQuanty));
+        //     $orde->save();
+        //     }
+        // }
     }
 
     //lưu đơn hàng
     public function postPay(Request $request)
     {
+        $cartt = session('cart');
+
+        foreach ($cartt->products as $value) {
+
+            $selectDT = Order_statisticals::where('id_san_pham_order', $value['productInfo']->id)->get();
+            // $nameOr = DB::select("select tensp from products where id=" . $value['productInfo']->id);
+            $product = Products::find($value['productInfo']->id);
+            if ($selectDT->count() == 0) {
+                $orderS = new Order_statisticals();
+                $orderS->id_san_pham_order = $product->id;
+                $orderS->so_luot_dat = $value['quanty'];
+                $orderS->save();
+            } else {
+                $orde = Order_statisticals::find($selectDT[0]->id);
+                $orde->so_luot_dat += $value['quanty'];
+
+                //Order_statisticals::where('ten_san_pham_order', $value['productInfo']->id)->update(array('so_luot_dat' => $newQuanty));
+                $orde->save();
+            }
+        }
+
+        #region postpay
+
         $cart = Session('cart') ? Session('cart') : null;
         if (Session('mDonHang')) {
             $request->session()->forget('mDonHang');
@@ -114,7 +164,7 @@ class CartController extends Controller
             $donhang['tongtien'] = $cart->totalPrice;
             $donhang['ngaytao'] = Carbon::now();
             $donhang['httt'] = $request->payment;
-        }else {
+        } else {
             return redirect()->route('product');
         }
         $payment = $request->payment;
@@ -203,7 +253,7 @@ class CartController extends Controller
             case 3:
                 # thanh toán vnpay
                 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                $vnp_Returnurl = "http://localhost/website_ban_nuoc/public/checkoutcomplete";
+                $vnp_Returnurl = "http://127.0.0.1:8000/checkoutcomplete";
                 $vnp_TmnCode = "PR66IZJ3"; //Mã website tại VNPAY 
                 $vnp_HashSecret = "SOYGBHCVQDYTYQPIKKWFAETKMEVMZXUO"; //Chuỗi bí mật
 
@@ -290,6 +340,7 @@ class CartController extends Controller
                 return redirect()->route('checkoutcomplete', ['madh' => $donhang->madh]);
                 break;
         }
+        #endregion 
     }
 
     public function checkoutComplete(Request $request)
@@ -308,7 +359,14 @@ class CartController extends Controller
                     $data['id_size'] = $value['size']->id;
                     $data['giaban'] = $value['price'];
 
-                    OrderDetail::create($data);
+
+                    $orderStaticals = new Order_statisticals();
+
+                    // $orderStaticals->ten_san_pham_order=$value['productInfo']->id;
+                    // $orderStaticals->so_luot_dat= $value['quanty'];
+                    // $orderStaticals->save();
+
+                    // OrderDetail::create($data);
                 }
             }
             $request->session()->forget('cart');
@@ -326,8 +384,16 @@ class CartController extends Controller
             $payment->ngaythanhtoan = $request->vnp_PayDate;
             $payment->id_donhang = $donhang->id;
             $payment->save();
-            return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
 
+            $saleStatisticals = new Sale_statisticals();
+
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $saleStatisticals->ngay_ban = date('Y-m-d', $request->responseTime);
+            $saleStatisticals->id_don_hang = $donhang->id;
+            $saleStatisticals->tien_don_hang = $request->vnp_Amount / 100;
+            $saleStatisticals->save();
+
+            return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else if ($request->partnerCode) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
@@ -359,13 +425,22 @@ class CartController extends Controller
             $payment->ngaythanhtoan = $request->responseTime;
             $payment->id_donhang = $donhang->id;
             $payment->save();
+
+            $saleStatisticals = new Sale_statisticals();
+
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $saleStatisticals->ngay_ban = date('Y-m-d', $request->responseTime);
+            $saleStatisticals->id_don_hang = $donhang->id;
+            $saleStatisticals->tien_don_hang = $request->amount;
+            $saleStatisticals->save();
+
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         }
-        if($request->madh){
-            return view('templates.clients.cart.checkoutComplete', ['madh' =>$request->madh]);
+        if ($request->madh) {
+            return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
         }
     }
-    
+
 
     //hàm thanh toán momo
     public function execPostRequest($url, $data)

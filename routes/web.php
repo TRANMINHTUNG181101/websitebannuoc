@@ -14,7 +14,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin','DashboardController@show')->name('d');
+//Dashboard
+Route::get('admin','DashboardController@show')->name('showDashboard');
+Route::post('getdata','DashboardController@getDateAnalytics')->name('dateget');
+Route::post('/admin/getvisitor','DashboardController@getVisitor');
+Route::post('/admin/draworders','DashboardController@getDataToDrawOrders');
+Route::post('/admin/statisbydate','DashboardController@statisByDate');
+Route::post('/admin/statisbymonth','DashboardController@statisByMonth');
+Route::get('/admin/download-exel','DashboardController@export');
+Route::post('/admin/drawstatisyear','DashboardController@drawstatisyear');
+Route::post('/admin/showSaleDaily','DashboardController@showSaleDaily');
+Route::post('admin/export','DashboardController@ExportFiles')->name('exportFile');
+Route::get('admin/thong-tin-tai-khoan','DashboardController@infologin')->name('infologin');
+Route::post('admin/doi-mat-khau','DashboardController@changepassw')->name('changepass');
+
+Route::get('admin/doi-mat-khaus','DashboardController@changepasswview')->name('viewupdatepass');
+
+Route::post('admin/xoa-nguyen-lieu-su-dung/{id}','ManagerMaterialUseController@delMMU')->name('managermaterial.del');
+
+
+
+
+//roles
+Route::get('admin/roles','RoleController@index')->name('roles.show');
+Route::get('admin/roles/addstaff','RoleController@addview')->name('roles.addview');
+Route::post('admin/roles/addstaffs','RoleController@addhandle')->name('roles.addstaff');
+
+
+
+
+Route::post('/admin/tong-ket','ManagerMaterialUseController@turnover')->name('turnover');
+
+
+Route::get('/admin/quan-ly-nguyen-lieu-sd','ManagerMaterialUseController@index')->name('quanlysudungnglieu');
+Route::post('/admin/sort-Mal-By-Day','ManagerMaterialUseController@sortMalByDay');
+Route::post('/admin/xoa-MMU/{id}','ManagerMaterialUseController@delMMU')->name('delMMU');
 
 //nguyen lieu
 Route::get('admin/nguyen-lieu','MaterialController@show')->name('showMaterial');
@@ -39,11 +73,11 @@ Route::post('admin/sua-san-pham/{id}','ProductController@updateProduct')->name('
 
 // Route::get('/register','RegisterController@showFormRegister')->name('auth.register');
 // Route::post('/register','RegisterController@postRegister')->name('authregister');
-// Route::post('/login','LoginController@postLogin')->name('authlogin');
-// Route::get('/login','LoginController@getLogin')->name('auth.login');
-// Route::get('/logout','LoginController@logout')->name('auth.logout');
+Route::post('admin/login','LoginController@postLogin')->name('authlogin');
+Route::get('admin/login','LoginController@getLogin')->name('auth.login');
+// Route::get('admin/logout','LoginController@logout')->name('admin.logout');
 
-Route::get('/fetchData','ProductController@sendData');
+// Route::get('/fetchData','ProductController@sendData');   
 Route::get('/admin/them-nguyen-lieu-ajax','MaterialController@addMaterialViewAjax');
 Route::post('/admin/them-nguyen-lieu-ajax1','MaterialController@addMaterialHandleAjax');
 
@@ -88,9 +122,6 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::post('/upCart', 'CartController@upCart')->name('get.upCart');
     Route::post('/pupCart', 'CartController@postupCart')->name('postup.cart');
     Route::post('/checkout', 'CartController@postPay')->name('post.checkout');
-
-
-
 
     //thanh toán Paypal sandbox
     Route::get('create-transaction', 'PayPalController@createTransaction')->name('createTransaction');
