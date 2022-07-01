@@ -30,7 +30,7 @@
                             <div class="woo_category_box border_style rounded slide-cate">
                                 <div class="woo_cat_thumb">
                                     <a href="{{ route('product')}}"><img
-                                            src="{{ asset('uploads/type/'.$value->hinhanh)}}" class="img-fluid"
+                                            src="{{ asset('uploads/categories/'.$value->hinhanh)}}" class="img-fluid"
                                             alt="" /></a>
                                 </div>
                                 <div class="woo_cat_caption">
@@ -225,7 +225,8 @@
                             <div class="item">
                                 <div class="woo_category_box border_style rounded">
                                     <div class="woo_cat_thumb">
-                                        <a href="javascript:"><img src="{{ asset('uploads/type/'.$value->hinhanh)}}"
+                                        <a href="javascript:"><img
+                                                src="{{ asset('uploads/categories/'.$value->hinhanh)}}"
                                                 class="img-fluid" alt="" /></a>
                                     </div>
                                     <div class="woo_cat_caption">

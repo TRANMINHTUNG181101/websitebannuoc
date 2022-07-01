@@ -16,21 +16,67 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin', 'DashboardController@show')->name('d');
+//Dashboard
+Route::get('admin', 'DashboardController@show')->name('showDashboard');
+Route::post('getdata', 'DashboardController@getDateAnalytics')->name('dateget');
+Route::post('/admin/getvisitor', 'DashboardController@getVisitor');
+Route::post('/admin/draworders', 'DashboardController@getDataToDrawOrders');
+Route::post('/admin/statisbydate', 'DashboardController@statisByDate');
+Route::post('/admin/statisbymonth', 'DashboardController@statisByMonth');
+Route::get('/admin/download-exel', 'DashboardController@export');
+Route::post('/admin/drawstatisyear', 'DashboardController@drawstatisyear');
+Route::post('/admin/showSaleDaily', 'DashboardController@showSaleDaily');
+Route::post('admin/export', 'DashboardController@ExportFiles')->name('exportFile');
+Route::get('admin/thong-tin-tai-khoan', 'DashboardController@infologin')->name('infologin');
+Route::post('admin/doi-mat-khau', 'DashboardController@changepassw')->name('changepass');
+Route::get('admin/doi-mat-khaus', 'DashboardController@changepasswview')->name('viewupdatepass');
 
-Route::get('admin/nguyen-lieu', 'MaterialController@show')->name('showMaterial');
-Route::get('admin/sua-nguyen-lieu/{id}', 'MaterialController@editMaterialView')->name('material.editview');
-Route::post('admin/sua-nguyen-lieu/{id}', 'MaterialController@updateMaterial')->name('material.edithandle');
 
-Route::get('admin/them-nguyen-lieu', 'MaterialController@addMaterialView')->name('material.addview');
-Route::post('admin/them-nguyen-lieu', 'MaterialController@addMaterialHandle')->name('material.addhandle');
-Route::get('admin/xoa-nguyen-lieu/{id}', 'MaterialController@delMaterial')->name('material.delete');
-Route::post('admin/tim-kiem/', 'MaterialController@searchMaterial')->name('material.search');
+//category
+Route::get('admin/category', 'CategoriesController@index')->name('category.show');
+Route::get('admin/category-add', 'CategoriesController@add')->name('categories.addview');
+Route::post('admin/category-adds', 'CategoriesController@create')->name('categories.addhandle');
+Route::get('admin/category-del/{id}', 'CategoriesController@deletecat')->name('categories.del');
+Route::get('admin/category-edit/{slug}', 'CategoriesController@edit')->name('categories.editview');
+Route::post('admin/category-edits/{id}', 'CategoriesController@update')->name('categories.edithandle');
+
+
+//roles
+Route::group(['middleware' => 'checkrole'], function () {
+    Route::get('admin/roles', 'RoleController@index')->name('roles.show');
+    Route::get('admin/roles/addstaff', 'RoleController@addview')->name('roles.addview');
+    Route::post('admin/roles/addstaffs', 'RoleController@addhandle')->name('roles.addstaff');
+});
+
+
+//manager material use
+Route::get('/admin/quan-ly-nguyen-lieu-sd', 'ManagerMaterialUseController@index')->name('quanlysudungnglieu');
+Route::get('admin/add-material-use', 'ManagerMaterialUseController@add')->name('mmu.addview');
+Route::post('admin/add-material-use', 'ManagerMaterialUseController@create')->name('mmu.addhandle');
+Route::get('admin/edit-material-use/{slug}', 'ManagerMaterialUseController@edit')->name('mmu.editview');
+Route::post('admin/edit-material-use/{id}', 'ManagerMaterialUseController@update')->name('mmu.edithandle');
+Route::get('/admin/xoa-MMU/{id}', 'ManagerMaterialUseController@delMMU')->name('mmu.del');
+Route::post('/admin/tong-ket', 'ManagerMaterialUseController@turnover')->name('turnover');
+Route::get('/admin/sort-Mal-By-Day', 'ManagerMaterialUseController@sortMalByDay')->name('sort-mmu-by-day');
+
+
+
+// Route::get('admin/nguyen-lieu', 'MaterialController@show')->name('showMaterial');
+// Route::get('admin/sua-nguyen-lieu/{id}', 'MaterialController@editMaterialView')->name('material.editview');
+// Route::post('admin/sua-nguyen-lieu/{id}', 'MaterialController@updateMaterial')->name('material.edithandle');
+// Route::get('admin/them-nguyen-lieu', 'MaterialController@addMaterialView')->name('material.addview');
+// Route::post('admin/them-nguyen-lieu', 'MaterialController@addMaterialHandle')->name('material.addhandle');
+// Route::get('admin/xoa-nguyen-lieu/{id}', 'MaterialController@delMaterial')->name('material.delete');
+// Route::post('admin/tim-kiem/', 'MaterialController@searchMaterial')->name('material.search');
 
 //san pham
 Route::get('admin/san-pham', 'ProductController@show')->name('products.show');
 Route::get('admin/them-san-pham', 'ProductController@addProductView')->name('products.addview');
 Route::post('admin/them-san-pham', 'ProductController@addProductHandle')->name('products.addhandle');
+Route::get('admin/xoa-san-pham/{id}', 'ProductController@deleteProduct')->name('products.del');
+Route::get('admin/sua-san-pham/{slug}', 'ProductController@edit')->name('products.editview');
+Route::post('admin/sua-san-pham/{id}', 'ProductController@update')->name('products.edithandle');
+
 
 
 //auth
@@ -41,14 +87,16 @@ Route::get('/login', 'LoginController@getLogin')->name('auth.login');
 Route::get('/logoutAdmin', 'LoginController@logout')->name('auth.logout');
 
 //nguyen lieu
-Route::get('admin/nguyen-lieu', 'MaterialController@show')->name('showMaterial');
 Route::get('/admin/nguyen-lieu-ajax', 'MaterialController@showMalAjax');
-Route::post('/admin/xoa-nguyen-lieu-ajax/{id}', 'MaterialController@delMalAjax');
+// Route::post('/admin/xoa-nguyen-lieu-ajax/{id}', 'MaterialController@delMalAjax');
 
-Route::get('admin/sua-nguyen-lieu/{slug}', 'MaterialController@editMaterialView')->name('material.editview');
-Route::post('admin/sua-nguyen-lieu/{id}', 'MaterialController@updateMaterial')->name('material.edithandle');
-Route::get('admin/them-nguyen-lieu', 'MaterialController@addMaterialView')->name('material.addview');
-Route::post('admin/them-nguyen-lieu', 'MaterialController@addMaterialHandle')->name('material.addhandle');
+Route::get('admin/nguyen-lieu', 'MaterialController@show')->name('showMaterial');
+Route::get('admin/sua-nguyen-lieu/{slug}', 'MaterialController@edit')->name('material.editview');
+Route::post('admin/sua-nguyen-lieu/{id}', 'MaterialController@update')->name('material.edithandle');
+
+Route::get('admin/them-nguyen-lieu', 'MaterialController@add')->name('material.addview');
+Route::post('admin/them-nguyen-lieu', 'MaterialController@create')->name('material.addhandle');
+
 Route::get('admin/xoa-nguyen-lieu/{id}', 'MaterialController@delMaterial')->name('material.delete');
 Route::post('admin/tim-kiem/', 'MaterialController@searchMaterial')->name('material.search');
 
@@ -63,11 +111,11 @@ Route::post('admin/sua-san-pham/{id}', 'ProductController@updateProduct')->name(
 
 // Route::get('/register','RegisterController@showFormRegister')->name('auth.register');
 // Route::post('/register','RegisterController@postRegister')->name('authregister');
-// Route::post('/login','LoginController@postLogin')->name('authlogin');
-// Route::get('/login','LoginController@getLogin')->name('auth.login');
-// Route::get('/logout','LoginController@logout')->name('auth.logout');
+Route::post('admin/login', 'LoginController@postLogin')->name('authlogin');
+Route::get('admin/login', 'LoginController@getLogin')->name('auth.login');
+// Route::get('admin/logout','LoginController@logout')->name('admin.logout');
 
-Route::get('/fetchData', 'ProductController@sendData');
+// Route::get('/fetchData','ProductController@sendData');   
 Route::get('/admin/them-nguyen-lieu-ajax', 'MaterialController@addMaterialViewAjax');
 Route::post('/admin/them-nguyen-lieu-ajax1', 'MaterialController@addMaterialHandleAjax');
 
@@ -201,15 +249,6 @@ Route::post('sendallMail', 'AdminController@sendmailAll')->name('sendmail.all.co
 
 
 
-
-
-
-
-
-
-
-
-
 Route::group(['namespace' => 'frontend'], function () {
     //trang chủ
     Route::get('/', 'HomeController@index')->name('get.home');
@@ -232,9 +271,7 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::post('/checkout', 'CartController@postPay')->name('post.checkout');
 
 
-    // xác nhận hoá đơn
     Route::get('invoice', 'CartController@InvoiceConfirm')->name('invoice.confirm');
-
 
     //thanh toán Paypal sandbox
     Route::get('create-transaction', 'PayPalController@createTransaction')->name('createTransaction');
@@ -356,9 +393,4 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('province', 'LocationController@getProvince')->name('get.db.province');
     Route::get('province/district/{province}', 'LocationController@getDistrict')->name('get.db.district');
     Route::get('province/ward/{district}', 'LocationController@getWard')->name('get.db.ward');
-
-
-    Route::get('test', function () {
-        return view('templates.clients.home.daylatest');
-    });
 });

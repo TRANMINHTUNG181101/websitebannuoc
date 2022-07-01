@@ -325,5 +325,5 @@ $(document).on('click', '.btn-wishlist', function(e) {
         .done(function(results) {
             toastr.info(results.message);
         });
-})
+});
 </script>

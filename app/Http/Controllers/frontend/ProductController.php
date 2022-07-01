@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Categories;
 use App\Models\Comments;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index()
     {
         $product = Products::where('trangthai', 1)->get();
-        $danhmuc = Category::where('trangthai', 1)->get();
+        $danhmuc = Categories::where('trangthai', 1)->get();
 
         $banner = Image::where('trangthai', 1)
             ->where('loai', 'bannerProduct')

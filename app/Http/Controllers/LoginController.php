@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +15,8 @@ class LoginController extends Controller
 
     public function logout()
     {
-       Auth::logout();
+        Auth::logout();
+        return view('auths.login')->with("message","Logout successful");
     }
     public function postLogin(Request $request)
     {
@@ -21,13 +24,9 @@ class LoginController extends Controller
         $password = $request->password;
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
 
-            // $getIDUser=auth()->user()->level;
-            // if($getIDUser==1){
-            //     return view('templates.admins.index');
-            // }else{
-            //     return view('templates.clients.index');
-            // }
-
+            $name_login = auth()->user()->name_staff;
+            return view('templates.admins.index', compact('name_login'));
         }
+        return view('auths.login');
     }
 }
