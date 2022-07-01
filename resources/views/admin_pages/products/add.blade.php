@@ -34,6 +34,8 @@
                             <label for=""></label>
                             <input type="checkbox" name="sizePro[]" id="sizeChoose"
                                 value="{{ $s->id }}">{{ $s->size_name }}
+
+                                
                         </div>
                     @endforeach
 
@@ -51,6 +53,23 @@
                 <div class="form-group">
                     <label for="">Hinh anh</label>
                     <input type="file" name="ProductImage" id="ProductImage" class="form-control">
+                    @if ($errors->first('ProductImage'))
+                        <div class="btn-danger">
+                            {{ $errors->first('ProductImage') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label for="">Category</label>
+               
+                        <select name="select_cat">
+                            @foreach ($categories as $cat)
+                                <option name="" id="" value="{{ $cat->id }}">
+                                    {{ $cat->tenloai }}</option>
+                            @endforeach
+                        </select>
+
                     @if ($errors->first('ProductImage'))
                         <div class="btn-danger">
                             {{ $errors->first('ProductImage') }}

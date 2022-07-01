@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Categories;
 use App\Models\Image;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -13,6 +13,7 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Models\Visitors;
 use Illuminate\Support\Carbon;
+
 
 class HomeController extends Controller
 {
@@ -28,8 +29,6 @@ class HomeController extends Controller
             ->orderBy('id')
 
             ->limit(6)
-            ->get()
-            ->limit(8)
             ->get();
 
         //sản phẩm khuyến mãi
@@ -39,7 +38,7 @@ class HomeController extends Controller
         })->values();
 
 
-        $danhmuc = Category::where('trangthai', 1)->get();
+        $danhmuc = Categories::where('trangthai', 1)->get();
 
         //bài viết 
         $posts = Posts::where('trangthai', 1)

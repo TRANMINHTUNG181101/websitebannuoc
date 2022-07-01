@@ -43,6 +43,8 @@ class RoleController extends Controller
                 return view('admin_pages.managerpermission.add');
             }
         }
+        return view('admin_pages.managerpermission.add');
+
         return view('admin_pages.denyaccess.index');
     }
 
@@ -64,6 +66,7 @@ class RoleController extends Controller
         }
         $newStaff->roles_id = $listRole;
         $newStaff->page_access = $listPage;
+        $newStaff->type_account=$request->typeaccount;
         $newStaff->save();
         $getStaff = User::all();
         return view('admin_pages.managerpermission.index', compact('getStaff'));

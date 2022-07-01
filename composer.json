@@ -14,11 +14,6 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
-<<<<<<< HEAD
-=======
-        "laravel/tinker": "^2.5",
-        "yoeunes/toastr": "^1.2",
->>>>>>> 2a8540a8c58e0b0f43ac8a2ea60393f0b04431e3
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",

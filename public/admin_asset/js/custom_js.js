@@ -75,13 +75,7 @@ $().ready(function () {
                     },
                 });
             },
-<<<<<<< HEAD
             error: function (xhr, ajaxOptions, thrownError) {},
-=======
-            error: function(xhr, ajaxOptions, thrownError) {
-                //alert("Fail to send ");
-            },
->>>>>>> 2a8540a8c58e0b0f43ac8a2ea60393f0b04431e3
         });
     }
 
@@ -608,3 +602,35 @@ $(document).ready(function () {
 // );
 
 //#endregion
+$(document).ready(function () {
+    $("#alert-success").delay(2000);
+    $("#alert-successl").hide(1200);
+});
+
+// $("#addModalMMU").click(function (e) {
+//     e.preventDefault();
+//     $("#addmmu").modal("show");
+//     // console.log('adasd');
+// });
+// $("#addmmuhandle").click(function (e) {
+//     e.preventDefault();
+//     $("#addmmu").modal("hide");
+//     // console.log('adasd');
+// });
+
+
+
+
+let checkboxes = document.getElementById('sizeChoose');
+            let values = [];
+            checkboxes.forEach((checkbox) => {
+                // values.push(checkbox.value);
+            });
+
+
+
+
+
+
+
+

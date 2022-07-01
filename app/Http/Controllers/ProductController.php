@@ -9,6 +9,7 @@ use App\Models\SizePros;
 use App\Models\Sizes;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Categories;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -19,14 +20,15 @@ class ProductController extends Controller
 
     public function show()
     {
-        $spham = Products::all();
+        $spham = Products::where('trangthai', 1)->get();
         return view('admin_pages.products.index', compact('spham'));
     }
 
     public function addProductView()
     {
+        $categories = Categories::all();
         $size = Sizes::all();
-        return view('admin_pages.products.add', compact('size'));
+        return view('admin_pages.products.add', compact('size', 'categories'));
     }
 
     public function addProductHandle(Request $req)
@@ -39,20 +41,14 @@ class ProductController extends Controller
         ]);
 
         //them hinh anh
-        $imageName = "";
-        $images = $req->file('ProductImage');
-        if ($req->hasFile('ProductImage')) {
-            $images = $req->file('ProductImage');
-            $imageName =  time() . '.' . $images->extension();
-            $images->move(public_path('uploads/products'), $imageName);
-        }
-
+        $imageName = $this->uploadImage($req);
         $newPro = new Products();
         $newPro->slug = Str::slug($req->ProductName);
-        $newPro->ten_san_pham = $req->ProductName;
-        $newPro->gia_ban = $req->SellPrice;
-        $newPro->hinh_anh = $imageName;
-        $newPro->mo_ta_san_pham = $req->Description;
+        $newPro->tensp = $req->ProductName;
+        $newPro->giaban = $req->SellPrice;
+        $newPro->hinhanh = $imageName;
+        $newPro->mota = $req->Description;
+        $newPro->id_loaisanpham = $req->select_cat;
         $newPro->save();
 
         $getPro = Products::all()->sortByDesc('id')->first();
@@ -67,15 +63,52 @@ class ProductController extends Controller
         return redirect('admin/san-pham');
     }
 
-
-
-    //update product
-    public function updateProduct()
+    public function uploadImage($req)
     {
+        $imageName = "";
+        $images = $req->file('ProductImage');
+        if ($req->hasFile('ProductImage')) {
+            $images = $req->file('ProductImage');
+            $imageName = time() . '.' . $images->extension();
+            $images->move(public_path('uploads/product/'), $imageName);
+        }
+        return $imageName;
     }
 
-    public function editProductView()
+    //update product
+    public function updateProduct(Request $req)
     {
-        $spham = Products::all();
+        $editProduct = Products::find($req->id);
+        $editProduct->tensp = $req->ten_spham;
+        $editProduct->giaban = $req->giaban;
+        $editProduct->mota = $req->mota;
+        $editProduct->id_loaisanpham = $req->select_cat;
+
+
+        if ($req->ProductImage != null) {
+            $imageName = $this->uploadImage($req);
+        } else {
+            $imageName = $req->imageOld;
+        }
+
+        $editProduct->hinhanh = $imageName;
+        $editProduct->save();
+        return redirect('admin/san-pham');
+
+    }
+
+    public function editProductView($slug)
+    {
+        $catetype = Categories::all();
+        $spham = Products::where('slug', $slug)->first();
+        return view('admin_pages.products.edit', compact('spham', 'catetype'));
+    }
+
+    public function deleteProduct($id)
+    {
+        $delProduct = Products::find($id);
+        $delProduct->trangthai = 0;
+        $delProduct->save();
+        return redirect('admin/san-pham');
     }
 }

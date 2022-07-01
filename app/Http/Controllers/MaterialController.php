@@ -20,67 +20,19 @@ class MaterialController extends Controller
 
     public function show()
     {
-        $nglieu = Materials::paginate(1);
+        $nglieu = Materials::paginate(20);
         return view('admin_pages.material.index', compact('nglieu'));
-    }
-    public function showMalAjax()
-    {
-        $nglieu = Materials::all();
-        return response()->json([
-            'nguyenlieu' => $nglieu
-        ]);
     }
 
     //add new material
-    public function addMaterialView()
+    public function add()
     {
         $dv_nglieu = MaterialUnit::all();
         return view('admin_pages.material.add', compact('dv_nglieu'));
     }
 
-    public function addMaterialViewAjax()
-    {
-        $dv_nl = MaterialUnit::all();
-        return response()->json([
-            'dv_ngl' => $dv_nl,
-        ]);
-    }
-    public function addMaterialHandleAjax(Request $request)
-    {
-        $newMal = new Materials();
-        $newMal->ten_nglieu = $request->ten_nl;
-        // $newMal->slug = Str::slug($request->ten_nl);
-        $newMal->gia_nhap = $request->gia_nhap;
-        $newMal->don_vi_nglieu = $request->don_vi_nglieu;
-        $timecurr = new DateTime();
-        $newMal->ngay_nhap = $timecurr->getTimestamp();
-        $newMal->so_luong = $request->so_luong;
-        $newMal->ngay_het_han = $request->ngay_het_han;
-        $newMal->save();
-        $checkInsert = Materials::where('ten_nglieu', $request->ten_nl)->get();
-        if ($checkInsert != null) {
-            return response()->json(
-                [
-                    'result_insert' =>  "success"
-                ]
-            );
-        }
-        return response()->json(
-            [
-                'result_insert' =>  "fail"
-            ]
-        );
-    }
 
-    public function delMalAjax($id)
-    {
-        $del = Materials::findOrFail($id);
-        $del->delete();
-        return response()->json([
-            'msg' => 'xoa thhanh cong'
-        ]);
-    }
-    public function addMaterialHandle(Request $req)
+    public function create(Request $req)
     {
         //validate values input from form add
         $req->validate([
@@ -89,43 +41,110 @@ class MaterialController extends Controller
             'MaterialQuantily' => 'required|integer|min:0',
             'ImportPrice' => 'required|integer|min:0'
         ]);
-        $imageName = $this->uploadImage($req);
-        $nglieu = new Materials();
-        $nglieu->slug = Str::slug($req->MaterialName);
-        $nglieu->ten_nglieu = $req->MaterialName;
-        $nglieu->gia_nhap = $req->ImportPrice;
-        $nglieu->so_luong = $req->MaterialQuantily;
-        //format date to timestamp
-        $timecurr = new DateTime();
-        $nglieu->ngay_nhap = $timecurr->getTimestamp();
-        $tam = $req->ExpiredDate;
-        $date = new DateTime($tam);
-        $nglieu->ngay_het_han = $date->getTimestamp();
-        $nglieu->hinh_anh = $imageName;
-        $nglieu->don_vi_nglieu = $req->input('select_unit');
-        $nglieu->save();
+
+        $slug = Str::slug($req->MaterialName);
+        if ($this->checkNameMalExisted($slug)) {
+            $dv_nglieu = MaterialUnit::all();
+            session()->put('oldname', $req->MaterialName);
+            session()->put('oldprice', $req->ImportPrice);
+            session()->put('oldquantity', $req->MaterialQuantily);
+            session()->put('olddate', $req->ExpiredDate);
+            session()->put('oldunit', $req->select_unit);
+
+            return view('admin_pages.material.add', compact('dv_nglieu'));
+        } else {
+            $imageName = $this->uploadImage($req);
+            $nglieu = new Materials();
+            $nglieu->slug = $slug;
+            $nglieu->ten_nglieu = $req->MaterialName;
+            $nglieu->gia_nhap = $req->ImportPrice;
+            $nglieu->so_luong = $req->MaterialQuantily;
+            //format date to timestamp
+            $timecurr = new DateTime();
+            $nglieu->ngay_nhap = $timecurr->getTimestamp();
+            $tam = $req->ExpiredDate;
+            $date = new DateTime($tam);
+            $nglieu->ngay_het_han = $date->getTimestamp();
+            $nglieu->hinh_anh = $imageName;
+            $nglieu->don_vi_nglieu = $req->input('select_unit');
+            $nglieu->save();
+            session()->put('success_add_mal', 'them thanh cong');
+        }
         return redirect('admin/nguyen-lieu');
     }
 
+
+
+    // public function addMaterialViewAjax()
+    // {
+    //     $dv_nl = MaterialUnit::all();
+    //     return response()->json([
+    //         'dv_ngl' => $dv_nl,
+    //     ]);
+    // }
+    // public function addMaterialHandleAjax(Request $request)
+    // {
+    //     $newMal = new Materials();
+    //     $newMal->ten_nglieu = $request->ten_nl;
+    //     // $newMal->slug = Str::slug($request->ten_nl);
+    //     $newMal->gia_nhap = $request->gia_nhap;
+    //     $newMal->don_vi_nglieu = $request->don_vi_nglieu;
+    //     $timecurr = new DateTime();
+    //     $newMal->ngay_nhap = $timecurr->getTimestamp();
+    //     $newMal->so_luong = $request->so_luong;
+    //     $newMal->ngay_het_han = $request->ngay_het_han;
+    //     $newMal->save();
+    //     $checkInsert = Materials::where('ten_nglieu', $request->ten_nl)->get();
+    //     if ($checkInsert != null) {
+    //         return response()->json(
+    //             [
+    //                 'result_insert' =>  "success"
+    //             ]
+    //         );
+    //     }
+    //     return response()->json(
+    //         [
+    //             'result_insert' =>  "fail"
+    //         ]
+    //     );
+    // }
+
+    // public function delMalAjax($id)
+    // {
+    //     $del = Materials::findOrFail($id);
+    //     $del->delete();
+    //     return response()->json([
+    //         'msg' => 'xoa thhanh cong'
+    //     ]);
+    // }
+
     //update material
-    public function editMaterialView($slug)
+    public function edit($slug)
     {
-        $nglieu = Materials::where('slug', $slug)->first();
+        $slug_mal = $slug;
+        $nglieu = Materials::where('slug', $slug_mal)->first();
         $dv_nglieu = MaterialUnit::all();
         $timeexp = $nglieu->ngay_het_han;
+        // echo $timeexp;
         $timein = $nglieu->ngay_nhap;
         $fm_date_expi = date('Y-m-d', $timeexp);
         $fm_date_in = date('Y-m-d', $timein);
+        // echo $slug;
         return view('admin_pages.material.edit', compact('nglieu', 'dv_nglieu', 'fm_date_expi', 'fm_date_in'));
     }
 
-    public function updateMaterial(Request $req)
+    public function update(Request $req)
     {
+
+        // dd($req->all()) ;
+
         $nglieu = Materials::findOrFail($req->id);
         $nglieu->ten_nglieu = $req->ten_nglieu;
         $nglieu->gia_nhap = $req->gia_nhap;
         $nglieu->so_luong = $req->so_luong;
-        if ($req->hinh_anh_edit != null) {
+
+
+        if ($req->MaterialImage != null) {
             $imageName = $this->uploadImage($req);
         } else {
             $imageName = $req->imageOld;
@@ -139,8 +158,11 @@ class MaterialController extends Controller
         $nglieu->hinh_anh = $imageName;
         $nglieu->don_vi_nglieu = $req->select_unit;
         $nglieu->save();
-        return redirect('admin/nguyen-lieu');
+        $nglieu = Materials::paginate(20);
+
+        return view('admin_pages.material.index', compact('nglieu'));
     }
+
 
     public function searchMaterial(Request $req)
     {
@@ -152,28 +174,33 @@ class MaterialController extends Controller
     //delete material
     public function delMaterial($id)
     {
-        $delMaterial = Materials::find($id);
-        $image_path = "uploads/materials/" . $delMaterial->hinh_anh;
-        $delMaterial->delete();
+        $malDel = Materials::where('id', $id)->first();
+
+        $image_path = "uploads/materials/" . $malDel->hinh_anh;
         if (file_exists($image_path)) {
-            @unlink($image_path);
+            @unlink(public_path($image_path));
         }
-        $checkDel = Materials::find($id);
+        $malDel->delete();
+
+        $checkDel = Materials::where('id', $id)->first();
         if ($checkDel != null) {
             session()->put('error_del_mal', 'xoa nguyen lieu that bai!');
         } else {
             session()->put('success_del_mal', 'xoa nguyen lieu thanh cong!');
         }
+
         return redirect('admin/nguyen-lieu');
     }
 
-    public function checkNameMalExisted($nameMal)
+    public function checkNameMalExisted($slug)
     {
-        $mal = Materials::all();
-        foreach ($mal as $val) {
-            if ($val->ten_nguyen_lieu == $nameMal) {
-                return true;
-            }
+        $mal = Materials::where('slug', $slug)->get('slug');
+        $checkName = "";
+        foreach ($mal as $m) {
+            $checkName = $m->slug;
+        }
+        if ($slug == $checkName) {
+            return true;
         }
         return false;
     }

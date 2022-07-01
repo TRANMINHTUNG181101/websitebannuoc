@@ -26,7 +26,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>id</th>
+                <th>stt</th>
                 <th>ten san pham</th>
                 <th>gia ban</th>
                 <th>Hinh anh</th>
@@ -37,24 +37,25 @@
             </tr>
         </thead>
         <tbody>
+            <?php $i=1;?>
             @foreach ($spham as $sp)
                 <tr>
-                    <td>{{ $sp->id }}</td>
-                    <td>{{ $sp->ten_san_pham }}</td>
-                    <td>{{ $sp->gia_ban }}</td>
-                    <td><img style="widtd:100px;height:150px" src="{{ asset('uploads/products/' . $sp->hinh_anh) }}">
+                    <td>{{ $i++ }}</td>
+                    <td>{{ $sp->tensp }}</td>
+                    <td>{{ currency_format($sp->giaban) }}</td>
+                    <td><img style="widtd:100px;height:150px" src="{{ asset('uploads/product/' . $sp->hinhanh) }}">
                     </td>
                     <td>
                         @foreach($sp->size as $value)
                         {{$value->size_name}}
                         @endforeach
                     </td>
-                    <td>{{ $sp->trang_thai }}</td>
-                    <td>{{$sp->mo_ta_san_pham}}</td>
+                    <td>{{ $sp->trangthai }}</td>
+                    <td>{{$sp->mota}}</td>
                     <td>
-                        <a href="{{ route('material.delete', $sp->id) }}"><i class="material-icons"
+                        <a href="{{ route('products.del', $sp->id) }}"><i class="material-icons"
                                 style="font-size:24px;color:red">delete</i></a>
-                        <a href="#"><i class="fa fa-edit"
+                        <a href="{{route('products.editview', $sp->slug) }}"><i class="fa fa-edit"
                                 style="font-size:24px;color:green"></i></a>
                     </td>
                 </tr>

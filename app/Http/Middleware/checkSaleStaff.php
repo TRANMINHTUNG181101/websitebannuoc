@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class checkRole
+class checkSaleStaff
 {
     /**
      * Handle an incoming request.
@@ -18,14 +17,7 @@ class checkRole
      */
     public function handle(Request $request, Closure $next)
     {
-        //type_account
-        /*
-        1 =>admin
-        2 =>pha_che
-        3 =>thu_ngan
-        */
-
-        if (Auth::user() &&  Auth::user()->type_account==1) {
+             if (Auth::user() &&  Auth::user()->type_account==2) {
             return $next($request);
         }
         

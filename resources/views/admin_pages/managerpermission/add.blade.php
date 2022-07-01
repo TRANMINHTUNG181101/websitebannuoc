@@ -48,6 +48,13 @@
                 <input type="checkbox" id="pagerole" name="choosepage[]" value="6">
                 <label for=""> Phan quyen</label><br><br>
             </div>
+
+            <div class="type-account">
+                <select name="typeaccount" id="">
+                    <option value="2" selected>nhan vien ban hang</option>
+                    <option value="3">nha vien thu ngan</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-success">Luu</button>
         </form>
     </div>

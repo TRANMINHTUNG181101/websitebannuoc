@@ -24,15 +24,16 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('checkrole');
+        // $this->middleware('checkrole');
     }
     public function show()
     {
-        $name_login = auth()->user()->name_staff;
+        // $name_login = auth()->user()->name_staff;
 
-        if($name_login==null){
-            return view('auths.login');
-        }
+        // if($name_login==null){
+        //     return view('auths.login');
+        // }
+        $name_login="a";
         return view('templates.admins.index', compact('name_login'));
     }
 

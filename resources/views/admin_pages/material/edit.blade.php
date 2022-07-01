@@ -56,7 +56,7 @@
                             id="preview_images" name="preview_images" style="width: 600px;height:300px">
                     </div>
                     <div class="form-group">
-                        <input type="file" name="hinh_anh_edit" id="hinh_anh_edit" onchange="preview_image(this)" class="form-control">
+                        <input type="file" name="MaterialImage" id="MaterialImage" onchange="preview_image(this)" class="form-control">
                     </div>
                 </div>
             </div>

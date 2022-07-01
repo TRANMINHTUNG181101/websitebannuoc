@@ -10,6 +10,6 @@ class ManagerMaterialUse extends Model
     use HasFactory;
     protected $table="manager_material_uses";
     protected $fillable=[
-        'ngay_tong_ket','don_gia','so_luong','trang_thai','id_nguyen_lieu'
+        'ngay_tong_ket','don_gia','so_luong','trang_thai','slug_name_mal'
     ];
 }
