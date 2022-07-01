@@ -53,7 +53,7 @@
                                 <article class="post-grid-layout">
                                     <a href="blog-detail.html">
                                         <div class="post-article-header">
-                                            <img src="{{ asset('frontend/img/'.$val->hinhanh) }}"
+                                            <img src="{{ asset('uploads/post/'.$val->hinhanh) }}"
                                                 class="img-fluid-post mx-auto" alt="">
                                         </div>
                                     </a>
@@ -72,7 +72,7 @@
                                             <a href="{{ route('detail.posts', $val->slug)}}"
                                                 class="btn offer_box_btn">Đọc tiếp</a>
                                         </div>
-                                        <span><i class="fas fa-calendar mr-1"></i>1 ngày trước</span>
+                                        <span><i class="fas fa-calendar mr-1"></i>{{toTime($val->created_at)}}</span>
                                     </div>
                                 </article>
                             </div>

@@ -94,7 +94,7 @@ window.addEventListener('load', (e) => {
                     <div class="col-12">
                         <div class="form_group">
                             <label>Nội dung</label>
-                            <textarea name="noidungmail" id="contentEmail" class=" form_control">
+                            <textarea name="noidungmail" id="contentEmail">
                                     </textarea>
                         </div>
                         @if($errors->first('noidungmail'))
@@ -117,6 +117,7 @@ window.addEventListener('load', (e) => {
         </div>
     </form>
 </div>
+
 <script>
 window.onload = () => {
 

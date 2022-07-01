@@ -77,6 +77,15 @@ Route::post('/login', 'LoginController@postLogin')->name('authlogin');
 Route::get('/login', 'LoginController@getLogin')->name('auth.login');
 Route::get('/logoutAdmin', 'LoginController@logout')->name('auth.logout');
 
+//danh sach tai khoan khach hang
+Route::get('/customers', 'CustomerController@index')->name('show.customer');
+Route::get('/del_customers/{id}', 'CustomerController@delete')->name('delete.customer');
+Route::get('/status_customers/{id}', 'CustomerController@updateStatus')->name('update.status.customer');
+Route::get('/add_customers', 'CustomerController@add')->name('get.add.customer');
+Route::post('/save_customers', 'CustomerController@saveCustomer')->name('get.save.customer');
+Route::get('/edit_customers/{id}', 'CustomerController@getEditCustomer')->name('get.edit.customer');
+Route::post('/save_edit_customers{id}', 'CustomerController@saveEditCustomer')->name('save.edit.customer');
+
 
 //xử lí đơn hàng
 Route::get('order/{orderStatus}', 'OrderController@index')->name('get.order');
@@ -111,6 +120,43 @@ Route::get('getProductPromo', 'CouponController@getProductPromo');
 Route::get('getListData', 'CouponController@getListData');
 
 
+// gioi thieu 
+
+Route::get('intro', 'AdminController@getIntro')->name('get.intro');
+Route::post('saveintro', 'AdminController@saveIntro')->name('save.intro');
+
+// chinh sach
+Route::get('policy', 'PostController@getPolicy')->name('get.policy');
+Route::get('create-policy', 'PostController@createPolicy')->name('create.policy');
+Route::post('save-policy', 'PostController@savePolicy')->name('save.policy');
+Route::get('active-policy/{id}', 'PostController@activePolicy')->name('active.policy');
+Route::get('delete-policy/{id}', 'PostController@deletePolicy')->name('delete.policy');
+Route::get('edit-policy/{id}', 'PostController@editPolicy')->name('edit.policy');
+Route::post('save-edit-policy/{id}', 'PostController@saveeditPolicy')->name('save.edit.policy');
+
+// loai bai viet
+Route::get('typepost', 'PostController@getTypePost')->name('get.typepost');
+Route::get('active-menupost/{id}', 'PostController@activeMenuPost')->name('active.menupost');
+Route::get('delete-menupost/{id}', 'PostController@deleteMenuPost')->name('delete.menupost');
+
+Route::get('create-menupost', 'PostController@createMenuPost')->name('create.menupost');
+Route::post('save-menupost', 'PostController@saveMenuPost')->name('save.menupost');
+
+Route::get('edit-menupost/{id}', 'PostController@editMenuPost')->name('edit.menupost');
+Route::post('save-edit-menupost/{id}', 'PostController@saveeditMenuPost')->name('save.edit.menupost');
+
+
+// bai viet
+Route::get('post', 'PostController@getPost')->name('get.post');
+Route::get('hot-post/{id}', 'PostController@hotPost')->name('hot.post');
+Route::get('active-post/{id}', 'PostController@activePost')->name('active.post');
+Route::get('delete-post/{id}', 'PostController@deletePost')->name('delete.post');
+
+Route::get('create-post', 'PostController@createPost')->name('create.post');
+Route::post('save-post', 'PostController@savePost')->name('save.post');
+
+Route::get('edit-post/{id}', 'PostController@editPost')->name('edit.post');
+Route::post('save-edit-post/{id}', 'PostController@saveeditPost')->name('save.edit.post');
 
 
 
@@ -238,6 +284,7 @@ Route::group(['namespace' => 'frontend'], function () {
     //tin tức
     Route::get('posts',  'PostsController@index')->name('get.posts');
     Route::get('posts/{slug}',  'PostsController@getPosts')->name('detail.posts');
+    Route::get('policy/{slug}',  'PostsController@showPolicy')->name('show.policy');
 
 
     Route::get('about',  'AboutController@index')->name('about');
@@ -284,6 +331,10 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('/get-password/{customer}/{token}', 'RegisterController@getPass')->name('get.pass');
     Route::post('/get-password/{customer}', 'RegisterController@postPass')->name('post.pass');
 
+    Route::get('/changepassword', 'AccountController@changePass')->name('change.pass');
+    Route::post('/updatePass', 'AccountController@changePassPost')->name('post.change.pass');
+
+
 
 
     //bình luận
@@ -305,4 +356,9 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('province', 'LocationController@getProvince')->name('get.db.province');
     Route::get('province/district/{province}', 'LocationController@getDistrict')->name('get.db.district');
     Route::get('province/ward/{district}', 'LocationController@getWard')->name('get.db.ward');
+
+
+    Route::get('test', function () {
+        return view('templates.clients.home.daylatest');
+    });
 });

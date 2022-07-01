@@ -1,4 +1,5 @@
 @if(Session::has('cart'))
+
 <div class="content">
     <div class="detail">
         <table class="table" id="dataTable" width="100%" cellspacing="0">
@@ -60,9 +61,7 @@
                     <td colspan="2" class="td-right">
                         <span class="mrg-l10">
                             - {{currency_format(Session::get('cart')->coupon)}}
-                            {{Session::get('cart')->discount ? '( - '.Session::get('cart')->discount.')' : ''}}
-                            @else
-                            {{currency_format(0)}}
+                            {{Session::get('cart')->discount ? '('.Session::get('cart')->discount.')' : ''}}
                         </span>
                     </td>
                 </tr>

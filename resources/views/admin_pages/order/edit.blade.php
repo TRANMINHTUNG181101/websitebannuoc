@@ -86,7 +86,7 @@
                                     <li><span>Email :</span> {{$order->email}}</li>
                                     <li><span> <i class="fa fa-money" aria-hidden="true"></i> Thông tin thanh toán
                                             :</span>
-                                        @if($order->trangthaithanhtoan == 2 )
+                                        @if($order->trangthaithanhtoan == 0 )
                                         <div class="badge badge-warning">Chờ thanh toán</div>
                                         @else
                                         <div class="badge badge-success">Đã thanh toán</div>
@@ -137,7 +137,7 @@
                                 <option value="1" {{  $order->trangthaithanhtoan == 1 ? "selected" : ""}}
                                     data-href="{{ route('get.actionPayment', ['success', $order->id])}}">Đã thanh toán
                                 </option>
-                                <option value="2" {{  $order->trangthaithanhtoan == 2 ? "selected" : ""}}
+                                <option value="2" {{  $order->trangthaithanhtoan == 0 ? "selected" : ""}}
                                     data-href="{{ route('get.actionPayment', ['process', $order->id])}}">Chờ thanh toán
                                 </option>
                             </select>
@@ -180,7 +180,7 @@
                                         @if($value->giagoc)
                                         {{currency_format($value->product->giaban + $value->size->price)}}
                                         <br />
-                                        {{'Khuyễn mãi : ( - '.currency_format($value->getCoupon->giamgia, ($value->getCoupon->loaigiam === 2) ? 'đ' : '%').' )'}}
+                                        {{'Khuyến mãi : ( - '.currency_format($value->getCoupon->giamgia, ($value->getCoupon->loaigiam === 2) ? 'đ' : '%').' )'}}
                                         @else
                                         {{currency_format($value->giaban)}}
                                         @endif
@@ -288,7 +288,12 @@
                                         {{$payment->ngaythanhtoan}}
                                         @endif
                                     </td>
-                                    <td>{{currency_format($payment->tongtien * 23187)}}</td>
+                                    <td>@if($value->httt === 1)
+                                        {{currency_format($payment->tongtien * 23187)}}
+                                        @else
+                                        {{currency_format($payment->tongtien)}}
+                                        @endif
+                                    </td>
                                     <td>
 
                                         @if($payment->trangthai == 1 )

@@ -27,39 +27,8 @@ window.onload = () => {
     <div class="container">
         <div class="row">
 
-            <div class="col-lg-5 col-md-6 col-sm-12">
-                <h2>Giới thiệu về <span class="theme-cl">cửa hàng</span></h2>
-                <p style="text-align: justify;">Luôn tâm huyết với việc khai thác nguồn nông sản Việt Nam để tạo ra
-                    những ly thức uống tươi ngon, an
-                    toàn và giàu giá trị dinh dưỡng, ToCoToCo mở cửa hàng đầu tiên vào năm 2013, mang trong mình lòng
-                    đam mê và khát vọng xây dựng một thương hiệu trà sữa thuần Việt, mang đậm hương vị quê
-                    hương.ToCoToCo tin rằng thưởng thức một ly trà sữa được pha chế từ trà Mộc Châu, trân châu từ sắn
-                    dây Nghệ An hay mứt dâu tằm từ Đà Lạt sẽ là những trải nghiệm hoàn toàn khác biệt và tuyệt vời nhất
-                    cho những khách hàng của mình.</p>
-                <p style="text-align: justify;">Hành trình đầy đam mê và tâm huyết này sẽ tiếp tục nhân rộng để lan tỏa
-                    những ly trà thuần khiết đến
-                    với mọi người.</p>
-                <a href=" {{ route('product')}}" class="btn btn-theme mt-2">Mua ngay</a>
-            </div>
-
-            <div class="col-lg-6 col-md-6 col-sm-12 ml-auto">
-                <div class="about_video">
-                    <div class="thumb">
-                        <img class="pro_img img-fluid w100" src="assets/img/offer-4.jpg" alt="7.jpg">
-                        <div class="overlay_icon">
-                            <div class="bb-video-box">
-                                <div class="bb-video-box-inner">
-                                    <div class="bb-video-box-innerup">
-                                        <a href="https://www.youtube.com/watch?v=A8EI6JaFbv4" data-toggle="modal"
-                                            data-target="#popup-video" class="theme-cl"><i
-                                                class="ti-control-play"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class=" col-12">
+                {!! isset($intro->noidung) ? html_entity_decode($intro->noidung) : ''!!} </div>
 
         </div>
     </div>

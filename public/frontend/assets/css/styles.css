@@ -5565,6 +5565,7 @@ ul.product.grid-5 .woo_product_cart ul li .woo_cart_btn {
     position: relative;
     animation: animateright .4s;
     right: 0;
+    z-index: 99999999;
 }
 @keyframes animateright {
     from {
@@ -5979,7 +5980,7 @@ h4.cart_heading {
 
 /*--------------- breadcrumbs -----------------*/
 .breadcrumbs_wrap {
-    padding:2rem 0;
+    padding: 8px 0;
     background: #f4f5f7;
 }
 .btn.btn-back {
@@ -6012,7 +6013,6 @@ h4.cart_heading {
     list-style: none;
     background-color: transparent;
     border-radius: 0;
-    margin: 0 auto;
     display: table;
 }
 .simple_breadcrumbs .breadcrumb {
@@ -10034,8 +10034,11 @@ ul.tp-list li {
     margin-top: 16px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     width: 100%;
+}
+.user-dropdown ul li:first-child {
+    padding-left: 5px;
 }
 
 .user-dropdown ul li:hover {
@@ -11005,3 +11008,63 @@ article.post-promotion {
     max-height: 350px;
     object-fit: cover;
 }
+
+.animation-text {
+    position: relative;
+    font-size: 14px;
+    color: #252839;
+    -webkit-text-stroke: .3px #383d52;
+    text-transform: uppercase;
+}
+
+.animation-text::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: red;
+    border-right: 2px solid red;
+    overflow: hidden;
+    animation: animateText 10s linear infinite;
+}
+
+.sec-heading-flex-one .text-animation {
+    position: relative;
+    display: inline;
+    font-size: 30px;
+    color: hsla(0,0%,76.9%,0.3);
+    -webkit-text-stroke: .3px #E0DECA;
+    text-transform: uppercase;
+}
+.text-animation::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #FBB454;
+    border-right: 2px solid #FFA500;
+    border-bottom: 4px solid #FFA500;
+    -webkit-text-stroke: .3px #FFA500 ;
+
+    overflow: hidden;
+    white-space: nowrap;
+    animation: animateText 10s linear infinite; 
+}
+
+@keyframes animateText {
+    0%,10%,100% {
+        width: 0;
+    }
+    70%,90% {
+        width: 100%;
+    }
+}
+
+.zalo-chat-widget{  
+    bottom: 90px!important;  
+    right: 20px!important;  
+} 

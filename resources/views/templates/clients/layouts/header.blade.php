@@ -14,8 +14,10 @@
                 <div class="row">
 
                     <div class="col-lg-9 col-md-6 col-sm-6 col-4">
-                        <span class="t-14">ĐỊA CHỈ: {{ $setting->diachi ?? ""}} - ĐIỆN THOẠI :
-                            {{ $setting->dienthoai ?? ""}}</span>
+                        <span class="t-14 ">
+                            {{$setting->name}} - ĐỊA CHỈ: {{ $setting->diachi ?? ""}} - ĐIỆN THOẠI:
+                            {{$setting->dienthoai ?? ""}}
+                        </span>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 col-8">
                         <div class="topbar_menu">
@@ -106,6 +108,12 @@
                                                 <a class="ml-2" href=" {{ route('get.infouser', 'info')}}">Thông tin tài
                                                     khoản</a>
                                             </li>
+                                            @if(!get_user('customer','type_social'))
+                                            <li>
+                                                <i class="fas fa-sync"></i>
+                                                <a class="ml-2" href="{{ route('change.pass')}}">Đổi mật khẩu</a>
+                                            </li>
+                                            @endif
                                             <li>
                                                 <i class="fas fa-sign-out-alt"></i>
                                                 <a class="ml-2" href="{{ route('logout')}}">Đăng xuất</a>
