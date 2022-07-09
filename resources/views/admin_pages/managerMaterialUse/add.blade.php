@@ -1,7 +1,7 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-add">
-        <h3>THEM NGUYEN LIEU DUNG</h3>
+        <h3>THÊM NGUYÊN LIỆU SỬ DỤNG</h3>
     </div>
     @if (Session::has('errors_add'))
         <div class="alert alert-danger" style="font-size:24px"> {{ Session::get('errors_add') }}</div>
@@ -11,17 +11,17 @@
             @csrf
             <div class="form-add-material-l">
                 <div class="form-group">
-                    <label for="">Ten nguyen lieu su dụng</label>
+                    <label for="">Tên nguyên liệu sử dụng</label>
                     <input type="text" name="namemmu">
                 </div>
             </div>
             <div class="form-add-material-l">
                 <div class="form-group">
-                    <label for="">so luong</label>
+                    <label for="">Số lượng</label>
                     <input type="number" name="quantymmu">
                 </div>
             </div>
-            <button type="submit" class="btn btn-success">Luu</button>
+            <button type="submit" class="btn btn-success">Lưu</button>
         </form>
     </div>
 @endsection

@@ -6,25 +6,25 @@
     @if (session('change_pass'))
         <div class="notify-del-mal" id="notify-del-mal">
             <h4 style="background: green;padding: 10px;text-align:center;width: 500px;color: white;">
-                thay doi mat khau thanh cong</h4>
-               <?php unset($_SESSION['change_pass']);?>
+               Thay đổi mật khẩu thành công</h4>
+               
         </div>
     @endif
-
+    {{ Session::forget('change_pass') }}
     <div class="infologin" style="font-weight: bold">
-        @foreach ($getLogin as $item)
+        {{-- @foreach ($getLogin as $item) --}}
             <div class="infolog">
-                Email: {{ $item->email }}
+                Email: {{ $getLogin->email }}
             </div>
             <div class="infolog">
-                Ten nhan vien: {{ $item->name_staff }}
+               Tên nhân viên: {{ $getLogin->name_staff }}
             </div>
             <div class="infolog">
-                So Dien Thoai: {{ $item->phone_number }}
+                Số điện thoại: {{ $getLogin->phone_number }}
             </div>
-        @endforeach
-        <a href="">Sua thong tin</a>
-        <a href="{{ route('viewupdatepass') }}">Doi mat Khau</a>
-        <a href="{{ route('showDashboard') }}">quay lai</a>
+        {{-- @endforeach --}}
+        <a href="">Sửa thông tin</a>
+        <a href="{{ route('viewupdatepass') }}">Đổi mật khẩu</a>
+        <a href="{{ route('showDashboard') }}">Quay lạ<i></i></a>
     </div>
 @endsection

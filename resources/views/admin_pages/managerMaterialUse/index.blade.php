@@ -3,18 +3,50 @@
     <div class="title-show">
         <h3>Quản lý nguyên liệu sử dụng</h3>
     </div>
+    @if (session('delete_success'))
+        <div class="show-alert-succes">
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    Swal.fire({
+                        title: 'Xoá thành công!',
+                        icon: 'success',
+                        timer: 2000
+                    });
+                });
+            </script>
+        </div>
+    @endif
+
+    @if (session('update_success'))
+        <div class="show-alert-succes">
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    Swal.fire({
+                        title: 'Cập nhật thành công!',
+                        icon: 'success',
+                        timer: 2000
+                    });
+                });
+            </script>
+        </div>
+    @endif
+
+    {{Session::forget('update_success') ;}}
+    {{Session::forget('delete_success') ;}}
+    {{Session::forget('add_success') ;}}
+    
+
     <div class="them-nguyen-lieu-dung">
-        <button class="btn btn-success"> <a href="{{ route('mmu.addview') }}" style="color:white" id="addModalMMU">Them nguyen
-                lieu su dung</a> </button>
+        <button class="btn btn-success"> <a href="{{ route('mmu.addview') }}" style="color:white" id="addModalMMU">Thêm nguyên liệu dùng</a> </button>
     </div>
     <br>
-    <div class="sap-xep-nguyen-lieu-sd">
+    {{-- <div class="sap-xep-nguyen-lieu-sd">
         <form action="{{ route('sort-mmu-by-day') }}" method="post">
             @csrf
             <input type="date" name="dateSorto" id="dateSorto">
             <button type="submit"><a href="{{ route('sort-mmu-by-day') }}">Lọc</a></button>
         </form>
-    </div>
+    </div> --}}
     <br>
     <div class="content-show">
         <table class="table table-bordered">
@@ -25,38 +57,41 @@
                     <th>Số Lượng</th>
                     <th>Đơn Giá</th>
                     <th>Ngày Tổng Kết</th>
-                    <th>Trang Thai</th>
-                    <th>thanh tien</th>
-                    <th>Thao Tac</th>
+                    <th>Trạng thái</th>
+                    <th>Thành tiền</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody id="show-manager-material-use "style="font-size:16px;font-weight:bold">
-                <?php $i=1;?>
+                <?php $i = 1; ?>
                 @foreach ($managerM as $m)
                     <tr>
-                        <td>{{ $i++}}</td>
+                        <td>{{ $i++ }}</td>
                         <td>
                             @foreach ($nameM as $n)
-                                @if ($n->slug == $m->slug_name_mal)
+                                @if ($n->id == $m->id_nguyen_lieu)
                                     {{ $n->ten_nglieu }}
                                 @endif
                             @endforeach
                         </td>
                         <td>{{ $m->so_luong }}</td>
                         <td>{{ currency_format($m->don_gia) }}</td>
-       
                         <td>{{ $m->ngay_tong_ket }}</td>
                         <td>{{ $m->trang_thai }}</td>
                         <td>{{ currency_format($m->so_luong * $m->don_gia) }}</td>
                         <td>
-                            <a href="{{ route('mmu.del', $m->id) }}">Xoa</a>
-                            <a href="{{ route('mmu.editview', $m->slug_name_mal) }}">sua</a>
+                            <a href="{{ route('mmu.del', $m->id) }}"><i class="fa fa-trash"
+                                    style="width: 16px;height: 16px;color:red"></i></a>
+                            <a href="{{ route('mmu.editview', $m->id) }}"><i class="fa fa-edit"
+                                    style="width: 16px;height: 16px;color:green"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <?php // dd(session()->all());
+    ?>
     <span>{{ $managerM->links() }}</span>
     <style>
         .w-5 {

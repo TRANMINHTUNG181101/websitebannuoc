@@ -9,6 +9,7 @@
  * @return    string
  */
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,5 +53,17 @@ if (!function_exists('toTime')) {
         $dt = Carbon::create($time);
         $now = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
         return $dt->diffForHumans($now);
+    }
+}
+
+
+if (!function_exists('getNameLog')) {
+    function getNameLog()
+    {
+        # code...
+        $getIDLogin = Auth::user()->id;
+        $getInfo = User::where('id', $getIDLogin)->first();
+        $nameLog = $getInfo->name_staff;
+        return $nameLog;
     }
 }

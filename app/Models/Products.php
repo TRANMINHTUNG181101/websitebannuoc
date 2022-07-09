@@ -13,7 +13,7 @@ class Products extends Model
     protected $fillable = ['tensp', 'slug', 'mota', 'hinhanh', 'noidung', 'giaban', 'id_loaisanpham', 'trangthai'];
     public function danhmuc()
     {
-        return $this->belongsTo(Category::class, 'id_loaisanpham');
+        return $this->belongsTo(Categories::class, 'id_loaisanpham');
     }
     public function size()
     {

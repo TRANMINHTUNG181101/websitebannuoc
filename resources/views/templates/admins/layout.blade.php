@@ -24,11 +24,7 @@
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
-
     {{-- <link href="{!! asset('admin_asset/fontawesome-free-6.1.1-web/css/fontawesome.min.css') !!}" rel="stylesheet"> --}}
-
-
     <link href="{!! asset('admin_asset/bootstrap-5.1.3-dist/css/bootstrap.min.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/css/app.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/css/custom_css.css') !!}" rel="stylesheet">
@@ -45,35 +41,35 @@
                 <a class="sidebar-brand" href="{{ route('showDashboard') }}">
                     <span class="align-middle">Admin Website</span>
                 </a>
-                <ul class="sidebar-nav">
-                    <li class=" sidebar-item active">
-                        <a class="sidebar-link " href="{{ route('showDashboard') }}">
+                <ul class="sidebar-nav" id="menuAdmin">
+                    <li class="sidebar-item " value="dashboard">
+                        <a class="sidebar-link " href="{{ route('showDashboard') }} ">
                             <i class="align-middle" data-feather="user"></i>
                             <span class="align-middle">Dashboard</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" value="material">
                         <a class="sidebar-link" href="{{ route('showMaterial') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Nguyen Lieu</span>
+                            <span class="align-middle">Nguyên liệu</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" value="product">
                         <a class="sidebar-link" href="{{ route('products.show') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">San Pham</span>
+                            <span class="align-middle">Sản phẩm</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" value="coupon">
                         <a class="sidebar-link" href="{{ route('get.admin.coupon') }}">
                             <i class="fa fa-gift" aria-hidden="true"></i>
                             <span class="align-middle">Khuyến Mãi</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" value="shipping">
                         <a class="sidebar-link" href="{{ route('get.shipping') }}">
                             <i class="fa fa-truck" aria-hidden="true"></i>
                             <span class="align-middle">Vận Chuyển</span>
@@ -92,7 +88,6 @@
                         </a>
                     </li>
                     <li class="sidebar-item list_order">
-
                         <a class="sidebar-link" href="{{ route('get.order', 'receive') }}">
                             <i class="fa fa-spinner" aria-hidden="true"></i>
                             <span class="align-middle">Tiếp nhận <span
@@ -156,7 +151,7 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('quanlysudungnglieu') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Quản lý nguyên liệu dùng</span>
+                            <span class="align-middle">Quản lý nguyên liệu sử dụng</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -171,6 +166,9 @@
                             <span class="align-middle">Category</span>
                         </a>
                     </li>
+                    <br>
+                    <br>
+                    <br>
                 </ul>
             </div>
         </nav>
@@ -178,7 +176,7 @@
             @include('templates.admins.nav-horizontal')
             <div class="product-admin main">
                 @yield('content')
-            </div>  
+            </div>
         </div>
     </div>
     <script src="{!! asset('admin_asset/js/app.js') !!}"></script>
@@ -187,7 +185,6 @@
     <script src="{!! asset('admin_asset/bootstrap-5.1.3-dist/js/bootstrap.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jquery-3.6.0.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="{!! asset('admin_asset/toastr/toastr.min.js') !!}"></script>
@@ -195,7 +192,7 @@
     <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/sweetalert2.all.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
-    <script>
+    {{-- <script>
         close.addEventListener("click", () => {
             modal.classList.remove('showModal_t')
         })
@@ -206,7 +203,7 @@
         modalBody.addEventListener("click", (e) => {
             e.stopPropagation();
         })
-    </script>
+    </script> --}}
 
 
 </body>

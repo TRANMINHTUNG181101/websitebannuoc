@@ -17,10 +17,15 @@ class checkSaleStaff
      */
     public function handle(Request $request, Closure $next)
     {
-             if (Auth::user() &&  Auth::user()->type_account==2) {
-            return $next($request);
+        //check user login
+        if(Auth::check()){
+            if (Auth::user()->type_account == 1 ||  Auth::user()->type_account == 2) {
+                return $next($request);
+            }
+            abort(403, 'Bạn không có quyền truy cập');
         }
-        
-        abort(403, 'Bạn không có quyền thêm cập');
+
+        return redirect('admin/login')->with("error_login","vui lòng đăng nhập");
+    
     }
 }

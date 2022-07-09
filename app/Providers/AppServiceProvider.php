@@ -7,6 +7,8 @@ use App\Models\StaticSetting;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,14 +41,23 @@ class AppServiceProvider extends ServiceProvider
         $process = Order::whereNotIn('trangthai', [1, 4, -1])->count();
         $success = Order::where('trangthai', 4)->count();
         $cancel = Order::where('trangthai', -1)->count();
+
+        // $getIDLog = Auth::user()->id;
+        // $getlogininfo = User::where('id', $getIDLog)->first();
+
         $viewData = [
             'all' => $all,
             'receive' => $receive,
             'process' => $process,
             'cancel' => $cancel,
-            'success' => $success
+            'success' => $success, 
+            // 'infolog' => $getlogininfo->name_staff
         ];
 
         View::share($viewData);
+
+        
+
+
     }
 }

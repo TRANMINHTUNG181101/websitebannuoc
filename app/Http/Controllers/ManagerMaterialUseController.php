@@ -7,8 +7,7 @@ use App\Models\Materials;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Redis;
+
 
 class ManagerMaterialUseController extends Controller
 {
@@ -32,10 +31,8 @@ class ManagerMaterialUseController extends Controller
     {
         $getRecord = ManagerMaterialUse::find($id);
         $getRecord->delete();
+        session()->put('delete_success', 'xoa thanh cong');
         return redirect()->back();
-        // $managerM = ManagerMaterialUse::all();
-        // $nameM = Materials::all();
-        // return view('admin_pages.managerMaterialUse.index', compact('managerM', 'nameM'));
     }
     ///add new
     public function add()
@@ -47,46 +44,52 @@ class ManagerMaterialUseController extends Controller
     {
         $newmmu = new ManagerMaterialUse();
         $slug_name = Str::slug($request->namemmu);
-        $newmmu->slug_name_mal = $slug_name;
         $newmmu->so_luong = $request->quantymmu;
         $timenow = Carbon::now('asia/Ho_Chi_Minh')->toDateString();
         $newmmu->ngay_tong_ket = $timenow;
         $getmmu = Materials::where('slug', $slug_name)->first();
         $newmmu->don_gia = $getmmu->gia_nhap;
-        // echo $getmmu->gia_nhap;
+        $newmmu->id_nguyen_lieu = $getmmu->id;
         if ($getmmu->gia_nhap == null) {
             session()->put('errors_add', 'nguyên liệu không tồn tại');
             return view('admin_pages.managerMaterialUse.add');
+        } else {
+            session()->forget('add_mmu');
+            // session()->put("add_mmu", 'Them thanh cong');
+            $newmmu->save();
+            $managerM = ManagerMaterialUse::paginate(20);
+            $nameM = Materials::all();
         }
-        $newmmu->save();
-        $managerM = ManagerMaterialUse::paginate(20);
-        $nameM = Materials::all();
+
+
         return view('admin_pages.managerMaterialUse.index', compact('managerM', 'nameM'));
     }
 
     //edit
-    public function edit($slug_name_mal)
+    public function edit($id)
     {
-        $getmmu = ManagerMaterialUse::where('slug_name_mal', $slug_name_mal)->first();
-        $getnameMal = Materials::where('slug', $getmmu->slug_name_mal)->first();
+        $getmmu = ManagerMaterialUse::where('id', $id)->first();
+        $getnameMal = Materials::where('id', $getmmu->id)->first();
         $namemal = $getnameMal->ten_nglieu;
         return view('admin_pages.managerMaterialUse.edit', compact('getmmu', 'namemal'));
     }
     public function update(Request $request)
     {
-        $id=$request->id;
+        $id = $request->id;
         $updatemmu = ManagerMaterialUse::where('id', $id)->first();
         $slug_mal = Str::slug($request->namemmu);
-        $updatemmu ->slug_name_mal=$slug_mal;
-        $updatemmu->so_luong= $request->quantymmu;
-        $getnamemal=Materials::where('slug',$slug_mal)->first();
-        if($getnamemal==null){
+        // $updatemmu ->slug_name_mal=$slug_mal;
+        $updatemmu->so_luong = $request->quantymmu;
+        $getnamemal = Materials::where('id', $id)->first();
+        if ($getnamemal == null) {
             session()->put('errors_add', 'nguyên liệu không tồn tại');
             return view('admin_pages.managerMaterialUse.add');
         }
         $updatemmu->save();
         $managerM = ManagerMaterialUse::paginate(20);
         $nameM = Materials::all();
+        session()->put('update_success', 'Thanh conng');
+
         return view('admin_pages.managerMaterialUse.index', compact('managerM', 'nameM'));
     }
     public function turnover(Request $req)

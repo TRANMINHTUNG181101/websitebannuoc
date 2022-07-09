@@ -1,8 +1,9 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-edit-show">
-        <h3>sua nguyen lieu</h3>
+        <h3>SỬA NGUYÊN LIỆU</h3>
     </div>
+    {{Breadcrumbs::render('Sửa nguyên liệu',$nglieu->slug)}}
     <div class="content-edit-show">
         <form action="{{route('material.edithandle',$nglieu->id)}}" method="post" enctype="multipart/form-data">
             @csrf
@@ -10,19 +11,19 @@
                 <div class="form-edit-left">
                     <input type="text" name="id_nglieu" id="id_nglieu" value="{{ $nglieu->id }}" hidden>
                     <div class="form-group">
-                        <label for="">ten nguyen lieu</label>
+                        <label for="">Tên nguyên liệu</label>
                         <input type="text" name="ten_nglieu" id="ten_nglieu" value="{{ $nglieu->ten_nglieu }}">
                     </div>
                     <div class="form-group">
-                        <label for="">gia nhap</label>
+                        <label for="">Giá nhập</label>
                         <input type="text" name="gia_nhap" id="gia_nhap" value="{{ $nglieu->gia_nhap }}">
                     </div>
                     <div class="form-group">
-                        <label for="">so luong</label>
+                        <label for="">Số lượng</label>
                         <input type="text" name="so_luong" id="so_luong" value="{{ $nglieu->so_luong }}">
                     </div>
                     <div class="form-group">
-                        <label for="">don vi</label>
+                        <label for="">Đơn vị</label>
                         <select name="select_unit">
                             @foreach ($dv_nglieu as $dvnl)
                                 @if ($dvnl->ten_don_vi == $nglieu->don_vi_nglieu)
@@ -38,12 +39,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">ngay het han(thang/ngay/nam)</label>
+                        <label for="">Ngày hết hạn</label>
                         <input type="date" name="dateEXP" id="dateEXP" value="{{$fm_date_expi}}" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label for="">ngay nhap(thang/ngay/nam)</label>
+                        <label for="">Ngày nhập</label>
                         <input type="date" name="dateIn" id="dateIn" value="{{$fm_date_in}}" class="form-control">
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success" style="margin-left: 200px">Luu</button>
+            <button type="submit" class="btn btn-success" style="margin-left: 200px">Lưu thay đổi</button>
         </form>
 
     </div>

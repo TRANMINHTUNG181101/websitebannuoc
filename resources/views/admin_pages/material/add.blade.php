@@ -1,18 +1,19 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-add">
-        <h3>them nguyen lieu</h3>
+        <h3>THEM NGUYEN LIEU</h3>
     </div>
+    {{Breadcrumbs::render('Thêm nguyên liệu')}}
     @if (Session::has('failadd'))
         <div class="alert alert-danger" style="font-size:24px"> {{ Session::get('failadd') }}</div>
     @endif
-    <div class="content-add">
+    <div class="content-add input-group-css">
         <form action="{{ route('material.addhandle') }}" method="post" id="form-add-material" enctype="multipart/form-data">
             @csrf
             <div class="form-input" style="display: flex;justify-content: space-between">
                 <div class="form-add-material-l" style="width: 100%">
                     <div class="form-group">
-                        <label for="">ten nguyen lieu</label>
+                        <label for="">Ten Nguyen Lieu</label>
                         <input type="text" name="MaterialName" id="MaterialName" class="form-control" value="{{session('oldname')}}">
                         @if ($errors->first('MaterialName'))
                             <div class="btn-danger">
@@ -21,7 +22,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label for="">giá nhập</label>
+                        <label for="">Giá Nhập</label>
                         <input type="number" name="ImportPrice" id="ImportPrice" class="form-control" value="{{session('oldprice')}}"
                             onkeyup="formatMoney()">
 
@@ -32,7 +33,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label for="">so luong</label>
+                        <label for="">So Luong</label>
                         <input type="text" name="MaterialQuantily" id="MaterialQuantily" class="form-control" value="{{session('oldquantity')}}">
                         @if ($errors->first('MaterialQuantily'))
                             <div class="btn-danger">
@@ -41,7 +42,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label for="">Hinh anh</label>
+                        <label for="">Hinh Anh</label>
                         <input type="file" name="MaterialImage" id="MaterialImage" class="form-control"
                             onchange="preview_image_add()">
                         @if ($errors->first('MaterialImage'))
@@ -51,7 +52,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label>Don vi nguyen lieu</label>
+                        <label>Don Vi Nguyen Lieu</label>
                         {{-- <input type="text" name="MaterialUnit" id="MaterialUnit" class="form-control"> --}}
                         <select name="select_unit">
                             @foreach ($dv_nglieu as $dvnl)
@@ -61,8 +62,13 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">han su dung</label>
+                        <label for="">Han Su Dung</label>
                         <input type="date" name="ExpiredDate" id="ExpiredDate" class="form-control" value="{{session('olddate')}}">
+                        @if ($errors->first('ExpiredDate'))
+                            <div class="btn-danger">
+                                {{ $errors->first('ExpiredDate') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
 

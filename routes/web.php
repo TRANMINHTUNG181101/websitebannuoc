@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Dashboard
-Route::get('admin', 'DashboardController@show')->name('showDashboard');
+Route::get('admin/dashboard', 'DashboardController@show')->name('showDashboard');
 Route::post('getdata', 'DashboardController@getDateAnalytics')->name('dateget');
 Route::post('/admin/getvisitor', 'DashboardController@getVisitor');
 Route::post('/admin/draworders', 'DashboardController@getDataToDrawOrders');
@@ -32,29 +32,40 @@ Route::post('admin/doi-mat-khau', 'DashboardController@changepassw')->name('chan
 Route::get('admin/doi-mat-khaus', 'DashboardController@changepasswview')->name('viewupdatepass');
 
 
+
+Route::get('admin/reset-password', 'LoginController@resetPasswordview')->name('viewinputmail');
+Route::post('admin/send-mail-reset', 'LoginController@sendMailReset')->name('sendmailreset');
+Route::get('admin/reset-pasworods/{email}', 'LoginController@viewchangepassword')->name('form-reset-password');
+Route::post('admin/reset-pasworods/{email}', 'LoginController@handlerspw')->name('handlerspw');
+
+
+
+
+
 //category
 Route::get('admin/category', 'CategoriesController@index')->name('category.show');
 Route::get('admin/category-add', 'CategoriesController@add')->name('categories.addview');
 Route::post('admin/category-adds', 'CategoriesController@create')->name('categories.addhandle');
 Route::get('admin/category-del/{id}', 'CategoriesController@deletecat')->name('categories.del');
 Route::get('admin/category-edit/{slug}', 'CategoriesController@edit')->name('categories.editview');
-Route::post('admin/category-edits/{id}', 'CategoriesController@update')->name('categories.edithandle');
+Route::post('admin/category-edit/{id}', 'CategoriesController@update')->name('categories.edithandle');
 
 
 //roles
 Route::group(['middleware' => 'checkrole'], function () {
-    Route::get('admin/roles', 'RoleController@index')->name('roles.show');
-    Route::get('admin/roles/addstaff', 'RoleController@addview')->name('roles.addview');
-    Route::post('admin/roles/addstaffs', 'RoleController@addhandle')->name('roles.addstaff');
+    Route::get('admin/phan-quyen', 'RoleController@index')->name('roles.show');
+    Route::get('admin/phan-quyen/them-nv', 'RoleController@addview')->name('roles.addview');
+    Route::post('admin/phan-quyen/them-nv', 'RoleController@addhandle')->name('roles.addstaff');
+    Route::get('admin/phan-quyen/xoa-nv/{id}', 'RoleController@delstaff')->name('del_staff');
 });
 
 
-//manager material use
-Route::get('/admin/quan-ly-nguyen-lieu-sd', 'ManagerMaterialUseController@index')->name('quanlysudungnglieu');
+//manager material use  
+Route::get('/admin/quan-ly-nguyen-lieu-su-dung', 'ManagerMaterialUseController@index')->name('quanlysudungnglieu');
 Route::get('admin/add-material-use', 'ManagerMaterialUseController@add')->name('mmu.addview');
-Route::post('admin/add-material-use', 'ManagerMaterialUseController@create')->name('mmu.addhandle');
+Route::post('admin/quan-ly-nguyen-lieu-sd', 'ManagerMaterialUseController@create')->name('mmu.addhandle');
 Route::get('admin/edit-material-use/{slug}', 'ManagerMaterialUseController@edit')->name('mmu.editview');
-Route::post('admin/edit-material-use/{id}', 'ManagerMaterialUseController@update')->name('mmu.edithandle');
+Route::post('admin/edit-material-use', 'ManagerMaterialUseController@update')->name('mmu.edithandle');
 Route::get('/admin/xoa-MMU/{id}', 'ManagerMaterialUseController@delMMU')->name('mmu.del');
 Route::post('/admin/tong-ket', 'ManagerMaterialUseController@turnover')->name('turnover');
 Route::get('/admin/sort-Mal-By-Day', 'ManagerMaterialUseController@sortMalByDay')->name('sort-mmu-by-day');
@@ -80,23 +91,20 @@ Route::post('admin/sua-san-pham/{id}', 'ProductController@update')->name('produc
 
 
 //auth
-Route::get('/register', 'RegisterController@showFormRegister')->name('auth.register');
-Route::post('/register', 'RegisterController@postRegister')->name('authregister');
-Route::post('/login', 'LoginController@postLogin')->name('authlogin');
-Route::get('/login', 'LoginController@getLogin')->name('auth.login');
-Route::get('/logoutAdmin', 'LoginController@logout')->name('auth.logout');
+// Route::get('/register', 'RegisterController@showFormRegister')->name('auth.register');
+// Route::post('/register', 'RegisterController@postRegister')->name('authregister');
+Route::post('/admin/login', 'LoginController@postLogin')->name('authlogin');
+Route::get('/admin', 'LoginController@getLogin')->name('auth.login');
+Route::get('/admin/login', 'LoginController@logout')->name('auth.logout');
 
 //nguyen lieu
 Route::get('/admin/nguyen-lieu-ajax', 'MaterialController@showMalAjax');
 // Route::post('/admin/xoa-nguyen-lieu-ajax/{id}', 'MaterialController@delMalAjax');
-
 Route::get('admin/nguyen-lieu', 'MaterialController@show')->name('showMaterial');
 Route::get('admin/sua-nguyen-lieu/{slug}', 'MaterialController@edit')->name('material.editview');
 Route::post('admin/sua-nguyen-lieu/{id}', 'MaterialController@update')->name('material.edithandle');
-
 Route::get('admin/them-nguyen-lieu', 'MaterialController@add')->name('material.addview');
 Route::post('admin/them-nguyen-lieu', 'MaterialController@create')->name('material.addhandle');
-
 Route::get('admin/xoa-nguyen-lieu/{id}', 'MaterialController@delMaterial')->name('material.delete');
 Route::post('admin/tim-kiem/', 'MaterialController@searchMaterial')->name('material.search');
 
@@ -109,41 +117,38 @@ Route::post('admin/sua-san-pham/{id}', 'ProductController@updateProduct')->name(
 
 //auth
 
-// Route::get('/register','RegisterController@showFormRegister')->name('auth.register');
-// Route::post('/register','RegisterController@postRegister')->name('authregister');
-Route::post('admin/login', 'LoginController@postLogin')->name('authlogin');
-Route::get('admin/login', 'LoginController@getLogin')->name('auth.login');
-// Route::get('admin/logout','LoginController@logout')->name('admin.logout');
 
 // Route::get('/fetchData','ProductController@sendData');   
 Route::get('/admin/them-nguyen-lieu-ajax', 'MaterialController@addMaterialViewAjax');
 Route::post('/admin/them-nguyen-lieu-ajax1', 'MaterialController@addMaterialHandleAjax');
 
-Route::get('/register', 'RegisterController@showFormRegister')->name('auth.register');
-Route::post('/register', 'RegisterController@postRegister')->name('authregister');
-Route::post('/login', 'LoginController@postLogin')->name('authlogin');
-Route::get('/login', 'LoginController@getLogin')->name('auth.login');
-Route::get('/logoutAdmin', 'LoginController@logout')->name('auth.logout');
+// Route::get('/register', 'RegisterController@showFormRegister')->name('auth.register');
+// Route::post('/register', 'RegisterController@postRegister')->name('authregister');
+// Route::post('admin/login', 'LoginController@postLogin')->name('authlogin');
+// Route::get('admin/login', 'LoginController@getLogin')->name('auth.login');
+// Route::get('admin/logins', 'LoginController@logout')->name('auth.logout');
 
 
 //xử lí đơn hàng
-Route::get('order/{orderStatus}', 'OrderController@index')->name('get.order');
-Route::get('delorder/{id}', 'OrderController@del')->name('get.del');
-Route::get('viewDetail/{id}', 'OrderController@viewDetail')->name('get.viewDetail');
-Route::get('action/{action}/{id}', 'OrderController@action')->name('get.action');
-Route::get('update/{madh}', 'OrderController@update')->name('get.update');
-Route::get('actionPayment/{action}/{id}', 'OrderController@actionPayment')->name('get.actionPayment');
-Route::get('print-order/{madh}', 'OrderController@print_order')->name('print.order');
-Route::post('dels', 'OrderController@dels')->name('dels');
-// tao mo don hang
-Route::get('createOrder', 'OrderController@createOrder')->name('create.order');
-Route::get('getCustomer', 'OrderController@getCustomer')->name('get.customer');
-Route::post('createcart', 'OrderController@createcart')->name('post.createcart');
-Route::post('deleteCartAd', 'OrderController@deleteCartAd')->name('post.deletecart');
-Route::post('saveOrderAd', 'OrderController@saveOrderAd')->name('post.saveOrderAd');
-Route::post('updateCartAd', 'OrderController@upCartAd')->name('post.upCartAd');
-Route::get('checkProductExist', 'OrderController@checkProductExist')->name('get.checkProductExist');
 
+Route::group(['middleware' => 'salestaff'], function () {
+    Route::get('order/{orderStatus}', 'OrderController@index')->name('get.order');
+    Route::get('delorder/{id}', 'OrderController@del')->name('get.del');
+    Route::get('viewDetail/{id}', 'OrderController@viewDetail')->name('get.viewDetail');
+    Route::get('action/{action}/{id}', 'OrderController@action')->name('get.action');
+    Route::get('update/{madh}', 'OrderController@update')->name('get.update');
+    Route::get('actionPayment/{action}/{id}', 'OrderController@actionPayment')->name('get.actionPayment');
+    Route::get('print-order/{madh}', 'OrderController@print_order')->name('print.order');
+    Route::post('dels', 'OrderController@dels')->name('dels');
+    // tao mo don hang
+    Route::get('createOrder', 'OrderController@createOrder')->name('create.order');
+    Route::get('getCustomer', 'OrderController@getCustomer')->name('get.customer');
+    Route::post('createcart', 'OrderController@createcart')->name('post.createcart');
+    Route::post('deleteCartAd', 'OrderController@deleteCartAd')->name('post.deletecart');
+    Route::post('saveOrderAd', 'OrderController@saveOrderAd')->name('post.saveOrderAd');
+    Route::post('updateCartAd', 'OrderController@upCartAd')->name('post.upCartAd');
+    Route::get('checkProductExist', 'OrderController@checkProductExist')->name('get.checkProductExist');
+});
 
 // thêm mã khuyễn mãi
 Route::get('coupon', 'CouponController@index')->name('get.admin.coupon');
@@ -166,7 +171,7 @@ Route::get('getListData', 'CouponController@getListData');
 
 // thêm phí vận chuyển
 
-Route::get('shipping', 'ShippingController@index')->name('get.shipping');
+Route::get('van-chuyen', 'ShippingController@index')->name('get.shipping');
 
 Route::post('/priceprovince', 'ShippingController@post')->name('post.province');
 Route::post('/changefeeship', 'ShippingController@change')->name('change.province');

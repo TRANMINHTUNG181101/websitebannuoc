@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function show()
     {
-        $spham = Products::where('trangthai', 1)->get();
+        $spham = Products::where('trangthai', 1)->paginate(10);
         return view('admin_pages.products.index', compact('spham'));
     }
 
@@ -34,10 +34,12 @@ class ProductController extends Controller
     public function addProductHandle(Request $req)
     {
         //kiem tra du lieu dau vao
-        $validator  = Validator::make($req->all(), [
-            'ProductName'  => 'required',
-            'SellPrice'      => 'required',
-            'ProductImage'     => 'required'
+        $req->validate([
+            'ProductName' => 'required|max:255',
+            'ProductImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:100000',
+            'SellPrice' => 'required|integer|min:0',
+            'Description' => 'required',
+            'contenproduct'=>'required'
         ]);
 
         //them hinh anh
@@ -48,6 +50,7 @@ class ProductController extends Controller
         $newPro->giaban = $req->SellPrice;
         $newPro->hinhanh = $imageName;
         $newPro->mota = $req->Description;
+        $newPro->noidung = $req->contenproduct;
         $newPro->id_loaisanpham = $req->select_cat;
         $newPro->save();
 

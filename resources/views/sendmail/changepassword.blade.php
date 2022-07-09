@@ -9,14 +9,14 @@
 </head>
 
 <body>
-    Mat khau cua ban da duoc cap nhat thanh cong
+    Mật khẩu đã được cập nhật thành cônng
     <br>
-    Thoi gian: <?php
+    Thời gian: <?php
     date_default_timezone_set('Asia/Ho_Chi_Minh');
-    
     echo date('h:i:sa'),"<br>";
-    echo ' ngay: ';
+    echo ' Ngày: ';
     echo date('Y-m-d'); ?>
+    <h3 style="font-weight: bold">Mật khẩu mới của bạn là:{{$newpass}}</h3>
 </body>
 
 </html>

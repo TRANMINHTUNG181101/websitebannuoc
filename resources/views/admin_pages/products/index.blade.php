@@ -1,19 +1,20 @@
 @extends('templates.admins.layout')
 @section('content')
 <div class="title-show">
-    <h3>San pham</h3>
+    <h3>SẢN PHẨM</h3>
 </div>
+
+
 <div class="add-material">
-    <a href="{{ route('products.addview') }}" class="btn btn-success">Them San Pham</a>
+    <a href="{{ route('products.addview') }}" class="btn btn-success">THÊM SẢN PHẨM</a>
     <div class="form-search-mal">
-        <form action="{{ route('material.search') }}" method="post">
+        {{-- <form action="{{ route('material.search') }}" method="post">
             @csrf
             <input type="text" placeholder="Search.." name="search" id="search">
             <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        </form> --}}
     </div>
 </div>
-<a href="{{ route('auth.logout') }}">logout</a>
 @if (session('success_del_mal'))
     <div class="notify-del-mal" id="notify-del-mal">
         <h4 style="background: green;padding: 10px;text-align:center;width: 500px;color: white;">
@@ -22,21 +23,21 @@
     </div>
 @endif
 
-<div class="content-show">
+<div class="content-show" style="font-weight: bold">
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>stt</th>
-                <th>ten san pham</th>
-                <th>gia ban</th>
-                <th>Hinh anh</th>
-                <th>size</th>
-                <th>trang thai</th>
-                <th>mo ta san pham</th>
-                <th>thao tac</th> 
+        <thead >
+            <tr >
+                <th style="background-color: #dee2e6">STT</th>
+                <th>TÊN SẢN PHẨM</th>
+                <th>GIÁ BÁN</th>
+                <th>HÌNH ẢNH</th>
+                <th>KÍCH CỠ</th>
+                <th>TRẠNG THÁI</th>
+                <th>SẢN PHẨM</th>
+                <th>THAO TÁC</th> 
             </tr>
         </thead>
-        <tbody>
+        <tbody style="position: sticky">
             <?php $i=1;?>
             @foreach ($spham as $sp)
                 <tr>
@@ -62,6 +63,11 @@
             @endforeach
         </tbody>
     </table>
-</div>
+</div>    <span>{{ $spham->links() }}</span>
+<style>
+    .w-5 {
+        display: none;
+    }
+</style>
 
 @endsection

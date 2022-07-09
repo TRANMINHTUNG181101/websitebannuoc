@@ -13,23 +13,30 @@ class RoleController extends Controller
     {
         $getID = auth()->user()->id;
         $getLogin = User::where('id', $getID)->get('page_access');
-        $listRoles = "";
-        foreach ($getLogin as $g) {
-            $listRoles = $g['page_access'];
-        }
-        $pieces = explode(",", $listRoles);
-        $roles = array();
-        foreach ($pieces as $p) {
-            if ($p == 6) {
-                $getStaff = User::all();
+        // $listRoles = "";
+        // foreach ($getLogin as $g) {
+        //     $listRoles = $g['page_access'];
+        // }
+        // $pieces = explode(",", $listRoles);
+        // $roles = array();
+        $getStaff = User::all();
+        // return view('admin_pages.managerpermission.index', compact('getStaff'));
+        // foreach ($pieces as $p) {
+        //     if ($p == 6) {
+        //         $getStaff = User::all();
+        //         return view('admin_pages.managerpermission.index', compact('getStaff'));
+        //     }
+        // }
                 return view('admin_pages.managerpermission.index', compact('getStaff'));
-            }
-        }
+
+
         return view('admin_pages.denyaccess.index');
     }
 
     public function addview()
     {
+        return view('admin_pages.managerpermission.add');
+
         $getID = auth()->user()->id;
         $getLogin = User::where('id', $getID)->get('roles_id');
         $listRoles = "";
@@ -51,23 +58,55 @@ class RoleController extends Controller
     public function addhandle(Request $request)
     {
 
+        //validate values input from form add
+        $request->validate([
+            'email' => 'required|email|max:255',
+            'ten' => 'required|max:255',
+            'matkhau' => 'required|min:10|max:15',
+            'dienthoai' => 'required|max:10',
+        ]);
+
         $newStaff = new User();
         $newStaff->email = $request->email;
         $newStaff->name_staff = $request->ten;
         $newStaff->password = bcrypt($request->matkhau);
         $newStaff->phone_number = $request->dienthoai;
-        $listRole = "";
-        foreach ($request->roles as $val) {
-            $listRole .= $val . ',';
-        }
-        $listPage = "";
-        foreach ($request->choosepage as $val) {
-            $listPage .= $val . ',';
-        }
+        $listRole = "demo";
+        // foreach ($request->roles as $val) {
+        //     $listRole .= $val . ',';
+        // }
+        $listPage = "demo";
+        // foreach ($request->choosepage as $val) {
+        //     $listPage .= $val . ',';
+        // }
         $newStaff->roles_id = $listRole;
         $newStaff->page_access = $listPage;
-        $newStaff->type_account=$request->typeaccount;
-        $newStaff->save();
+        $newStaff->type_account = $request->typeaccount;
+        if ($this->checkMailExs($request->email)) {
+            session()->put('add_staff_fail', "that bai! email nay da ton tai");
+            return view('admin_pages.managerpermission.add');
+        } else {
+            $newStaff->save();
+            session()->put('add_staff_success', "them thanh cong!");
+        }
+
+        $getStaff = User::all();
+        return view('admin_pages.managerpermission.index', compact('getStaff'));
+    }
+    public function checkMailExs($mail)
+    {
+        # code...
+        $getmail = User::where('email', $mail)->get();
+        if ($getmail->count() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public function delstaff($id)
+    {
+        $getdel = User::where('id', $id)->get();
+        $getdel->delete();
         $getStaff = User::all();
         return view('admin_pages.managerpermission.index', compact('getStaff'));
     }
