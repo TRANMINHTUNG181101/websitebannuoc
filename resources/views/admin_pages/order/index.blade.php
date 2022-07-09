@@ -92,19 +92,6 @@ alertify.success("{{session()->get('message')}}", 1);
                                                     class="time-order">{{ toTime($value->ngaytao)}}</span></span>
                                         </div>
                                     </div>
-<<<<<<< HEAD
-                                    <div class="col-w">
-
-              
-
-                                        <div class="dropdown action">
-                                            <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cập nhật</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">           
-                                                <a class="dropdown-item" href=" {{ route('get.action', ['process', $value->id])}}"><i class="fa fa-refresh" aria-hidden="true"></i> Đã xử lí</a>
-                                                <a class="dropdown-item" href="{{ route('get.action', ['transport', $value->id])}}"><i class="fa fa-truck" aria-hidden="true"></i> Đang vận chuyển</a>
-                                                <a class="dropdown-item" href="{{ route('get.action', ['success', $value->id])}}"><i class="fa fa-check" aria-hidden="true"></i> Đã giao</a>
-                                                <a class="dropdown-item" href="{{ route('get.action', ['cancel', $value->id])}}"><i class="fa fa-ban" aria-hidden="true"></i> Huỷ</a>
-=======
                                     <div class="border-body">
                                         <div class="col-w" style="width: 230px;">
                                             <ul>
@@ -132,7 +119,6 @@ alertify.success("{{session()->get('message')}}", 1);
                                             <div
                                                 class="badge badge-{{ $value->getStatus($value->trangthai)['class']}} ">
                                                 {{ $value->getStatus($value->trangthai)['name']}}
->>>>>>> 2a8540a8c58e0b0f43ac8a2ea60393f0b04431e3
                                             </div>
                                         </div>
                                         <div class="col-w">

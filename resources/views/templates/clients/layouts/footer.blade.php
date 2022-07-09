@@ -1,45 +1,7 @@
 <footer class="dark-footer skin-dark-footer style-2">
     <div class="before-footer">
         <div class="container">
-            <!-- <div class="row">
 
-				<div class="col-lg-4 col-md-4">
-					<div class="single_facts">
-						<div class="facts_icon">
-							<i class="ti-shopping-cart"></i>
-						</div>
-						<div class="facts_caption">
-							<h4>Free Home Delivery</h4>
-							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-4 col-md-4">
-					<div class="single_facts">
-						<div class="facts_icon">
-							<i class="ti-money"></i>
-						</div>
-						<div class="facts_caption">
-							<h4>Money Back Guarantee</h4>
-							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-4 col-md-4">
-					<div class="single_facts last">
-						<div class="facts_icon">
-							<i class="ti-headphone-alt"></i>
-						</div>
-						<div class="facts_caption">
-							<h4>24x7 Online Support</h4>
-							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut</p>
-						</div>
-					</div>
-				</div>
-
-			</div> -->
         </div>
     </div>
 
@@ -75,12 +37,15 @@
 					</div>
 				</div> -->
 
-                <div class="col-lg-2 col-md-2">
+                <div class="col-lg-3 col-md-2">
                     <div class="footer_widget">
                         <h4 class="widget_title">Điều khoản</h4>
                         <ul class="footer-menu">
-                            <li><a href="#">Điều khoản sử dụng</a></li>
-                            <li><a href="#">Quy tắc bảo mật</a></li>
+                            @if(isset($policy) && count($policy) > 0)
+                            @foreach($policy as $value)
+                            <li><a href="{{ route('show.policy', $value->slug)}}">{{$value->tieude}}</a></li>
+                            @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -97,9 +62,9 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-2">
+                <div class="col-lg-3 col-md-2">
                     <iframe
-                        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=340&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId=1056375581823890"
+                        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FDrink-Coffee-109823691782418&tabs=timeline&width=340&height=187&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1056375581823890"
                         width="340" height="" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
                         allowfullscreen="true"
                         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>

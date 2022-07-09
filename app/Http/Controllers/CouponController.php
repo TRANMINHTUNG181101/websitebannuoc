@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestCoupon;
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product_Coupon;
 use App\Models\Products;
 use Carbon\Carbon;
@@ -18,7 +20,7 @@ class CouponController extends Controller
     {
         $ldate = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $upCoupon = Coupon::where('ngaykt', '<', $ldate)->update(['trangthai' => 2]);
-        $coupon = Coupon::all();
+        $coupon = Coupon::where('trangthai', '!=', -1)->get();
         $viewData = [
             'coupon' => $coupon,
         ];
@@ -68,9 +70,15 @@ class CouponController extends Controller
     }
     function delete($id)
     {
+        $coupon = Coupon::find($id);
         if ($id) {
+            if (count(OrderDetail::where('giagoc', $coupon->id)->get()) > 0 || count(Order::where('id_coupon', $coupon->id)->get())) {
+                $coupon->trangthai = -1;
+                $coupon->save();
+                return redirect()->back();
+            }
             Product_Coupon::where('id_coupon', $id)->delete();
-            Coupon::find($id)->delete();
+            $coupon->delete();
         }
 
         return redirect()->back();

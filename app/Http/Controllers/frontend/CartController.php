@@ -33,7 +33,6 @@ class CartController extends Controller
 {
     public function addCart(Request $request)
     {
-
         $product = Products::find((int)$request->id);
         $discount = 0;
         if (count($product->Coupon) > 0) {
@@ -164,14 +163,17 @@ class CartController extends Controller
 
                 if (+Session('coupon')->loaigiam === 1) {
                     Session('cart')->coupon = Session('cart')->totalPrice * Session('coupon')->giamgia / 100;
-                    Session('cart')->discount = Session('coupon')->giamgia . '%';
+                    // Session('cart')->coupon = Session('cart')->totalPrice * Session('coupon')->giamgia / 100;
+                    Session('cart')->discount = 'Giảm ' . Session('coupon')->giamgia . '%';
                 } else {
-                    Session('cart')->coupon = Session('cart')->totalPrice - Session('coupon')->giamgia;
-                    Session('cart')->discount = Session('coupon')->giamgia . 'đ';
+                    Session('cart')->coupon = Session('coupon')->giamgia;
+                    // Session('cart')->coupon = Session('cart')->totalPrice - Session('coupon')->giamgia;
+                    Session('cart')->discount = 'Giảm ' . currency_format(Session('coupon')->giamgia);
                 }
             } else {
                 Session('cart')->coupon = 0;
             }
+            // return view('templates.clients.cart.invoice');
             $html = view('templates.clients.cart.invoice')->render();
             return  Response()->json(['invoice' => $html]);
         }
@@ -338,12 +340,12 @@ class CartController extends Controller
                 $vnp_TmnCode = "PR66IZJ3"; //Mã website tại VNPAY 
                 $vnp_HashSecret = "SOYGBHCVQDYTYQPIKKWFAETKMEVMZXUO"; //Chuỗi bí mật
 
-                $vnp_TxnRef = time() . ""; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+                $vnp_TxnRef =  $donhang['madh']; //time() . ""; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
                 $vnp_OrderInfo = 'Thanh toán đơn hàng VNPAY';
                 $vnp_OrderType = '3';
                 $vnp_Amount = $donhang['tongtien'] * 100;
                 $vnp_Locale = 'vn';
-                $vnp_BankCode = 'NCB';
+                $vnp_BankCode = 'NCB'; //VNBANK VNPAYQR INTCARD
                 $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
                 $startTime = date('YmdHis');
                 $vnp_ExpireDate = date('YmdHis', strtotime('+10 minutes', strtotime($startTime)));
@@ -450,8 +452,8 @@ class CartController extends Controller
             $this->sendMail($request->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $request->madh]);
         }
+        $donhang = Session('mDonHang') ? Session('mDonHang') : null;
         if ($request->vnp_Amount && $request->vnp_ResponseCode == '00') {
-            $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
             $donhang['trangthaithanhtoan'] = 1;
             $donhang->save();

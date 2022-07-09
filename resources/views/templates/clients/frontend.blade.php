@@ -6,8 +6,13 @@
     <meta name="author" content="www.frebsite.nl" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-
+    @if(isset($meta) && count($meta) > 0)
+    <meta property="og:title" content="{{$meta['title']}}" />
+    <meta property="og:description" content="{{$meta['description']}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{$meta['url']}}" />
+    <meta property="og:image" content="{{$meta['image'] }}" />
+    @endif
 
     <title>{{ $setting->name ?? "Drinks Order"}}</title>
     <link rel="icon" href="{{ asset('img/logo.png')}}" type="image/gif" sizes="16x16">
@@ -28,6 +33,33 @@
 
     <body>
         <div id="fb-root"></div>
+        <div id="fb-customer-chat" class="fb-customerchat">
+        </div>
+
+        <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "109823691782418");
+        chatbox.setAttribute("attribution", "biz_inbox");
+        </script>
+
+        <!-- Your SDK code -->
+        <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                xfbml: true,
+                version: 'v14.0'
+            });
+        };
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
         <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0&appId=1056375581823890&autoLogAppEvents=1"
             nonce="JhpQ55Gl"></script>
@@ -55,12 +87,12 @@
 
         @include('templates.clients.layouts.footer')
 
-        <!-- ============================================================== -->
-        <!-- This page plugins -->
-        <!-- ============================================================== -->
+
         <script src="https://sp.zalo.me/plugins/sdk.js"></script>
         <div class="zalo-chat-widget" data-oaid="22237114426800699" data-welcome-message="Rất vui khi được hỗ trợ bạn!"
-            style="z-index: 9999" data-autopopup="0" data-width="" data-height=""></div>
+            style="z-index: 9999; right: 10px;" data-autopopup="0" data-width="" data-height=""></div>
+
+
         <script>
         function openRightMenu() {
             document.getElementById("rightMenu").style.display = "block";

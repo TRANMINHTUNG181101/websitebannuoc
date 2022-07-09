@@ -1,5 +1,6 @@
 @extends('templates.admins.layout')
 @section('content')
+<<<<<<< HEAD
     <div class="main">
         <main class="content">
             <div class="container-fluid p-0">
@@ -7,40 +8,48 @@
 
                 <div class="row">
                     <div class="col show-visitor text-view-visitor" style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%
+=======
+<div class="main">
+    <main class="content">
+        <div class="container-fluid p-0">
+            <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
+
+            <div class="row" style="gap:20px;">
+                <div class="col show-visitor text-view-visitor" style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%
+>>>>>>> 815184b128b9f6816f5dc8764f10e53332af7447
                                                                                 ">
-                        <h5 class="title-visitor">Truy cập hôm nay</h5>
-                        <span id="visitor_views" style="font-size: 24px"></span>
-                    </div>
-                    <div class="col sale-by-date text-view-visitor" id="statis-view"
-                        style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold">
-                        <h5> DOANH THU HOM NAY</h5><br><span id="numberMoney"></span> Đ
-                        {{-- <div id="show-more-statis">
+                    <h5 class="title-visitor">Truy cập hôm nay</h5>
+                    <span id="visitor_views" style="font-size: 24px"></span>
+                </div>
+                <div class="col sale-by-date text-view-visitor" id="statis-view"
+                    style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold">
+                    <h5> DOANH THU HOM NAY</h5><br><span id="numberMoney"></span> Đ
+                    {{-- <div id="show-more-statis">
                             <button>XEM THÊM</button>
                         </div> --}}
-                    </div>
+                </div>
 
-                    <div class="col">
-                    </div>
-                    <div class="col">
-                    </div>
+                <div class="col">
                 </div>
-                <br>
-                <div class="show-chart-statis">
-                    <canvas id="show-statis-by-year"></canvas>
-                </div>
-                <canvas class="" id="top-product-sale"
-                    style="width:100%;max-width:600px;color:black;font-weight:bold">
-                </canvas>
-
-                <div class="show-doanh-thu" id="showdoanhthu">
-                    <h3 id="showdoanhso"></h3>
-                </div>
-                <div class="export-file">
-                    <button id="exportFile">xuất file exel</button>
+                <div class="col">
                 </div>
             </div>
-        </main>
-    </div>
+            <br>
+            <div class="show-chart-statis">
+                <canvas id="show-statis-by-year"></canvas>
+            </div>
+            <canvas class="" id="top-product-sale" style="width:100%;max-width:600px;color:black;font-weight:bold">
+            </canvas>
+
+            <div class="show-doanh-thu" id="showdoanhthu">
+                <h3 id="showdoanhso"></h3>
+            </div>
+            <div class="export-file">
+                <button id="exportFile">xuất file exel</button>
+            </div>
+        </div>
+    </main>
+</div>
 @endsection
 
 {{-- modal 'exportFile' --}}
@@ -73,14 +82,12 @@
 
                                 <?php $monthCurr = date('m'); ?>
 
-                                @for ($i = 1; $i < 13; $i++)
-                                    {
-                                    @if ($i <= $monthCurr)
-                                        <option value="{{ $i }}">Tháng: {{ $i }}</option>
+                                @for ($i = 1; $i < 13; $i++) { @if ($i <=$monthCurr) <option value="{{ $i }}">Tháng:
+                                    {{ $i }}</option>
                                     @endif
 
                                     }
-                                @endfor
+                                    @endfor
                             </select>
                         </div>
                     </div>

@@ -27,8 +27,7 @@ class HomeController extends Controller
         //sản phẩm mới 
         $productnew = Products::where('trangthai', 1)
             ->orderBy('id')
-
-            ->limit(6)
+            ->limit(8)
             ->get();
 
         //sản phẩm khuyến mãi
@@ -74,6 +73,16 @@ class HomeController extends Controller
         $id = $request->id;
         if ($id) {
             $product = Products::find($id);
+            $discount = 0;
+            if (count($product->Coupon) > 0) {
+                if ($product->Coupon[0]->loaigiam === 1) {
+                    $discount = $product->giaban *  $product->Coupon[0]->giamgia / 100;
+                } else {
+                    $discount = $product->Coupon[0]->giamgia;
+                }
+            }
+            $product->giaban = ($product->giaban - $discount < 0) ? 0 : $product->giaban - $discount;
+
             return view('templates.clients.home.quickview', ['product' => $product]);
         }
     }
@@ -81,6 +90,26 @@ class HomeController extends Controller
     public function register()
     {
         return view('templates.clients.home.register');
+    }
+
+    public function searchOrderResult(Request $request)
+    {
+        $order = Order::where('madh', $request->keyWord)->first();
+        $html = '';
+        if ($order) {
+            $deatil = OrderDetail::where('id_donhang', $order->id)->get();
+            $payment = Payment::where('id_donhang', $order->id)->first();
+            $html = view('templates.clients.home.resultSearchOrder', ['order' => $order, 'orderDetail' => $deatil, 'payment' => $payment])->render();
+        } else {
+            $html = view('templates.clients.home.resultSearchOrder', ['order' => $order])->render();
+        }
+
+        return  Response()->json(['resultSearchOrder' => $html]);
+    }
+
+    public function searchOrder()
+    {
+        return view('templates.clients.home.searchOrder');
     }
 
     //insert ip visitor

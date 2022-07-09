@@ -39,7 +39,7 @@
                                         @foreach($danhmuc as $value)
                                         <div class="single_filter_card filter_card_{{$value->id}}">
                                             <h5 class="cate_homeproduct">
-                                                <img src="{{ asset('uploads/type/'.$value->hinhanh)}}" />
+                                                <img src="{{ asset('uploads/categories/'.$value->hinhanh)}}" />
                                                 <a href="#{{$value->id}}">{{$value->tenloai}}</a>
                                             </h5>
                                             <!-- 														

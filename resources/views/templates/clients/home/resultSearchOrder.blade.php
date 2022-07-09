@@ -86,10 +86,10 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <span class="text-search-ti">Thông tin thanh toán: </span>
-                @if($order->trangthaithanhtoan == 2 )
-                <div class="badge badge-warning">Chờ thanh toán</div>
-                @else
+                @if($order->trangthaithanhtoan == 1 )
                 <div class="badge badge-success">Đã thanh toán</div>
+                @else
+                <div class="badge badge-warning">Chờ thanh toán</div>
                 @endif
             </div>
             <div class="col-lg-3 col-md-6">
@@ -130,7 +130,11 @@
                                 <?php
                                 $giaban = $value->product->giaban + $value->size->price;
                                 if ($value->giagoc) {
-                                    $giaban = $giaban - $value->getCoupon->giamgia;
+                                    $down = $value->getCoupon->giamgia;
+                                    if ($value->getCoupon->loaigiam == 1) {
+                                        $down = $giaban * ($value->getCoupon->giamgia / 100);
+                                    }
+                                    $giaban = $giaban - $down;
                                 }
                                 ?>
                                 {{ currency_format(($giaban > 0 ) ? $giaban : 0)}}

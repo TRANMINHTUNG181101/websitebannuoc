@@ -1,6 +1,5 @@
 @extends('templates.clients.frontend')
 @section('content')
-
 <div class="slideshow bg-pink">
     <div class="owl-carousel category-slider owl-slide">
         @if(count($slide))
@@ -31,7 +30,7 @@
                             <div class="woo_category_box border_style rounded slide-cate">
                                 <div class="woo_cat_thumb">
                                     <a href="{{ route('product')}}"><img
-                                            src="{{ asset('uploads/type/'.$value->hinhanh)}}" class="img-fluid"
+                                            src="{{ asset('uploads/categories/'.$value->hinhanh)}}" class="img-fluid"
                                             alt="" /></a>
                                 </div>
                                 <div class="woo_cat_caption">
@@ -60,7 +59,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="sec-heading-flex ">
                     <div class="sec-heading-flex-one">
-                        <h2>Sản Phẩm Đang khuyến mãi</h2>
+                        <h2 class="text-animation" data-text="Sản Phẩm Đang khuyến mãi">Sản Phẩm Đang khuyến mãi</h2>
                         <span class="line"></span>
                     </div>
                     <!-- <div class="sec-heading-flex-last">
@@ -226,7 +225,8 @@
                             <div class="item">
                                 <div class="woo_category_box border_style rounded">
                                     <div class="woo_cat_thumb">
-                                        <a href="javascript:"><img src="{{ asset('uploads/type/'.$value->hinhanh)}}"
+                                        <a href="javascript:"><img
+                                                src="{{ asset('uploads/categories/'.$value->hinhanh)}}"
                                                 class="img-fluid" alt="" /></a>
                                     </div>
                                     <div class="woo_cat_caption">
@@ -334,7 +334,7 @@
                     <div class="offer_item">
                         <div class="offer_item_thumb">
                             <div class="offer-overlay"></div>
-                            <img src="{{ asset('frontend/img/'.$value->hinhanh) }}" alt="">
+                            <img src="{{ asset('uploads/post/'.$value->hinhanh) }}" alt="">
                             <div class="offer_bottom_caption">
                                 <div class="offer_title">{{ $value->tieude}}</div>
                             </div>

@@ -56,38 +56,32 @@
                                 <div class="form_group">
                                     <label>Tạo độ map Iframe (<a href="https://www.google.com/maps" target="_blank">Lấy
                                             link nhúng</a>)</label>
-                                    <textarea name="iframemap" class="form_control" rows="4">
-                                    {{$setting->iframemap}}
+                                    <textarea name="iframemap" class="form_control" rows="5">{{$setting->iframemap}}
                                     </textarea>
                                 </div>
                                 @if($errors->first('iframemap'))
                                 <span class="error text-danger">{{ $errors->first('iframemap') }}</span>
                                 @endif
                             </div>
+                            <div class="col-12">
+                                <div class="map">
+                                    @if($setting->iframemap)
+                                    {!! html_entity_decode($setting->iframemap) !!}
+                                    @endif
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 mt-4">
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0"><i class="fa fa-info"></i> Cấu hình email</h5>
-                        </div>
-                        <div class="card-body row">
-
-                        </div>
-
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            Lưu thông tin
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                        Lưu thông tin
-                    </button>
-                </div>
-            </div>
         </form>
 
     </div>

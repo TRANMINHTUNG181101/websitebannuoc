@@ -325,11 +325,5 @@ $(document).on('click', '.btn-wishlist', function(e) {
         .done(function(results) {
             toastr.info(results.message);
         });
-<<<<<<< HEAD
-    })
-
-
-=======
-})
->>>>>>> 2a8540a8c58e0b0f43ac8a2ea60393f0b04431e3
+});
 </script>

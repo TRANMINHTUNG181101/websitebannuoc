@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Order;
+use App\Models\Posts;
 use App\Models\StaticSetting;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -53,7 +54,8 @@ class AppServiceProvider extends ServiceProvider
             'success' => $success, 
             // 'infolog' => $getlogininfo->name_staff
         ];
-
+        $policy = Posts::where(['trangthai' => 1, 'loaibaiviet' => 'chinh-sach'])->get();
+        View::share('policy', $policy);
         View::share($viewData);
 
         

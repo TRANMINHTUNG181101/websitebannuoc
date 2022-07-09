@@ -138,7 +138,7 @@
                                     <tr>
                                         <th scope="col">Mã</th>
                                         <th scope="col">Tên</th>
-                                        <th scope="col">Thòi gian</th>
+                                        <th scope="col">Thời gian</th>
                                         <th scope="col">Tổng</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Xử lí</th>

@@ -75,6 +75,36 @@
                             <span class="align-middle">Vận Chuyển</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('show.customer') }}">
+                            <i class="fa fa-truck" aria-hidden="true"></i>
+                            <span class="align-middle">Khách hàng</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
+                        Tin tức
+                    </li>
+                    <li class="sidebar-item list_order">
+
+                        <a class="sidebar-link" href="{{ route('get.typepost') }}">
+                            <i class="fa fa-caret-square-o-left" aria-hidden="true"></i>
+                            <span class="align-middle">Loại tin tức</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item list_order">
+
+                        <a class="sidebar-link" href="{{ route('get.post') }}">
+                            <i class="fa fa-caret-square-o-left" aria-hidden="true"></i>
+                            <span class="align-middle">Tin tức</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item list_order">
+
+                        <a class="sidebar-link" href="{{ route('get.policy') }}">
+                            <i class="fa fa-caret-square-o-left" aria-hidden="true"></i>
+                            <span class="align-middle">Chính sách</span>
+                        </a>
+                    </li>
 
                     <li class="sidebar-header">
                         Đơn hàng
@@ -134,7 +164,12 @@
                             <span class="align-middle">Slide</span>
                         </a>
                     </li>
-
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('get.intro') }}">
+                            <i class="fa fa-bookmark" aria-hidden="true"></i>
+                            <span class="align-middle">Giới thiệu</span>
+                        </a>
+                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('get.static') }}">
                             <i class="fa fa-cogs" aria-hidden="true"></i>
@@ -142,7 +177,7 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item" style="margin-bottom: 20px;">
                         <a class="sidebar-link" href="{{ route('get.banner') }}">
                             <i class="fa fa-picture-o" aria-hidden="true"></i>
                             <span class="align-middle">Banner</span>
@@ -181,10 +216,24 @@
     </div>
     <script src="{!! asset('admin_asset/js/app.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/popper.min.js') !!}"></script>
-    {{-- <script src="{!! asset('admin_asset/fontawesome-free-6.1.1-web/js/fontawesome.min.js') !!}"></script> --}}
+    <script src="{!! asset('admin_asset/fontawesome-free-6.1.1-web/js/fontawesome.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/bootstrap-5.1.3-dist/js/bootstrap.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jquery-3.6.0.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
+<<<<<<< HEAD
+=======
+    <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
+
+    <!-- <script src="{{ asset('ckeditor/ckeditor.js')}}"></script> -->
+    <script src="{{ asset('ckfinder/ckfinder.js')}}"></script>
+    <script src="//cdn.ckeditor.com/4.19.0/full/ckeditor.js"></script>
+    <script>
+    CKEDITOR.replace('contentEmail', {
+        filebrowserBrowseUrl: '{{ asset("/ckfinder/ckfinder.html")}}',
+        filebrowserUploadUrl: '{{ asset("/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files")}}',
+    });
+    </script>
+>>>>>>> 815184b128b9f6816f5dc8764f10e53332af7447
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="{!! asset('admin_asset/toastr/toastr.min.js') !!}"></script>
@@ -192,6 +241,7 @@
     <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/sweetalert2.all.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
+<<<<<<< HEAD
     {{-- <script>
         close.addEventListener("click", () => {
             modal.classList.remove('showModal_t')
@@ -204,6 +254,20 @@
             e.stopPropagation();
         })
     </script> --}}
+=======
+    <script>
+    close.addEventListener("click", () => {
+        modal.classList.remove('showModal_t')
+    })
+
+    modal.addEventListener("click", () => {
+        modal.classList.remove('showModal_t')
+    })
+    modalBody.addEventListener("click", (e) => {
+        e.stopPropagation();
+    })
+    </script>
+>>>>>>> 815184b128b9f6816f5dc8764f10e53332af7447
 
 
 </body>
