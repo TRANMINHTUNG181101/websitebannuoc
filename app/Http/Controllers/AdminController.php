@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestStatic;
 use App\Http\Requests\SlideRequest;
+use App\Models\Comments;
 use App\Models\Contact;
 use App\Models\Image;
 use App\Models\Posts;
 use App\Models\StaticSetting;
 use App\Models\StaticW;
+use Egulias\EmailValidator\Warning\Comment;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -196,7 +198,7 @@ class AdminController extends Controller
     public function bannerShow($id)
     {
         $banner = Image::find($id);
-        $banner->trangthai = $banner->trangthai === 1 ? 2 : 1;
+        $banner->trangthai = +$banner->trangthai === 1 ? 2 : 1;
         $banner->save();
         return redirect()->back();
     }
@@ -298,5 +300,18 @@ class AdminController extends Controller
         } else {
             return redirect()->back()->with('message', 'Cập nhật không thành công.');
         }
+    }
+
+    public function getComment()
+    {
+        $comments = Comments::paginate(10);
+        return view('admin_pages.static.comments', ['comments' => $comments]);
+    }
+
+    public function deleteComment($id)
+    {
+        $slide = Comments::find($id);
+        $slide->delete();
+        return redirect()->route('get.all.comments')->with('message', 'Đã xoá thành công.');
     }
 }

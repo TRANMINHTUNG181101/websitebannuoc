@@ -52,7 +52,7 @@ window.addEventListener('load', (e) => {
                         </td>
                         <td>
 
-                            @if($value->hot === 1 )
+                            @if(+$value->hot === 1 )
                             <a href="{{route('hot.post', $value->id)}}">
                                 <div class=" badge badge-success">
                                     Có
@@ -68,7 +68,7 @@ window.addEventListener('load', (e) => {
 
                         </td>
                         <td>
-                            @if($value->trangthai === 1 )
+                            @if(+$value->trangthai === 1 )
                             <a href="{{route('active.post', $value->id)}}">
                                 <div class=" badge badge-success">
                                     Hiển thị

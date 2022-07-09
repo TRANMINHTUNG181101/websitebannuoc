@@ -7,6 +7,8 @@ use App\Exports\saleExport;
 use App\Mail\sendMail;
 use App\Models\Cart;
 use App\Models\ManagerMaterialUse;
+use App\Models\Order;
+use App\Models\Products;
 use App\Models\Sale_statisticals;
 use App\Models\Visitors;
 use Maatwebsite\Excel\Facades\Excel;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Aws\Middleware;
+use CKSource\CKFinder\Command\Proxy;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -26,15 +29,64 @@ class DashboardController extends Controller
     {
         // $this->middleware('checkrole');
     }
-    public function show()
+    public function show(Request $req)
     {
+        $nowMonth = Carbon::now()->month;
+        $nowYear = Carbon::now()->year;
+        $nowday = Carbon::now()->day;
+        $statisByYear = array();
+        $statisByDay = array();
+        $datadays = null;
+
+        for ($i = 1; $i < 13; $i++) {
+            $month = 'Tháng ' . $i;
+            $data['name'] = $month;
+            $data['y'] = null;
+            $data['drilldown'] = $i;
+            if ($nowMonth >= $i) {
+                $d = $this->statisByMonthy1($i);
+                $data['y'] = $d;
+                $datadays['data'] = array();
+                // lay thong ke theo tung ngay
+                $days = Carbon::createFromDate($nowYear, $i)->daysInMonth;
+                for ($j = 1; $j <= $days; $j++) {
+                    $day = 'Ngày ' . $j . '/' . $i . '/' . $nowYear;
+                    if ($i <= $nowMonth) {
+                        if ($i === $nowMonth && $j > $nowday) {
+                            array_push($datadays['data'], [$day, null]);
+                        } else {
+                            array_push($datadays['data'], [$day, $this->statisByDay($i, $j)]);
+                        }
+                    } else {
+                        array_push($datadays['data'], [$day, null]);
+                    }
+                }
+            }
+            $datadays['name'] = $data['name'] = $month;
+            $datadays['id'] = $i;
+            array_push($statisByYear, $data);
+            array_push($statisByDay, $datadays);
+            $datadays = array();
+        }
+        $nameOrder = DB::select("SELECT id_san_pham_order,so_luot_dat FROM order_statisticals ORDER BY so_luot_dat DESC LIMIT 5");
+        $data = [];
+        for ($i = 0; $i < count($nameOrder); $i++) {
+            $nameP = DB::select("SELECT tensp FROM products WHERE id=" . $nameOrder[$i]->id_san_pham_order);
+
+            $value['name'] = $nameP[0]->tensp;
+            $value['y'] = $nameOrder[$i]->so_luot_dat;
+            array_push($data, $value);
+        }
         // $name_login = auth()->user()->name_staff;
 
         // if($name_login==null){
         //     return view('auths.login');
         // }
-        $name_login="a";
-        return view('templates.admins.index', compact('name_login'));
+        // return $statisByYear;
+        $name_login = "a";
+        $countProduct = Products::where('trangthai', 1)->count();
+        $countOrder = Order::whereDate('ngaytao', Carbon::today()->toDateString())->count();
+        return view('templates.admins.index', compact('name_login'), ['topproduct' => json_encode($data), 'statisByYear' => json_encode($statisByYear), 'statisByDay' => json_encode($statisByDay), 'countProduct' => $countProduct, 'countOrder' => $countOrder]);
     }
 
     public function showVisitors(Request $req)
@@ -161,6 +213,54 @@ class DashboardController extends Controller
         ]);
     }
 
+    function statisByMonthy1($month)
+    {
+        $nowYear = Carbon::now()->year;
+        $moneySale = 0;
+        $moneyBuyMaterial = 0;
+        $getSaleByMonth = Sale_statisticals::whereYear('ngay_ban', $nowYear)->whereMonth('ngay_ban', $month)->get();
+        $getUseMaterialByMonth = ManagerMaterialUse::whereYear('ngay_tong_ket', $nowYear)->whereMonth('ngay_tong_ket', $month)->get();
+        if ($getSaleByMonth->count() > 0) {
+            foreach ($getSaleByMonth as $val) {
+                $moneySale += $val->tien_don_hang;
+            }
+            if ($getUseMaterialByMonth->count() > 0) {
+                foreach ($getUseMaterialByMonth as $val) {
+                    $moneyBuyMaterial += $val->so_luong * $val->don_gia;
+                }
+            } else {
+                $moneyBuyMaterial += 0;
+            }
+            $turnoverMonth = $moneySale - $moneyBuyMaterial;
+            return $turnoverMonth;
+        }
+        return 0;
+    }
+    function statisByDay($month, $day)
+    {
+        $nowYear = Carbon::now()->year;
+        $date = Carbon::createFromDate($nowYear, $month, $day)->format('Y-m-d');
+        $moneySale = 0;
+        $moneyBuyMaterial = 0;
+        $getSaleByMonth = Sale_statisticals::whereDate('ngay_ban', $date)->get();
+        $getUseMaterialByMonth = ManagerMaterialUse::whereDate('ngay_tong_ket', $date)->get();
+        if ($getSaleByMonth->count() > 0) {
+            foreach ($getSaleByMonth as $val) {
+                $moneySale += $val->tien_don_hang;
+            }
+            if ($getUseMaterialByMonth->count() > 0) {
+                foreach ($getUseMaterialByMonth as $val) {
+                    $moneyBuyMaterial += $val->so_luong * $val->don_gia;
+                }
+            } else {
+                $moneyBuyMaterial += 0;
+            }
+            $turnoverMonth = $moneySale - $moneyBuyMaterial;
+            return $turnoverMonth;
+        }
+        return 0;
+    }
+
     function statisByMonthy($month)
     {
         $nowYear = Carbon::now()->year;
@@ -185,7 +285,7 @@ class DashboardController extends Controller
     {
         $data = array();
         for ($i = 1; $i < 13; $i++) {
-            $d = $this->statisByMonthy($i);
+            $d = $this->statisByMonthy1($i);
             array_push($data, $d);
         }
         return response()->json([
@@ -201,15 +301,22 @@ class DashboardController extends Controller
         $turnover = 0;
         $getUseMaterialDaily = ManagerMaterialUse::where('ngay_tong_ket', $today)->get();
         $getSaleDaily = Sale_statisticals::where('ngay_ban', $today)->get();
-        if ($getUseMaterialDaily->count() > 0 && $getSaleDaily->count() > 0) {
+        // if ($getUseMaterialDaily->count() > 0 && $getSaleDaily->count() > 0)
+        if ($getSaleDaily->count() > 0) {
 
             foreach ($getSaleDaily as $val) {
                 $moneySale += $val->tien_don_hang;
             }
-
-            foreach ($getUseMaterialDaily as $val) {
-                $moneyBuyMaterial += $val->so_luong * $val->don_gia;
+            if ($getUseMaterialDaily->count() > 0) {
+                foreach ($getUseMaterialDaily as $val) {
+                    $moneyBuyMaterial += $val->so_luong * $val->don_gia;
+                }
+            } else {
+                $moneyBuyMaterial += 0;
             }
+            // foreach ($getUseMaterialDaily as $val) {
+            //     $moneyBuyMaterial += $val->so_luong * $val->don_gia;
+            // }
             $turnover = $moneySale - $moneyBuyMaterial;
             return response()->json([
                 "today" => $turnover
@@ -265,29 +372,27 @@ class DashboardController extends Controller
     {
         return view('admin_pages.infologin.changepass');
     }
-    
+
     public function changepassw(Request $req)
     {
         $oldpass = $req->oldpass;
         $newpass = $req->newpass;
         $idLog = auth()->user()->id;
         $getAccountLogin = User::where('id', $idLog)->get();
-        $getPass="";
-        foreach ($getAccountLogin as $val){
+        $getPass = "";
+        foreach ($getAccountLogin as $val) {
             $getPass = $val['password'];
         }
         if (Hash::check($oldpass, $getPass)) {
-        $user = User::find(8);
-        $user->password = bcrypt($newpass);
-        $user->save();
-        $mailable = new sendMail();
-        Mail::to("kukuku2108@gmail.com")->send($mailable);
-        $idLogin = auth()->user()->id;
-        $getLogin = User::where('id', $idLogin)->get();
-        session()->put('change_pass', '1');
-        return view('admin_pages.infologin.index', compact('getLogin'));
-
-
+            $user = User::find(8);
+            $user->password = bcrypt($newpass);
+            $user->save();
+            $mailable = new sendMail();
+            Mail::to("kukuku2108@gmail.com")->send($mailable);
+            $idLogin = auth()->user()->id;
+            $getLogin = User::where('id', $idLogin)->get();
+            session()->put('change_pass', '1');
+            return view('admin_pages.infologin.index', compact('getLogin'));
         }
 
         $idLogin = auth()->user()->id;

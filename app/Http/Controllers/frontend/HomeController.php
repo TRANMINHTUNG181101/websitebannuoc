@@ -26,7 +26,7 @@ class HomeController extends Controller
 
         //sản phẩm mới 
         $productnew = Products::where('trangthai', 1)
-            ->orderBy('id')
+            ->orderBy('id', 'desc')
             ->limit(8)
             ->get();
 
@@ -43,7 +43,7 @@ class HomeController extends Controller
         $posts = Posts::where('trangthai', 1)
             ->where('hot', 1)
             ->orderBy('id')
-            ->limit(8)
+            ->limit(4)
             ->get();
 
 

@@ -318,6 +318,7 @@ $(document).on('click', '.btn-user-detailorder', function(e) {
 $(document).on('click', '.btn-wishlist', function(e) {
     e.preventDefault()
     let url = $(this).attr('href')
+    console.log(url)
     $.ajax({
             method: 'post',
             url: url,

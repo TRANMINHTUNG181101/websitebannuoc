@@ -45,8 +45,6 @@
                                 @endif
 
                             </div>
-
-
                             <div class="form_group">
                                 <label>Loại giảm</label>
                                 <select name="loaigiam" id="" class="form_control">
@@ -156,7 +154,6 @@ window.onload = () => {
     const listPromo = document.querySelector('.list-promo');
 
     const url = '{{asset("/")}}';
-    console.log(url)
     img.addEventListener('change', (e) => {
         let file = e.target.files[0];
         if (!file) {
@@ -213,7 +210,7 @@ window.onload = () => {
         option: 0,
 
         getData: async function() {
-            const response = await fetch('http://localhost/website_ban_nuoc/public/getListData');
+            const response = await fetch(`${url}getListData`);
             const data = await response.json();
             if (response && data) {
                 let {
@@ -234,9 +231,9 @@ window.onload = () => {
                 return (`
                     <tr>
                     <td scope=" col"><input data-id="${item.id}" ${checked} name="checkedAll[]" type="checkbox" /></td>
-                    <td>${index}</td>
+                    <td>${index + 1}</td>
                     <td style="font-size: 16px; text-transform: uppercase; font-weight: 600;">
-                    <img class="img-type" src="${url}/uploads/type/${item.hinhanh}"> ${item.tenloai}</td>
+                    <img class="img-type" src="${url}uploads/categories/${item.hinhanh}"> ${item.tenloai}</td>
                    </tr>
                 `);
             }).join('');
@@ -254,9 +251,9 @@ window.onload = () => {
                 return (`
                     <tr>
                     <td scope=" col"><input data-id="${item.id}" ${checked} name="checkedAll[]" type="checkbox" /></td>
-                    <td>${index}</td>
+                    <td>${index + 1}</td>
                     <td style="font-size: 16px; text-transform: uppercase; font-weight: 600;">
-                    <img class="img-type" src="${url}/uploads/product/${item.hinhanh}"> ${item.tensp}</td>
+                    <img class="img-type" src="${url}uploads/product/${item.hinhanh}"> ${item.tensp}</td>
                     <td style="text-transform: uppercase; font-weight: 600;">${item.id_loaisanpham.tenloai}</td>
                    </tr>
                 `);
@@ -298,7 +295,7 @@ window.onload = () => {
                                 return (`
                                         <div class="item_promo">
                                             <img class="img_promo"
-                                                src="${url}/uploads/product/${item.hinhanh}"">
+                                                src="${url}uploads/product/${item.hinhanh}"">
                                             <span class="name_promo">${item.tensp}</span>
                                             <input hidden value=${item.id} name="id_products[]" />
                                         </div>
@@ -331,7 +328,7 @@ window.onload = () => {
                                 return (`
                                             <div class="item_promo">
                                                 <img class="img_promo"
-                                                    src="${url}/uploads/product/${item.hinhanh}"">
+                                                    src="${url}uploads/product/${item.hinhanh}"">
                                                 <span class="name_promo">${item.tensp}</span>
                                                 <input hidden value=${item.id} name="id_products[]" />
                                             </div>

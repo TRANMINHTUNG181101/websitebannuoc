@@ -8,6 +8,7 @@ use App\Models\ChitietDH;
 use App\Models\Comments;
 use App\Models\Coupon;
 use App\Models\District;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Donhang;
 use App\Models\Order;
 use App\Models\Order_statisticals;
@@ -24,7 +25,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use PhpParser\Node\Expr\FuncCall;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -123,31 +123,10 @@ class CartController extends Controller
     }
     public function delCart(Request $request)
     {
-        // $cartt = session('cart');
-
-        // foreach ($cartt->products as $value) {
-
-        //      $selectDT = Order_statisticals::where('ten_san_pham_order', $value['productInfo']->id)->first();
-        //     $nameOr = DB::select("select tensp from products where id=" . $value['productInfo']->id);
-        //     $product = Products::find($value['productInfo']->id);
-        //     if ($selectDT == null) {
-        //     $orderS = new Order_statisticals();
-        //     $orderS->ten_san_pham_order = $product->id;
-        //     $orderS->so_luot_dat = $value['quanty'];
-        //     $orderS->save();
-        //     } else {
-        //     $orde = Order_statisticals::findOrFail($selectDT->id);
-
-        //     // $quatyOrder = DB::select("select so_luot_dat from order_statisticals where ten_san_pham_order='" . $value['productInfo']->id . "'");
-
-        //     // $newQuanty = $quatyOrder[0]->so_luot_dat + $value['quanty'];
-        //     $orde->so_luot_dat = $orde->so_luot_dat + $value['quanty'];
-
-        //     //Order_statisticals::where('ten_san_pham_order', $value['productInfo']->id)->update(array('so_luot_dat' => $newQuanty));
-        //     $orde->save();
-        //     }
-        // }
-        sleep(10);
+        Mail::send('admin_pages.contact.email', ['data' => 'sdflksafjkds'], function ($email) {
+            $email->subject('Drinks - Web');
+            $email->to('trip6013@gmail.com', 'hi');
+        });
         return 1;
     }
 
@@ -182,30 +161,6 @@ class CartController extends Controller
     //lưu đơn hàng
     public function postPay(Request $request)
     {
-        $cartt = session('cart');
-
-        foreach ($cartt->products as $value) {
-
-            $selectDT = Order_statisticals::where('id_san_pham_order', $value['productInfo']->id)->get();
-            // $nameOr = DB::select("select tensp from products where id=" . $value['productInfo']->id);
-            $product = Products::find($value['productInfo']->id);
-            if ($selectDT->count() == 0) {
-                $orderS = new Order_statisticals();
-                $orderS->id_san_pham_order = $product->id;
-                $orderS->so_luot_dat = $value['quanty'];
-                $orderS->save();
-            } else {
-                $orde = Order_statisticals::find($selectDT[0]->id);
-                $orde->so_luot_dat += $value['quanty'];
-
-                //Order_statisticals::where('ten_san_pham_order', $value['productInfo']->id)->update(array('so_luot_dat' => $newQuanty));
-                $orde->save();
-            }
-        }
-
-        #region postpay
-
-
         $urlWebsite = asset('checkoutcomplete/');
         $cart = Session('cart') ? Session('cart') : null;
         if (Session('mDonHang')) {
@@ -418,8 +373,29 @@ class CartController extends Controller
                                 $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
                             }
                             OrderDetail::create($data);
+
+                            $selectDT = Order_statisticals::where('id_san_pham_order', $value['productInfo']->id)->get();
+
+                            // danh sach top san pham 
+                            $product = Products::find($value['productInfo']->id);
+                            if ($selectDT->count() == 0) {
+                                $orderS = new Order_statisticals();
+                                $orderS->id_san_pham_order = $product->id;
+                                $orderS->so_luot_dat = $value['quanty'];
+                                $orderS->save();
+                            } else {
+                                $orde = Order_statisticals::find($selectDT[0]->id);
+                                $orde->so_luot_dat += $value['quanty'];
+                                $orde->save();
+                            }
                         }
                     }
+                    $saleStatisticals = new Sale_statisticals();
+                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                    $saleStatisticals->ngay_ban = date('Y-m-d', $request->responseTime);
+                    $saleStatisticals->id_don_hang = $donhang->id;
+                    $saleStatisticals->tien_don_hang = $donhang['tongtien'];
+                    $saleStatisticals->save();
                 }
                 $request->session()->forget('cart');
                 return redirect()->route('checkoutcomplete', ['madh' => $donhang->madh]);
@@ -470,14 +446,20 @@ class CartController extends Controller
                         $data['giagoc'] = $value['productInfo']->Coupon[0]->id;
                     }
 
+                    OrderDetail::create($data);
 
-                    $orderStaticals = new Order_statisticals();
-
-                    // $orderStaticals->ten_san_pham_order=$value['productInfo']->id;
-                    // $orderStaticals->so_luot_dat= $value['quanty'];
-                    // $orderStaticals->save();
-
-                    // OrderDetail::create($data);
+                    $selectDT = Order_statisticals::where('id_san_pham_order', $value['productInfo']->id)->get();
+                    $product = Products::find($value['productInfo']->id);
+                    if ($selectDT->count() == 0) {
+                        $orderS = new Order_statisticals();
+                        $orderS->id_san_pham_order = $product->id;
+                        $orderS->so_luot_dat = $value['quanty'];
+                        $orderS->save();
+                    } else {
+                        $orde = Order_statisticals::find($selectDT[0]->id);
+                        $orde->so_luot_dat += $value['quanty'];
+                        $orde->save();
+                    }
                 }
             }
             $request->session()->forget('cart');
@@ -505,9 +487,6 @@ class CartController extends Controller
             $saleStatisticals->save();
 
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
-        } else if ($request->partnerCode) {
-            $this->sendMail($donhang->madh);
-            return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else if ($request->partnerCode && $request->resultCode == 0) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;
             $cart = Session('cart') ? Session('cart') : null;
@@ -527,6 +506,19 @@ class CartController extends Controller
                     }
 
                     OrderDetail::create($data);
+
+                    $selectDT = Order_statisticals::where('id_san_pham_order', $value['productInfo']->id)->get();
+                    $product = Products::find($value['productInfo']->id);
+                    if ($selectDT->count() == 0) {
+                        $orderS = new Order_statisticals();
+                        $orderS->id_san_pham_order = $product->id;
+                        $orderS->so_luot_dat = $value['quanty'];
+                        $orderS->save();
+                    } else {
+                        $orde = Order_statisticals::find($selectDT[0]->id);
+                        $orde->so_luot_dat += $value['quanty'];
+                        $orde->save();
+                    }
                 }
             }
             $request->session()->forget('cart');
@@ -547,7 +539,7 @@ class CartController extends Controller
             $saleStatisticals = new Sale_statisticals();
 
             date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $saleStatisticals->ngay_ban = date('Y-m-d', $request->responseTime);
+            $saleStatisticals->ngay_ban = date("Y-m-d", strtotime($request->responseTime));
             $saleStatisticals->id_don_hang = $donhang->id;
             $saleStatisticals->tien_don_hang = $request->amount;
             $saleStatisticals->save();
@@ -642,6 +634,14 @@ class CartController extends Controller
             $payment->ngaythanhtoan = $response['purchase_units'][0]['payments']['captures'][0]['create_time'];
             $payment->id_donhang = $donhang->id;
 
+
+            $saleStatisticals = new Sale_statisticals();
+
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $saleStatisticals->ngay_ban = date('Y-m-d', $request->responseTime);
+            $saleStatisticals->id_don_hang = $donhang->id;
+            $saleStatisticals->tien_don_hang = $response['purchase_units'][0]['payments']['captures'][0]['amount']['value'] * 23187;
+            $saleStatisticals->save();
             $payment->save();
             $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);

@@ -1,5 +1,12 @@
 @extends('templates.admins.layout')
 @section('content')
+@if(session()->has('messageupdate'))
+<script>
+window.addEventListener('load', (e) => {
+    toastr.warning("{{session()->get('messageupdate')}}");
+})
+</script>
+@endif
 <div class="container-fluid coupon form_ql">
     <div class="card_1">
         <h3 class="card-title">Danh mục mã khuyến mãi</h3>
@@ -18,6 +25,7 @@
                     <th>Code</th>
                     <th>Giảm</th>
                     <th>Kết thúc</th>
+                    <th>Dành cho</th>
                     <th>Trạng Thái</th>
                     <th></th>
                 </tr>
@@ -27,18 +35,40 @@
                 @foreach($coupon as $key => $value)
                 <tr>
                     <td scope=" col"><input type="checkbox" /></>
-                    <td scope="row">{{$key}}</td>
+                    <td scope="row">{{$key + 1}}</td>
                     <td><span class='nowrap'>{{$value->ten}}</span></td>
                     <td>{{$value->code}}</td>
                     <td>{{currency_format($value->giamgia, ($value->loaigiam === 2) ? 'đ' : '%')}}</td>
                     <td>{{format_date($value->ngaykt)}}</td>
                     <td>
-
-                        @if($value->trangthai === 1 )
-                        <div class=" badge badge-success">Đang hoạt động
-                        </div>
+                        @if(+$value->hienthi === 1 )
+                        <a href="{{route('show.coupon', $value->id)}}">
+                            <div class=" badge badge-info">
+                                Hiển thị
+                            </div>
+                        </a>
                         @else
-                        <div class="badge badge-warning">Đã hết hạn</div>
+                        <a href="{{ route('show.coupon', $value->id)}}">
+                            <div class="badge badge-warning">
+                                Không
+                            </div>
+                        </a>
+                        @endif
+
+                    </td>
+                    <td>
+                        @if(+$value->trangthai === 1 )
+                        <a href="{{route('active.coupon', $value->id)}}">
+                            <div class=" badge badge-success">
+                                Hoạt động
+                            </div>
+                        </a>
+                        @else
+                        <a href="{{ route('active.coupon', $value->id)}}">
+                            <div class="badge badge-danger">
+                                Ngừng
+                            </div>
+                        </a>
                         @endif
 
                     </td>

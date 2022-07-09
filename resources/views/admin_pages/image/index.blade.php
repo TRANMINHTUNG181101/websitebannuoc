@@ -38,7 +38,7 @@
                                 <select name="vitri" id="position" class="form_control">
                                     @if($count > 0)
                                     @for($i = 1; $i <= $count ; $i++) <option value="{{$i}}"
-                                        {{($value->vitri === $i ? 'selected' : '')}}>{{$i}} </option>
+                                        {{(+$value->vitri === $i ? 'selected' : '')}}>{{$i}} </option>
                                         @endfor
                                         @endif
                                 </select>
@@ -47,7 +47,7 @@
                         </form>
                     </td>
                     <td>
-                        @if($value->trangthai === 1 )
+                        @if(+$value->trangthai === 1 )
                         <a href="{{route('active.slide', $value->id)}}">
                             <div class=" badge badge-success">
                                 Hiển thị

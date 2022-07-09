@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestAddCustomer;
+use App\Models\Coupon;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
     public function index()
     {
         $customer = Customer::all();
-        return view('admin_pages.customer.index', ['customer' => $customer]);
+        $coupon = Coupon::where(['trangthai' => 1, 'loaigiam' => 2, 'hienthi' => 0])->get();
+        return view('admin_pages.customer.index', ['customer' => $customer, 'coupon' => $coupon]);
     }
 
     public function delete($id)
@@ -64,5 +67,33 @@ class CustomerController extends Controller
             $data->save();
         }
         return redirect()->route('show.customer');
+    }
+
+    public function sendmailCustomer(Request $request)
+    {
+        $request->validate([
+            'coupon' => 'required',
+            'checks' => 'required',
+        ], [
+            'coupon.required' => "Chưa chọn khuyến mãi.",
+            'checks.required' => "Chưa chọn khách hàng.",
+        ]);
+        $customer = Customer::whereIn('id', $request->checks)->get();
+        $coupon = Coupon::whereIn('id', $request->coupon)->get();
+        $data = [];
+        foreach ($customer as $value) {
+            $data['email'][] = $value->email;
+        }
+        try {
+            Mail::send('admin_pages.customer.couponmail', ['coupon' => $coupon], function ($email) use ($data) {
+                $email->subject('Drinks - Web');
+                $email->to($data['email'], 'Gửi khuyễn mãi khách hàng.');
+            });
+            return redirect()->back()->with('successSendMail', 'Đã gửi mail thành công.');
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('errorSendMail', 'Gửi mail thất bại.');
+        }
     }
 }

@@ -218,7 +218,7 @@
                                                     title="blog">{{$value->tieude}}</a></h5>
                                             <div class="blog-post-meta">
                                                 <span class="updated">{{toTime($value->created_at)}}</span> | <a
-                                                    href="#" rel="tag">{{ $value->Danhmuc->tendanhmuc}}</a>
+                                                    href="#" rel="tag">{{ $value->danhmuc->tendanhmuc}}</a>
                                             </div>
                                         </div>
                                     </li>

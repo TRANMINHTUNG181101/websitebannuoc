@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestSubmitOrder;
 use App\Models\Cart;
+use App\Models\Categories;
 use App\Models\Products;
 use App\Models\Customer;
 use App\Models\District;
@@ -199,7 +200,7 @@ class OrderController extends Controller
         $pro = Province::all();
         $pro = FeeShip::whereNotNull('province_id')->get();
         $product = Products::where('trangthai', 1)->orderBy('id_loaisanpham')->get();
-        $category = Category::where('trangthai', 1)->get();
+        $category = Categories::where('trangthai', 1)->get();
         foreach ($product as $value) {
             $product->size = $value->size;
             $product->danhmuc = $value->danhmuc;

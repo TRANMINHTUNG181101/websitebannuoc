@@ -52,17 +52,25 @@
                             <span class="align-middle">Dashboard</span>
                         </a>
                     </li>
+                    <li class="sidebar-header">
+                        Sản phẩm
+                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('showMaterial') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Nguyen Lieu</span>
+                            <span class="align-middle">Nguyên liệu</span>
                         </a>
                     </li>
-
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('category.show') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Loại sản phẩm</span>
+                        </a>
+                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('products.show') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">San Pham</span>
+                            <span class="align-middle">Sản phẩm</span>
                         </a>
                     </li>
 
@@ -79,10 +87,19 @@
                             <span class="align-middle">Vận Chuyển</span>
                         </a>
                     </li>
+                    <li class="sidebar-header">
+                        Tài khoản
+                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('show.customer') }}">
                             <i class="fa fa-truck" aria-hidden="true"></i>
                             <span class="align-middle">Khách hàng</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('roles.show') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Phân quyền</span>
                         </a>
                     </li>
                     <li class="sidebar-header">
@@ -195,17 +212,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('roles.show') }}">
+                        <a class="sidebar-link" href="{{ route('get.all.comments') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Phân quyền</span>
+                            <span class="align-middle">Bình luận</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('category.show') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Category</span>
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </nav>
@@ -216,13 +228,15 @@
             </div>
         </div>
     </div>
+
+
+    @yield('script')
     <script src="{!! asset('admin_asset/js/app.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/popper.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/fontawesome-free-6.1.1-web/js/fontawesome.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/bootstrap-5.1.3-dist/js/bootstrap.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jquery-3.6.0.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
-    <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
 
     <!-- <script src="{{ asset('ckeditor/ckeditor.js')}}"></script> -->
     <script src="{{ asset('ckfinder/ckfinder.js')}}"></script>
@@ -240,7 +254,39 @@
     <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/sweetalert2.all.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
+
+
+
+    <div class="modal_t">
+        <div class="modal_overlay"></div>
+        <div class="modal_body">
+            <div class="modal_close">
+                <i class="fa fa-times"></i>
+            </div>
+            <header class="modal_header">
+                Chọn danh mục
+            </header>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><input type="checkbox" /></th>
+                        <th>STT</th>
+                        <th>Tên</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <footer class="modal_footer">
+                <a href="" id="listPromotion" class="btn primary">Lưu</a>
+            </footer>
+        </div>
+    </div>
     <script>
+    const close = document.querySelector('.modal_close');
+    const modal = document.querySelector('.modal_t');
+    const modalBody = document.querySelector('.modal_t .modal_body');
     close.addEventListener("click", () => {
         modal.classList.remove('showModal_t')
     })

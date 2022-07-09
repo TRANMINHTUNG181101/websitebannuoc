@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestCoupon;
+use App\Models\Categories;
 use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Order;
@@ -29,7 +30,7 @@ class CouponController extends Controller
 
     function add()
     {
-        $category = Category::where('trangthai', 1)->get();
+        $category = Categories::where('trangthai', 1)->get();
         $product = Products::where('trangthai', 1)->get();
         $viewData = [
             'category' => $category,
@@ -55,6 +56,7 @@ class CouponController extends Controller
             $data['hinhanh'] = $newImage;
         }
         $data['trangthai'] = 1;
+        $data['hienthi'] = $request->loaigiam === 1 ? 1 : 0;
 
 
         $coupon = Coupon::create($data);
@@ -88,7 +90,7 @@ class CouponController extends Controller
     {
         $coupon = Coupon::find($id);
         $produs_coupon = Product_Coupon::where('id_coupon', $coupon->id)->get();
-        $cate = Category::where('trangthai', 1)->get();
+        $cate = Categories::where('trangthai', 1)->get();
         $array = array();
         foreach ($cate as $value) {
             $products = array();
@@ -108,7 +110,7 @@ class CouponController extends Controller
     public function edit($id)
     {
         $coupon = Coupon::find($id);
-        $cate = Category::where('trangthai', 1)->get();
+        $cate = Categories::where('trangthai', 1)->get();
         $produs_coupon = Product_Coupon::where('id_coupon', $coupon->id)->get();
         $array = array();
         foreach ($cate as $value) {
@@ -148,7 +150,8 @@ class CouponController extends Controller
             $img->move('uploads/coupon', $newImage);
             $coupon->hinhanh = $newImage;
         }
-        $coupon->trangthai = 1;
+        $data['trangthai'] = 1;
+        $data['hienthi'] = $request->loaigiam === 1 ? 1 : 0;
 
 
         $coupon->save();
@@ -166,7 +169,7 @@ class CouponController extends Controller
 
     public function getCategoryPromo()
     {
-        $category = Category::where('trangthai', 1)->get();
+        $category = Categories::where('trangthai', 1)->get();
         $url = asset('uploads/type/');
         $result = '<thead><tr><th scope="col"><input type="checkbox" /></th><th>STT</th><th>Tên</th></tr></thead><tbody>';
         foreach ($category as $key => $value) {
@@ -192,12 +195,27 @@ class CouponController extends Controller
 
     public function getListData()
     {
-        $category = Category::where('trangthai', 1)->get();
+        $category = Categories::where('trangthai', 1)->get();
         $product = Products::where('trangthai', 1)->orderBy('id_loaisanpham')->get();
         foreach ($product as $index =>   $value) {
             $product[$index]->id_loaisanpham = ['tenloai' => $value->danhmuc->tenloai, 'id_loai' => $value->id_loaisanpham];
         }
-
         return Response()->json(['category' => $category, 'products' => $product]);
+    }
+    public function activeCoupon($id)
+    {
+        $slide = Coupon::find($id);
+        $slide->trangthai = +!$slide->trangthai;
+
+        $slide->save();
+        return redirect()->back()->with('messageupdate', 'Đã cập nhật.');
+    }
+    public function showCoupon($id)
+    {
+        $slide = Coupon::find($id);
+        $slide->hienthi = +!$slide->hienthi;
+
+        $slide->save();
+        return redirect()->back()->with('messageupdate', 'Đã cập nhật.');
     }
 }

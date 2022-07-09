@@ -15,8 +15,8 @@ window.addEventListener('load', (e) => {
 })
 </script>
 @endif
-<div class="container-fluid coupon form_ql">
-    <form method="post" class="form-submit" action="{{ route('sendmail.all.contact')}}" enctype="multipart/form-data">
+<div class="container-fluid coupon form_ql form-submit">
+    <form method="post" class="form-submit" action="{{ route('sendmail.coupon')}}" enctype="multipart/form-data">
         @csrf
         <div class="card_1">
             <h3 class="card-title">Danh sách khách hàng</h3>
@@ -49,7 +49,7 @@ window.addEventListener('load', (e) => {
                         <td>{{$value->sodienthoai}}</td>
                         <td>
 
-                            @if($value->trangthai === 1 )
+                            @if(+$value->trangthai === 1 )
                             <a href="{{ route('update.status.customer', $value->id)}}">
                                 <div class=" badge badge-success">Hoạt động
                                 </div>
@@ -78,10 +78,49 @@ window.addEventListener('load', (e) => {
                     @endif
                 </tbody>
             </table>
+            @if($errors->first('checks'))
+            <span class="error text-danger">{{ $errors->first('checks') }}</span>
+            @endif
 
         </div>
+        <div class="col-md-12 mt-4 ">
+            <div class="card">
+                <div class=" card-header">
+                    <h5 class="card-title mb-0"><i class="fa fa-info"></i> Gửi email khuyến mãi cho khách thành viên
+                    </h5>
+                </div>
+                <div class="card-body row">
+                    <div class="col-12">
+                        @if(isset($coupon) && count($coupon) > 0)
+                        @foreach($coupon as $value)
+                        <div class="mt-2">
+                            <input id="{{$value->id}}" type="checkbox" name="coupon[]" value="{{$value->id}}" />
+                            <label for="{{$value->id}}"
+                                style="cursor: pointer; user-select: none;">{{$value->ten}}</label>
+                        </div>
+                        @endforeach
+                        @endif
+                        @if($errors->first('coupon'))
+                        <span class="error text-danger">{{ $errors->first('coupon') }}</span>
+                        @endif
+                    </div>
+                    <div class="col-12 mt-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    Gửi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
+
 </div>
+
 
 <script>
 window.onload = () => {

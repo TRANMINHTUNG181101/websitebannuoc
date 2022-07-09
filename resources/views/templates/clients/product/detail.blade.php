@@ -244,7 +244,7 @@
 
                                     <div class="review-wrapper">
                                         <div class="review-wrapper-header">
-                                            <h4>Bình luận</h4>
+                                            <h4>Đánh giá</h4>
                                         </div>
 
                                         @if(get_user('customer','id'))
@@ -266,7 +266,7 @@
 
                                             <div class="row">
 
-                                                <span>Đăng nhập để bình luận</span>
+                                                <span>Đăng nhập để đánh giá</span>
                                             </div>
                                         </div>
                                         @endif

@@ -3,6 +3,12 @@ body {
     overflow-y: unset;
     overflow: unset !important;
 }
+.main {
+    background-color: #fcfcfc;
+}
+.main .content{
+    padding: 20px;
+}
 .sidebar-link, a.sidebar-link  {
     color : #fff;
     font-size: 16px;

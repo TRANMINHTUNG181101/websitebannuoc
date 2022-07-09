@@ -138,7 +138,7 @@
                                 @if(count($val->Coupon) > 0)
                                 <span class="woo_offer_sell">
                                     -
-                                    {{currency_format($val->Coupon[0]->giamgia, ($val->Coupon[0]->loaigiam === 2) ? 'đ' : '%')}}</span>
+                                    {{currency_format($val->Coupon[0]->giamgia, (+$val->Coupon[0]->loaigiam === 2) ? 'đ' : '%')}}</span>
                                 @endif
                                 <div class="woo_product_thumb">
                                     <img src="{{ asset('uploads/product/'.$val->hinhanh)}}" class="img-fluid" alt="" />
@@ -153,7 +153,7 @@
                                             @if(count($val->Coupon) > 0)
                                             <?php
                                             $price = 0;
-                                            if ($val->Coupon[0]->loaigiam === 2) {
+                                            if (+$val->Coupon[0]->loaigiam === 2) {
                                                 $price = $val->giaban - $val->Coupon[0]->giamgia;
                                             } else {
                                                 $price = $val->giaban - ($val->giaban * $val->Coupon[0]->giamgia / 100);

@@ -10,6 +10,6 @@ class MenuPosts extends Model
     use HasFactory;
     protected $table = "menu_posts";
     protected $fillable = [
-        'trangthai', 'tendanhmuc', 'mota', 'trangthai', 'slug'
+        'trangthai', 'tendanhmuc', 'mota', 'trangthai', 'slug', 'id'
     ];
 }

@@ -30,13 +30,17 @@ function preview_image_add(input) {
     }
 }
 
+
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+});
 $().ready(function () {
     $("#notify-del-mal").delay(2000);
     $("#notify-del-mal").hide(1200);
-
     DrawOrders();
     // showMaterials();
-
     //#region thong ke 5 san pham doc ban nhieu
     function DrawOrders() {
         $.ajax({
@@ -44,14 +48,15 @@ $().ready(function () {
             url: "/admin/draworders",
             dataType: "json",
             success: function (response) {
+                console.log(response)
                 var xValues = response.top_sale_name;
                 var yValues = response.top_sale_num;
                 var barColors = [
-                    "#b91d47",
-                    "#00aba9",
-                    "#2b5797",
-                    "#e8c3b9",
-                    "#1e7145",
+                    "#ff6384",
+                    "#ff9f40",
+                    "#ffcd56",
+                    "#4bc0c0",
+                    "#36a2eb",
                 ];
 
                 new Chart("top-product-sale", {
@@ -70,9 +75,10 @@ $().ready(function () {
                             display: true,
                             fontSize: 16,
                             fontColor: "black",
-                            text: "TOP 5 SAN PHAM DUOC BAN NHIEU NHAT",
+                            text: "TOP 5 SẢN PHẨM BÁN NHIỀU NHẤT",
                         },
                     },
+                    
                 });
             },
             error: function (xhr, ajaxOptions, thrownError) {},
@@ -607,6 +613,7 @@ $(document).ready(function () {
     $("#alert-successl").hide(1200);
 });
 
+
 // $("#addModalMMU").click(function (e) {
 //     e.preventDefault();
 //     $("#addmmu").modal("show");
@@ -621,11 +628,12 @@ $(document).ready(function () {
 
 
 
-let checkboxes = document.getElementById('sizeChoose');
-            let values = [];
-            checkboxes.forEach((checkbox) => {
-                // values.push(checkbox.value);
-            });
+// let checkboxes = document.getElementById('sizeChoose');
+//             let values = [];
+//             checkboxes.forEach((checkbox) => {
+//          values.push(checkbox.value);
+// });
+
 
 
 

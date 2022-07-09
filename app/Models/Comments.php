@@ -22,4 +22,12 @@ class Comments extends Model
     {
         return $this->hasMany(Comments::class, 'parent_id', 'id');
     }
+    public function sanpham()
+    {
+        return $this->belongsTo(Products::class, 'id_sanpham');
+    }
+    public function baiviet()
+    {
+        return $this->belongsTo(Posts::class, 'id_baiviet');
+    }
 }

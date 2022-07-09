@@ -10,7 +10,7 @@ class Coupon extends Model
     use HasFactory;
     protected $table = "coupon";
     protected $fillable = [
-        'id', 'trangthai', 'mota', 'code', 'hinhanh', 'ten', 'ngaybd', 'ngaykt', 'giamgia', 'dieukien', 'loaigiam'
+        'id', 'trangthai', 'mota', 'code', 'hinhanh', 'ten', 'ngaybd', 'ngaykt', 'giamgia', 'dieukien', 'loaigiam', 'hienthi'
     ];
 
     public function Product()

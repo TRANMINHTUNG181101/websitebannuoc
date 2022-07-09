@@ -8,20 +8,25 @@
             <div class="row" style="gap:20px;">
                 <div class="col show-visitor text-view-visitor" style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%
                                                                                 ">
-                    <h5 class="title-visitor">Truy cập hôm nay</h5>
+                    <h3>Truy cập hôm nay</h3>
                     <span id="visitor_views" style="font-size: 24px"></span>
                 </div>
                 <div class="col sale-by-date text-view-visitor" id="statis-view"
                     style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold">
-                    <h5> DOANH THU HOM NAY</h5><br><span id="numberMoney"></span> Đ
+                    <h3>Doanh thu hôm nay</h3><br><span style="font-size: 24px" id="numberMoney"></span> đ
                     {{-- <div id="show-more-statis">
                             <button>XEM THÊM</button>
                         </div> --}}
                 </div>
-
-                <div class="col">
+                <div class="col"
+                    style="background-color: #C4DFAA;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
+                    <h3>Sản phẩm</h3>
+                    <span style="font-size: 24px">{{$countProduct}}</span>
                 </div>
-                <div class="col">
+                <div class="col"
+                    style="background-color: #C4DFAA;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
+                    <h3>Đơn hàng hôm nay</h3>
+                    <span style="font-size: 24px">{{$countOrder}}</span>
                 </div>
             </div>
             <br>
@@ -35,7 +40,20 @@
                 <h3 id="showdoanhso"></h3>
             </div>
             <div class="export-file">
-                <button id="exportFile">xuất file exel</button>
+                <button id="exportFile" class="btn btn-primary">xuất file exel</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <figure class="highcharts-figure">
+                    <div id="container-topproduct" data-topproduct="{{$topproduct}}"></div>
+                </figure>
+            </div>
+            <div class="col-12">
+                <figure class="highcharts-figure">
+                    <div id="container-staticbyyear" data-staticbyyear="{{$statisByYear}}"
+                        data-staticbyday="{{$statisByDay}}"></div>
+                </figure>
             </div>
         </div>
     </main>
@@ -90,3 +108,128 @@
         </div>
     </div>
 </div>
+
+@section('script')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+<script type="text/javascript">
+let value = document.querySelector('#container-topproduct').getAttribute('data-topproduct');
+value = JSON.parse(value);
+Highcharts.chart('container-topproduct', {
+    chart: {
+        type: 'pie',
+    },
+    title: {
+        text: 'TOP 5 SẢN PHẨM ĐƯỢC MUA NHỀU NHẤT',
+        style: {
+            fontSize: '20px'
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>',
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    fontSize: '14px',
+                }
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Số lượng',
+        colorByPoint: true,
+        data: value
+    }]
+});
+
+const formatCurrency = (x) => {
+    x = x.toLocaleString('it-IT', {
+        style: 'currency',
+        currency: 'VND'
+    });
+    return x;
+}
+// thong ke theo nam 
+var nowYear = new Date();
+var getNowYear = nowYear.getFullYear();
+let statisByYear = document.querySelector('#container-staticbyyear').getAttribute('data-staticbyyear');
+statisByYear = JSON.parse(statisByYear);
+let statisByDay = document.querySelector('#container-staticbyyear').getAttribute('data-staticbyday');
+statisByDay = JSON.parse(statisByDay);
+Highcharts.chart('container-staticbyyear', {
+    chart: {
+        type: 'column'
+    },
+    lang: {
+        drillUpText: '◁ {series.name}\' e Geri Dön',
+        decimalPoint: ',', // <== Most locales that use `.` for thousands use `,` for decimal, but adjust if that's not true in your locale
+        thousandsSep: '.' // <== Uses `.` for thousands
+    },
+    title: {
+        align: 'center',
+        text: `DOANH THU NĂM ${getNowYear}`
+    },
+    accessibility: {
+        announceNewData: {
+            enabled: true
+        }
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+
+    },
+    legend: {
+        enabled: false,
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                format: `{point.y}`
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>',
+        valueSuffix: "đ",
+    },
+
+    series: [{
+        name: `Doanh thu năm ${getNowYear}`,
+        colorByPoint: true,
+        data: statisByYear,
+    }],
+    drilldown: {
+        breadcrumbs: {
+            position: {
+                align: 'right'
+            }
+        },
+        series: statisByDay
+    }
+});
+</script>
+@stop

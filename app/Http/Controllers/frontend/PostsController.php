@@ -16,7 +16,7 @@ class PostsController extends Controller
     {
 
         //danh sách bài viết
-        $posts = Posts::where('trangthai', 1)->get();
+        $posts = Posts::where(['trangthai' => 1, 'loaibaiviet' => 'tin-tuc'])->get();
 
         //danh mục bài viết
         $cate = MenuPosts::where('trangthai', 1)->get();
@@ -30,7 +30,7 @@ class PostsController extends Controller
     public function getPosts($slug, Request $request)
     {
         $detail = Posts::where('slug', $slug)->firstOrFail();
-        $lated = Posts::where('trangthai', 1)
+        $lated = Posts::where(['trangthai' =>  1, 'loaibaiviet' => 'tin-tuc'])
             ->orderBy('created_at')
             ->limit(5)
             ->get();

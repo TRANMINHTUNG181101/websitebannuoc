@@ -7,6 +7,7 @@ use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Facade\FlareClient\Http\Response;
+use PHPUnit\Framework\Constraint\Count;
 
 class CouponController extends Controller
 {
@@ -14,6 +15,7 @@ class CouponController extends Controller
     {
         $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
         $coupon = Coupon::where('trangthai', 1)
+            ->where('hienthi', 1)
             ->where('ngaykt', '>', $today)
             ->where('dieukien', '!=', 1)
             ->get();
@@ -52,6 +54,7 @@ class CouponController extends Controller
     {
         $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
         $promotion = Coupon::where('trangthai', 1)
+            ->where('hienthi', 1)
             ->where('ngaykt', '>', $today)
             ->get();
         $viewData = [

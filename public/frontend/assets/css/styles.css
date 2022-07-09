@@ -5084,6 +5084,10 @@ ul.deals_time_counter li {
     object-fit: cover;
     flex-shrink: 0;
 }
+
+.list-search .woo_product_thumb img {
+    height: unset;
+}
 .woo_product_list_cart {
     margin-top: 1rem;
     display: flex;

@@ -41,11 +41,11 @@
             <th>
                 @if(count($value['productInfo']->Coupon) > 0)
                 <span class="price-old">
-                    {{ currency_format($value['productInfo']->giagoc)}}
+                    {{ currency_format($value['productInfo']->giagoc + $value['size']->price)}}
                 </span>
                 @endif
                 <span>
-                    {{ currency_format($value['productInfo']->giaban)}}
+                    {{ currency_format($value['productInfo']->giaban + $value['size']->price)}}
                 </span>
             </th>
             <th>

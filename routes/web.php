@@ -133,6 +133,7 @@ Route::get('/add_customers', 'CustomerController@add')->name('get.add.customer')
 Route::post('/save_customers', 'CustomerController@saveCustomer')->name('get.save.customer');
 Route::get('/edit_customers/{id}', 'CustomerController@getEditCustomer')->name('get.edit.customer');
 Route::post('/save_edit_customers{id}', 'CustomerController@saveEditCustomer')->name('save.edit.customer');
+Route::post('/sendmailcoupon', 'CustomerController@sendmailCustomer')->name('sendmail.coupon');
 
 
 //xử lí đơn hàng
@@ -162,6 +163,8 @@ Route::get('deletecoupon/{id}', 'CouponController@delete')->name('delete.coupon'
 Route::get('detailCoupon/{id}', 'CouponController@detailCoupon')->name('get.detail.coupon');
 Route::get('edit/{id}', 'CouponController@edit')->name('get.edit');
 Route::post('editpost/{id}', 'CouponController@editpost')->name('edit.coupon');
+Route::get('show-coupon/{id}', 'CouponController@showCoupon')->name('show.coupon');
+Route::get('active-coupon/{id}', 'CouponController@activeCoupon')->name('active.coupon');
 
 Route::get('getCategoryPromo', 'CouponController@getCategoryPromo');
 Route::get('getProductPromo', 'CouponController@getProductPromo');
@@ -205,6 +208,11 @@ Route::post('save-post', 'PostController@savePost')->name('save.post');
 
 Route::get('edit-post/{id}', 'PostController@editPost')->name('edit.post');
 Route::post('save-edit-post/{id}', 'PostController@saveeditPost')->name('save.edit.post');
+
+Route::get('comments', 'AdminController@getComment')->name('get.all.comments');
+Route::get('delete-comments/{id}', 'AdminController@deleteComment')->name('delete.comments');
+
+
 
 
 
@@ -382,6 +390,8 @@ Route::group(['namespace' => 'frontend'], function () {
 
     Route::get('getcoupon', 'CouponController@getCoupon')->name('get.coupon');
     Route::post('checkcoupon/', 'CouponController@checkCoupon')->name('check.coupon');
+
+
 
 
     // tat ca khuyen mai

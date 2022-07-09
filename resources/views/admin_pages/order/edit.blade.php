@@ -285,10 +285,11 @@
                                         @elseif ($payment->Donhang->httt === 2)
                                         <?= date("d-m-Y H:i:s ", substr($payment->ngaythanhtoan, 0, 10)) ?>
                                         @else
-                                        {{$payment->ngaythanhtoan}}
+                                        <!-- {{$payment->ngaythanhtoan}} -->
+                                        <?= date("d-m-Y H:i:s", strtotime($payment->ngaythanhtoan)) ?>
                                         @endif
                                     </td>
-                                    <td>@if($value->httt === 1)
+                                    <td>@if(+$order->httt === 1)
                                         {{currency_format($payment->tongtien * 23187)}}
                                         @else
                                         {{currency_format($payment->tongtien)}}
