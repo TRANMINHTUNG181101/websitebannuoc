@@ -25,10 +25,10 @@ class checkRole
         3 =>thu_ngan
         */
 
-        if (Auth::user() &&  Auth::user()->type_account==1) {
+        if (Auth::check() &&  Auth::user()->type_account==1) {
             return $next($request);
         }
         
-        abort(403, 'Bạn không có quyền thêm cập');
+        abort(403, 'Bạn không có quyền truy cập');
     }
 }

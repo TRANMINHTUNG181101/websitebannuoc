@@ -39,7 +39,11 @@ window.addEventListener('load', (e) => {
                     <td><span class='nowrap'>{{$value->ten}}</span></td>
                     <td>{{$value->code}}</td>
                     <td>{{currency_format($value->giamgia, ($value->loaigiam === 2) ? 'đ' : '%')}}</td>
-                    <td>{{format_date($value->ngaykt)}}</td>
+                    <td>
+                        <?php
+                        echo date('d/m/Y', strtotime($value->ngaykt))
+                        ?>
+                    </td>
                     <td>
                         @if(+$value->hienthi === 1 )
                         <a href="{{route('show.coupon', $value->id)}}">

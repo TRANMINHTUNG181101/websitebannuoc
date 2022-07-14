@@ -1,7 +1,7 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-add">
-        <h3>SUA NGUYEN CATEGORY</h3>
+        <h3>SỬA CATEGORY</h3>
     </div>
     {{-- @if (Session::has('errors_add'))
         <div class="alert alert-danger" style="font-size:24px"> {{ Session::get('errors_add') }}</div>
@@ -12,13 +12,13 @@
             <input type="text" name="id_cat" value="{{$editCat->id}}" hidden>
             <div class="form-add-material-l">
                 <div class="form-group">
-                    <label for="">Ten loai</label>
+                    <label for="">Tên loại</label>
                     <input type="text" name="categoryname_edit" value="{{$editCat->tenloai}}">
                 </div>
             </div>
             <div class="form-add-material-l">
                 <div class="form-group">
-                    <label for="">Mo ta</label>
+                    <label for="">Mô tả</label>
                     <input type="text" name="des_edit" value="{{$editCat->mota}}">
                 </div>
             </div>

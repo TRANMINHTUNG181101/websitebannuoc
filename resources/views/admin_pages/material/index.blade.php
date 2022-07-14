@@ -4,19 +4,17 @@
         @if (session('success_add_mal'))
             <div class="show-alert-succes">
                 <script type="text/javascript">
-                    Swal.fire({
-                        title: 'Thêm thành công!',
-                        icon: 'success',
-                        timer: 2000
+                    $(document).ready(function() {
+                        Swal.fire({
+                            title: 'Thêm thành công!',
+                            icon: 'success',
+                            timer: 2000
+                        });
                     });
                 </script>
             </div>
         @endif
-        @if (Session::has('success_del_mal'))
-            <div class="alert alert-success" style="font-size:24px">
-                <div id="alert-success">{{ Session::get('success_del_mal') }}</div>
-            </div>
-        @endif
+
         {{-- @if (session('success_del_mal'))
             <div class="show-alert-del-succes">
                 <script type="text/javascript">
@@ -29,34 +27,28 @@
                 </script>
             </div>
         @endif --}}
-
+        {{ Session::forget('success_add_mal') }}
 
         <?php
-        session_start();
-        unset($_SESSION['success_add_mal']);
-        unset($_SESSION['success_del_mal']);
-        session_destroy();
+        // session_start();
+        // unset($_SESSION['success_add_mal']);
+        // unset($_SESSION['success_del_mal']);
+        // session_destroy();
         ?>
-
-
-
-
 
     </div>
 
     <div class="title-show">
-        <h3>Nguyên liệu</h3>
+        <h3>NGUYÊN LIỆU</h3>
     </div>
     <div class="add-material">
-        <a href="{{ route('material.addview') }}" class="btn btn-primary">Them
-            Nguyen
-            Lieu</a>
+        <a href="{{ route('material.addview') }}" class="btn btn-primary">THÊM NGUYÊN LIỆU</a>
         <div class="form-search-mal">
-            <form action="{{ route('material.search') }}" method="post">
+            {{-- <form action="{{ route('material.search') }}" method="post">
                 @csrf
                 <input type="text" placeholder="Search.." name="search" id="search">
                 <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
+            </form> --}}
         </div>
     </div>
     <div class="content-show">
@@ -64,15 +56,15 @@
             <thead>
                 <tr>
                     <th>STT</th>
-                    <th>TEN NGUYEN LIEU</th>
-                    <th>GIA NHAP</th>
-                    <th>Hinh anh</th>
-                    <th>SO LUONG</th>
-                    <th>DON VI</th>
-                    <th>NGAY NHAP</th>
-                    <th>HAN SU DUNG</th>
-                    <th>TRANG THAI</th>
-                    <th>THAO TAC</th>
+                    <th>TÊN NGUYÊN LIỆU</th>
+                    <th>GIÁ NHẬP</th>
+                    <th>HÌNH ẢNH</th>
+                    <th>SỐ LƯỢNG</th>
+                    <th>ĐƠN VỊ</th>
+                    <th>NGÀY NHẬP</th>
+                    <th>HẠN SỬ DỤNG</th>
+                    <th>TRẠNG THÁI</th>
+                    <th>THAO TÁC</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,7 +74,7 @@
                         <td><?php echo $i;
                         $i++; ?></td>
                         <td>{{ $item->ten_nglieu }}</td>
-                        <td>{{ $item->gia_nhap }}</td>
+                        <td>{{ currency_format($item->gia_nhap) }}</td>
                         <td> <img style="widtd:100px;height:150px"
                                 src="{{ asset('uploads/materials/' . $item->hinh_anh) }}"></td>
 
@@ -92,20 +84,24 @@
                         <td>{{ $item->ngay_het_han }}</td>
                         <td>{{ $item->trang_thai }}</td>
                         <td>
-                            <a href="{{ route('material.delete', $item->id) }}">xoa</a>
-                            <a href="{{ route('material.editview', $item->slug) }}">sua</a>
+                            <a href="{{ route('material.delete', $item->id) }}"><i class="fa fa-trash"
+                                style="width: 16px;height: 16px;color:red"></i></a>
+                            <a href="{{ route('material.editview', $item->slug) }}"><i class="fa fa-edit"
+                                style="width: 16px;height: 16px;color:green"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
+
         </table>
+        <span>{{ $nglieu->links() }}</span>
+        <style>
+            .w-5 {
+                display: none;
+            }
+        </style>
     </div>
-    <span>{{ $nglieu->links() }}</span>
-    <style>
-        .w-5 {
-            display: none;
-        }
-    </style>
+
 
     <!-- Modal Add new materials-->
     <div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel" aria-hidden="true">

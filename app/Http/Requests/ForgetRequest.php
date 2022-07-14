@@ -24,10 +24,11 @@ class ForgetRequest extends FormRequest
     public function rules()
     {
         return [
-            'emailforget' => 'required|exists:customer',
+            'emailforget' => 'required|exists:customers,email',
         ];
     }
-    public function messages(){
+    public function messages()
+    {
         return [
             'emailforget.required' => "Email Không Được Để Trống",
             'emailforget.exists' => "Email Không tồn tại",

@@ -35,10 +35,16 @@ class buyMaterialExport implements FromCollection, WithTitle, WithHeadings, With
     {
         if ($this->codeQuery == 1) {
             $getData = ManagerMaterialUse::where('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
+            foreach ($getData as $key => $value) {
+                $getData[$key]->id_nguyen_lieu = $value->Name->ten_nglieu;
+            }
             return $getData;
         }
         $nowYear = Carbon::now()->year;
         $getData = ManagerMaterialUse::whereYear('ngay_tong_ket', $nowYear)->whereMonth('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
+        foreach ($getData as $key => $value) {
+            $getData[$key]->id_nguyen_lieu = $value->Name->ten_nglieu;
+        }
         return $getData;
     }
 

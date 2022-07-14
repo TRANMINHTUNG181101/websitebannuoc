@@ -38,7 +38,7 @@
                         <tbody>
                             @foreach($district->Ward as $val)
                             <tr>
-                                <td scope=" col"><input type="checkbox" /></>
+                                <td scope=" col"><input hidden type="checkbox" /></>
                                 <td><span class='nowrap'>{{$val->ward_name}}</span></td>
                                 <td>
                                     @if($val->FeeShip)
@@ -92,10 +92,11 @@ changeFeeship.forEach(item => {
         const pro_id = e.target.dataset.id_pro;
         const ward_id = e.target.dataset.id_ward;
         const value = e.target.value;
+        const url = "{{ asset('/')}}";
         if (value) {
             (async () => {
                 const response = await fetch(
-                    'http://localhost/website_ban_nuoc/public/changefeeship', {
+                    `${url}changefeeship`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector(

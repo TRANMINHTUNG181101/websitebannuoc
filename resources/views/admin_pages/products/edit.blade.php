@@ -3,6 +3,7 @@
     <div class="title-edit-show">
         <h3>Sửa sản phẩm</h3>
     </div>
+ {{Breadcrumbs::render('Sửa sản phẩm', $spham->slug)}}
     <div class="content-edit-show">
         <form action="{{ route('products.edithandle', $spham->id) }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -10,19 +11,19 @@
                 <div class="form-edit-left">
                     <input type="text" name="id_spham" id="id_spham" value="{{ $spham->id }}" hidden>
                     <div class="form-group">
-                        <label for="">ten san pham</label>
+                        <label for="">Tên sản phẩm</label>
                         <input type="text" name="ten_spham" id="ten_spham" value="{{ $spham->tensp }}">
                     </div>
                     <div class="form-group">
-                        <label for="">gia ban</label>
+                        <label for="">Giá bán</label>
                         <input type="text" name="giaban" id="giaban" value="{{ $spham->giaban }}">
                     </div>
                     <div class="form-group">
-                        <label for="">mo ta</label>
+                        <label for="">Mô tả</label>
                         <input type="text" name="mota" id="mota" value="{{ $spham->mota }}">
                     </div>
                     <div class="form-group">
-                        <label for="">loai san pham</label>
+                        <label for="">Loại sản phẩm</label>
                         <select name="select_cat">
                             @foreach ($catetype as $dvnl)
                                 @if ($dvnl->id == $spham->id_loaisanpham)
@@ -54,7 +55,7 @@
                         </div>
 
                     </div>
-                    <button type="submit" class="btn btn-success" style="margin-left: 200px">Luu</button>
+                    <button type="submit" class="btn btn-success" style="margin-left: 200px">Lưu thay đổi</button>
                 </div>
 
         </form>

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RequestAddCustomer;
+use App\Models\Comments;
 use App\Models\Coupon;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +25,14 @@ class CustomerController extends Controller
     {
         $customer = Customer::find($id);
         if ($customer) {
-            $customer->delete();
+            if (count(Order::where('id_khachhang', $customer->id)->get()) > 0) {
+                $customer->trangthai = 2;
+                $customer->save();
+            } else {
+                Comments::where('id_khachhang', $customer->id)->delete();
+                Wishlist::where('id_khachhang', $customer->id)->delete();
+                $customer->delete();
+            };
         }
         return redirect()->back();
     }

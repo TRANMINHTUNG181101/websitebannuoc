@@ -1,7 +1,7 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-add">
-        <h3>THEM THỂ LOẠI SẢN PHẨM</h3>
+        <h3>THÊM THỂ LOẠI SẢN PHẨM</h3>
     </div>
     {{-- @if (Session::has('errors_add'))
         <div class="alert alert-danger" style="font-size:24px"> {{ Session::get('errors_add') }}</div>
@@ -11,7 +11,7 @@
             @csrf
             <div class="form-add-material-l">
                 <div class="form-group">
-                    <label for="">Ten loại</label>
+                    <label for="">Tên loại</label>
                     <input type="text" name="namecategory">
                 </div>
             </div>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-add-material-l">
                 <div class="form-group">
-                    <label for="">Hinh anh</label>
+                    <label for="">Hình ảnh</label>
                     <input type="file" name="categoriesIMG" id="categoriesIMG" class="form-control"
                         onchange="preview_image_add()">
                     @if ($errors->first('categoriesIMG'))
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success">Luu</button>
+            <button type="submit" class="btn btn-success">Lưu thông tin</button>
         </form>
     </div>
 @endsection

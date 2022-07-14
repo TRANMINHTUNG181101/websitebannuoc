@@ -12,15 +12,15 @@ class sendMail extends Mailable
     use Queueable, SerializesModels;
 
 
-    private $user;
+    private $newPassword;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($passwd)
     {
-        //
+        $this->newPassword = $passwd;
         
     }
 
@@ -31,6 +31,7 @@ class sendMail extends Mailable
      */
     public function build()
     {
-        return $this ->view('sendmail.changepassword')->subject("CAP NHAT MAT KHAU");
+        $newpass=$this->newPassword;
+        return $this ->view('sendmail.changepassword',compact('newpass'))->subject("CAP NHAT MAT KHAU");
     }
 }

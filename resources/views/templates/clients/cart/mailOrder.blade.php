@@ -45,7 +45,7 @@
                             toán</div>
                         @else
                         <div
-                            style="padding: 4px 8px;border-radius: 4px;color: #fff;display: inline-block; background-color: #8cff65;">
+                            style="padding: 4px 8px;border-radius: 4px;color: #fff;display: inline-block; background-color: #519200;">
                             Đã thanh
                             toán</div>
                         @endif

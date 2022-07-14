@@ -625,20 +625,82 @@ $(document).ready(function () {
 //     // console.log('adasd');
 // });
 
+var checkboxes = document.getElementById("sizeChoose");
+
+var getValueCheck = document.getElementById("sizeChoose");
+// if (getValueCheck == "Nhỏ") {
+
+// }
+
+//active menu when click
+$(document).ready(function () {
+    //get url current
+    var getUrlCurrent = window.location.href;
+    //split string to arr
+    var ar = getUrlCurrent.split("/");
+
+    var getLength = ar.length;
+    var strURl = ar[getLength - 1];
+   
+    var urlp = strURl.split("?");
+    var getLength = ar.length;
+    // //get parameters last
+    var strURl = ar[getLength - 1];
+    //get parameters first
+    var urlPage = urlp[0];
+
+    // //get list menu
+    var ul = document.getElementsByTagName("ul");
+    var li = ul[0].getElementsByTagName("li");
+
+    for (var i = 0; i < li.length; i++) {
+        var getStr = li[i].innerText;
+        var str = toSlug(getStr);
+        if (str == strURl||str == urlPage) {
+            $("li:eq(" + i + ")").addClass("active");
+        }
+    }
+});
+
+//convert string to slug
+function toSlug(str) {
+    // Chuyển hết sang chữ thường
+    str = str.toLowerCase();
+
+    // xóa dấu
+    str = str
+        .normalize("NFD") // chuyển chuỗi sang unicode tổ hợp
+        .replace(/[\u0300-\u036f]/g, ""); // xóa các ký tự dấu sau khi tách tổ hợp
+
+    // Thay ký tự đĐ
+    str = str.replace(/[đĐ]/g, "d");
+
+    // Xóa ký tự đặc biệt
+    str = str.replace(/([^0-9a-z-\s])/g, "");
+
+    // Xóa khoảng trắng thay bằng ký tự -
+    str = str.replace(/(\s+)/g, "-");
+
+    // Xóa ký tự - liên tiếp
+    str = str.replace(/-+/g, "-");
+
+    // xóa phần dư - ở đầu & cuối
+    str = str.replace(/^-+|-+$/g, "");
+
+    // return
+    return str;
+}
+
+const dropdownMenuButton = document.querySelector('#dropdownMenuButton')
+dropdownMenuButton.addEventListener('click', () => {
+    document.querySelector('.dropdown-menu').classList.toggle('show');
+})
+// $('.dropdown-toggle-menu').dropdown('toggle');dropdownMenuButton
 
 
 
-// let checkboxes = document.getElementById('sizeChoose');
-//             let values = [];
-//             checkboxes.forEach((checkbox) => {
-//          values.push(checkbox.value);
-// });
 
-
-
-
-
-
-
-
-
+$('.dropdown-toggle-menu').click(function (e) { 
+    e.preventDefault();
+    
+});

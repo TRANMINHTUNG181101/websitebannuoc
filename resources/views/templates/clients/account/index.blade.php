@@ -54,8 +54,8 @@
                                             <div class="label-edit">
                                                 {{ $user->email}}
                                             </div>
-                                            <input class="form-control" name="email" type="email" placeholder="Email"
-                                                value="{{$user->email}}" required="">
+                                            <input class="form-control" readonly name="email" type="email"
+                                                placeholder="Email" value="{{$user->email}}" required="">
 
                                         </div>
                                     </div>
@@ -242,14 +242,23 @@ import {
     getAnalytics
 } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
 
+// const firebaseConfig = {
+//     apiKey: "AIzaSyC7ALeRiWvTv2KjrMR5UAh7sJRlwaDEf7g",
+//     authDomain: "orderdrinks.firebaseapp.com",
+//     projectId: "orderdrinks",
+//     storageBucket: "orderdrinks.appspot.com",
+//     messagingSenderId: "872153443222",
+//     appId: "1:872153443222:web:ba0f4cb68374d6786c8bb7",
+//     measurementId: "G-9SQ327MWYM"
+// };
 const firebaseConfig = {
-    apiKey: "AIzaSyC7ALeRiWvTv2KjrMR5UAh7sJRlwaDEf7g",
-    authDomain: "orderdrinks.firebaseapp.com",
-    projectId: "orderdrinks",
-    storageBucket: "orderdrinks.appspot.com",
-    messagingSenderId: "872153443222",
-    appId: "1:872153443222:web:ba0f4cb68374d6786c8bb7",
-    measurementId: "G-9SQ327MWYM"
+    apiKey: "AIzaSyC_mKMK0o8d-FvKmPvC_LnKuyFlll7LDo8",
+    authDomain: "orderdrinkscoffee.firebaseapp.com",
+    projectId: "orderdrinkscoffee",
+    storageBucket: "orderdrinkscoffee.appspot.com",
+    messagingSenderId: "215031192883",
+    appId: "1:215031192883:web:5c207cf865f35d7d2d3246",
+    measurementId: "G-LPPVYPR11G"
 };
 
 // Initialize Firebase

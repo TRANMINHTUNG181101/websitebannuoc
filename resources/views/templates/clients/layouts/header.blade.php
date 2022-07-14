@@ -22,9 +22,11 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-8">
                         <div class="topbar_menu">
                             <ul>
-                                <li><a href="order-tracking.html"><i class="fab fa-youtube"></i>Youtube</a></li>
+                                <li><a href="#"><i class="fab fa-youtube"></i>Youtube</a></li>
+                                @if(get_user('customer'))
                                 <li class="hide-m"><a href="{{ route('get.infouser', 'wishlist')}}"><i
                                             class="fas fa-heart"></i>Yêu thích</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>

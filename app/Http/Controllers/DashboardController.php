@@ -77,13 +77,11 @@ class DashboardController extends Controller
             $value['y'] = $nameOrder[$i]->so_luot_dat;
             array_push($data, $value);
         }
-        // $name_login = auth()->user()->name_staff;
+        $name_login = auth()->user()->name_staff;
 
-        // if($name_login==null){
-        //     return view('auths.login');
-        // }
-        // return $statisByYear;
-        $name_login = "a";
+        if ($name_login == null) {
+            return view('auths.login');
+        }
         $countProduct = Products::where('trangthai', 1)->count();
         $countOrder = Order::whereDate('ngaytao', Carbon::today()->toDateString())->count();
         return view('templates.admins.index', compact('name_login'), ['topproduct' => json_encode($data), 'statisByYear' => json_encode($statisByYear), 'statisByDay' => json_encode($statisByDay), 'countProduct' => $countProduct, 'countOrder' => $countOrder]);
@@ -364,7 +362,7 @@ class DashboardController extends Controller
     public function infologin()
     {
         $idLogin = auth()->user()->id;
-        $getLogin = User::where('id', $idLogin)->get();
+        $getLogin = User::where('id', $idLogin)->first();
         return view('admin_pages.infologin.index', compact('getLogin'));
     }
 
@@ -378,25 +376,24 @@ class DashboardController extends Controller
         $oldpass = $req->oldpass;
         $newpass = $req->newpass;
         $idLog = auth()->user()->id;
-        $getAccountLogin = User::where('id', $idLog)->get();
-        $getPass = "";
-        foreach ($getAccountLogin as $val) {
-            $getPass = $val['password'];
-        }
+        $getAccountLogin = User::where('id', $idLog)->first();
+        $emailUser = $getAccountLogin->email;
+        $getPass = $getAccountLogin->password;
         if (Hash::check($oldpass, $getPass)) {
-            $user = User::find(8);
+            $user = User::find($idLog);
             $user->password = bcrypt($newpass);
             $user->save();
-            $mailable = new sendMail();
-            Mail::to("kukuku2108@gmail.com")->send($mailable);
+            $mailable = new sendMail($newpass);
+            Mail::to($emailUser)->send($mailable);
             $idLogin = auth()->user()->id;
             $getLogin = User::where('id', $idLogin)->get();
-            session()->put('change_pass', '1');
-            return view('admin_pages.infologin.index', compact('getLogin'));
+            session()->put('change_pass', 'Thay đổi mật khẩu thành công');
         }
 
-        $idLogin = auth()->user()->id;
-        $getLogin = User::where('id', $idLogin)->get();
-        return view('admin_pages.infologin.index', compact('getLogin'));
+        Auth::logout();
+        return redirect('admin');
+        // $idLogin = auth()->user()->id;
+        // $getLogin = User::where('id', $idLogin)->get();
+        // return view('admin_pages.infologin.index', compact('getLogin'));
     }
 }

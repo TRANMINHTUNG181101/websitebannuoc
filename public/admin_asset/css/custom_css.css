@@ -248,11 +248,29 @@ label {
     display: flex;
     justify-content: space-around;
 }
-
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th,
+td {
+    background: #fff;
+    padding: 8px 16px;
+}
 .content-show {
     text-align: center;
+    overflow: auto;
+    height: 1000px;
 }
-
+/* .content-show thead th {
+    position: sticky;
+    top: 0;
+}
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+} */
 .form-edit-mal {
     display: flex;
     justify-content: space-around;
@@ -294,4 +312,35 @@ label {
 
 .show-message-page {
     position: relative;
+}
+
+.form-update-mmu {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #fff;
+    color: black;
+}
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="password"] {
+    color: black;
+    background-color: #fff;
+    border-bottom: red solid;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border: black solid 1px;
+}
+
+.dropdown-toggle-menu{
+    margin-right: 38px;
+}
+
+
+.infologin{
+    background-color: lightblue;
+    padding: 20px;
 }

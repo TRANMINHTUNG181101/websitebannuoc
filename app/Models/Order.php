@@ -53,4 +53,9 @@ class Order extends Model
     {
         return $this->hasOne(Coupon::class, 'id', 'id_coupon');
     }
+
+    public function NameUser()
+    {
+        return $this->belongsTo(User::class, 'id_nhanvien');
+    }
 }

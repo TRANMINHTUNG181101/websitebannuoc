@@ -42,7 +42,7 @@
                                 <div class="step-inner">Chờ xác nhận</div>
                             </li>
                             <li class="step step02 {{ ($order->trangthai >= 2 ) ? 'active' : ''}}">
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                                <i class="fa fas fa-sync-alt" aria-hidden="true"></i>
                                 <div class="step-inner">Đang xử lí</div>
                             </li>
                             <li class="step step03 {{ ($order->trangthai >= 3 ) ? 'active' : ''}}">
@@ -234,7 +234,13 @@
                             {{$payment->ngaythanhtoan}}
                             @endif
                         </td>
-                        <td>{{currency_format($payment->tongtien)}}</td>
+                        <td>
+                            @if(+$order->httt === 1)
+                            {{currency_format($payment->tongtien * 23187)}}
+                            @else
+                            {{currency_format($payment->tongtien)}}
+                            @endif
+                        </td>
                         <td>
 
                             @if($payment->trangthai == 1 )

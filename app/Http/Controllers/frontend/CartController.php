@@ -256,7 +256,7 @@ class CartController extends Controller
                 $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa'; //K951B6PE1waDMi640xX08PD3vg6EkVlz
                 $orderInfo = "Thanh toán qua MoMo";
                 $amount = $donhang['tongtien'];
-                $orderId = time() . "";
+                $orderId = $donhang['madh'];  //time() . ""
                 $redirectUrl = $urlWebsite;
                 $ipnUrl = $urlWebsite;
                 $extraData = "";
@@ -290,7 +290,7 @@ class CartController extends Controller
             case 3:
                 # thanh toán vnpay
                 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                $vnp_Returnurl = "http://127.0.0.1:8000/checkoutcomplete";
+                $vnp_Returnurl = $urlWebsite;
                 $vnp_Returnurl = $urlWebsite;
                 $vnp_TmnCode = "PR66IZJ3"; //Mã website tại VNPAY 
                 $vnp_HashSecret = "SOYGBHCVQDYTYQPIKKWFAETKMEVMZXUO"; //Chuỗi bí mật
@@ -486,6 +486,7 @@ class CartController extends Controller
             $saleStatisticals->tien_don_hang = $request->vnp_Amount / 100;
             $saleStatisticals->save();
 
+            $this->sendMail($donhang->madh);
             return view('templates.clients.cart.checkoutComplete', ['madh' => $donhang->madh]);
         } else if ($request->partnerCode && $request->resultCode == 0) {
             $donhang = Session('mDonHang') ? Session('mDonHang') : null;

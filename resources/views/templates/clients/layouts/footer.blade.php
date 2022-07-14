@@ -177,7 +177,7 @@
                                 <label>Nhập Email tài khoản của bạn :</label>
                                 <input type="email" autocomplete="off" required class="form-control" name="emailforget">
                                 @if($errors->first('emailforget'))
-                                <small class="text-danger">{{ $errors->first('email') }}</small>
+                                <small class="text-danger">{{ $errors->first('emailforget') }}</small>
                                 @endif
                             </div>
                             <div class="login_flex">

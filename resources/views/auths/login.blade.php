@@ -5,13 +5,28 @@
     <meta charset="UTF-8">
     <title>Login Form</title>
     <link rel="stylesheet" href="{!! asset('admin_asset/css/css_page_login.css') !!}">
-
 </head>
 
 <body>
+
     <body class="align">
         <div class="grid">
-            <form action="{{ route('authlogin')}}" method="POST" class="form login">
+            @if (session('error_login'))
+                <h4 style="color: red">{{ Session::get('error_login') }}</h4>
+            @endif
+            @if (session('change_pass'))
+                <h4 style="color: red">{{ Session::get('change_pass') }}</h4>
+            @endif
+            @if (session('sendmailrs'))
+                <h4 style="color: red">{{ Session::get('sendmailrs') }}</h4>
+            @endif
+
+
+
+            {{ Session::forget('error_login') }}
+            {{ Session::forget('change_pass') }}
+            {{ Session::forget('sendmailrs') }}
+            <form action="{{ route('authlogin') }}" method="post" class="form login">
                 @csrf
                 <div class="form__field">
                     <label for="login__username"><svg class="icon">
@@ -35,7 +50,8 @@
 
             </form>
 
-            <p class="text--center">Quên mật khẩu? <a href="#">Lấy lại mật khẩu</a> <svg class="icon">
+            <p class="text--center">Quên mật khẩu? <a href="{{ route('viewinputmail') }}">Reset lại mật khẩu</a> <svg
+                    class="icon">
                     <use xlink:href="#icon-arrow-right"></use>
                 </svg></p>
         </div>

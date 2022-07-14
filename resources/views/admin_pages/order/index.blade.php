@@ -77,7 +77,7 @@ alertify.success("{{session()->get('message')}}", 1);
                                 <td colspan="7">
                                     <div class="row-header">
                                         <input type="checkbox" name="checkdel[]" value="{{$value->id}}">
-                                        <span style="margin-left:10px;" class="">#{{$key + 1}} -
+                                        <span style="margin-left:3px;" class="">#{{$key + 1}} -
                                             {{$value->hoten}}</span>
                                         <div class="order-col">
                                             <span class="col-w"><i class="fa fa-tasks text-primary"
@@ -85,7 +85,7 @@ alertify.success("{{session()->get('message')}}", 1);
                                                 Mã đơn hàng : <span class="text-danger">#{{$value->madh}}</span></span>
                                             <span class="col-w"><i class="fa fa-users text-danger"></i>
                                                 Đơn hàng tạo bởi : <span
-                                                    class="text-primary">{{ ($value->id_nhanvien) ? $value->id_nhanvien : 'Mua Online'}}</span></span>
+                                                    class="text-primary">{{ ($value->id_nhanvien) ? $value->NameUser->name_staff : 'Mua Online'}}</span></span>
                                             <span class="col-w"><i class="fa fa-clock-o text-success"
                                                     aria-hidden="true"></i>
                                                 Thời gian : <span
@@ -122,9 +122,6 @@ alertify.success("{{session()->get('message')}}", 1);
                                             </div>
                                         </div>
                                         <div class="col-w">
-
-
-
                                             <div class="dropdown-cus action dropdownMenuButtonCus">
                                                 <button class="btn btn-primary dropdown-toggle" type="button">Cập
                                                     nhật</button>

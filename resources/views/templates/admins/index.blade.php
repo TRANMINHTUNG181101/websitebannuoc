@@ -1,5 +1,6 @@
 @extends('templates.admins.layout')
 @section('content')
+
 <div class="main">
     <main class="content">
         <div class="container-fluid p-0">
@@ -14,9 +15,7 @@
                 <div class="col sale-by-date text-view-visitor" id="statis-view"
                     style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold">
                     <h3>Doanh thu hôm nay</h3><br><span style="font-size: 24px" id="numberMoney"></span> đ
-                    {{-- <div id="show-more-statis">
-                            <button>XEM THÊM</button>
-                        </div> --}}
+
                 </div>
                 <div class="col"
                     style="background-color: #C4DFAA;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
@@ -30,11 +29,11 @@
                 </div>
             </div>
             <br>
-            <div class="show-chart-statis">
+            <!-- <div class="show-chart-statis">
                 <canvas id="show-statis-by-year"></canvas>
             </div>
             <canvas class="" id="top-product-sale" style="width:100%;max-width:600px;color:black;font-weight:bold">
-            </canvas>
+            </canvas> -->
 
             <div class="show-doanh-thu" id="showdoanhthu">
                 <h3 id="showdoanhso"></h3>
@@ -46,13 +45,13 @@
         <div class="row">
             <div class="col-12">
                 <figure class="highcharts-figure">
-                    <div id="container-topproduct" data-topproduct="{{$topproduct}}"></div>
+                    <div id="container-staticbyyear" data-staticbyyear="{{$statisByYear}}"
+                        data-staticbyday="{{$statisByDay}}"></div>
                 </figure>
             </div>
             <div class="col-12">
                 <figure class="highcharts-figure">
-                    <div id="container-staticbyyear" data-staticbyyear="{{$statisByYear}}"
-                        data-staticbyday="{{$statisByDay}}"></div>
+                    <div id="container-topproduct" data-topproduct="{{$topproduct}}"></div>
                 </figure>
             </div>
         </div>

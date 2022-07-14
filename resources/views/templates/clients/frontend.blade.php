@@ -33,17 +33,17 @@
 
     <body>
         <div id="fb-root"></div>
-        <div id="fb-customer-chat" class="fb-customerchat">
+        <!-- <div id="fb-customer-chat" class="fb-customerchat">
         </div>
 
         <script>
         var chatbox = document.getElementById('fb-customer-chat');
         chatbox.setAttribute("page_id", "109823691782418");
         chatbox.setAttribute("attribution", "biz_inbox");
-        </script>
+        </script> -->
 
         <!-- Your SDK code -->
-        <script>
+        <!-- <script>
         window.fbAsyncInit = function() {
             FB.init({
                 xfbml: true,
@@ -62,7 +62,7 @@
         </script>
         <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v14.0&appId=1056375581823890&autoLogAppEvents=1"
-            nonce="JhpQ55Gl"></script>
+            nonce="JhpQ55Gl"></script> -->
         @include('templates.clients.layouts.header')
         @yield('content')
 

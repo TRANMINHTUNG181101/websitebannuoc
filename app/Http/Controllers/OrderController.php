@@ -110,6 +110,7 @@ class OrderController extends Controller
                     break;
                 case 'success':
                     $order->trangthai = 4;
+                    $order->trangthaithanhtoan = 1;
                     break;
 
                 case 'cancel':
@@ -304,7 +305,7 @@ class OrderController extends Controller
             if ($request->id) {
                 $donhang['id_khachhang'] = $request->id;
             }
-            $donhang['id_nhanvien'] = 1;
+            $donhang['id_nhanvien'] = getIdLog();
             $donhang['madh'] = $madh;
             $donhang['email'] = $request->email;
             $donhang['hoten'] = $request->hoten;

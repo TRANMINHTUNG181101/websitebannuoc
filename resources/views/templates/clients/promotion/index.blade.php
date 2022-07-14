@@ -29,7 +29,10 @@
                                     {{$value->mota}}
                                 </div>
                                 <div class="post-short-des mb-2 fs-2">
-                                    Ngày hết hạn: {{$value->ngaykt}}
+                                    Ngày hết hạn:
+                                    <?php
+                                    echo date('d/m/Y', strtotime($value->ngaykt))
+                                    ?>
                                 </div>
                                 @if(+$value->dieukien ===1)
                                 <div class="row">

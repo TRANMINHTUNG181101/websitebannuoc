@@ -88,7 +88,7 @@
                 <ul>
                     <li>Khách hàng : <span>{{$order->hoten}}</span></li>
                     <li>Thời gian : <span>{{ format_date($order->ngaytao)}}</span></li>
-                    <li>Thu ngân : <span>Admin</span></li>
+                    <li>Thu ngân : <span>{{ getNameLog() ?? 'Admin' }}</span></li>
                 </ul>
             </div>
             <div class="w-50">

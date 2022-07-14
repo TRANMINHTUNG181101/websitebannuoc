@@ -1,6 +1,5 @@
 @extends('templates.clients.frontend')
 @section('content')
-
 <div class="breadcrumbs_wrap dark">
     <div class="container">
         <div class="row align-items-center">

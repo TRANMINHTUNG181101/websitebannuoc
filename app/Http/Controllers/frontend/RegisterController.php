@@ -17,6 +17,7 @@ class RegisterController extends Controller
 {
     public function index()
     {
+
         return view('templates.clients.account.register');
     }
 
@@ -26,16 +27,16 @@ class RegisterController extends Controller
             $data['email'] = $request->email;
             $data['password'] = Hash::make($request->password);
             $data['diachi'] = $request->address;
-            $data['ten'] = $request->ten;
+            $data['ten'] = $request->hoten;
             $data['token'] = $request->_token;
             $data['trangthai'] = 0;
             if ($customer = Customer::create($data)) {
                 Mail::send('templates.clients.account.verifyEmail', compact('customer'), function ($email) use ($customer) {
                     $email->subject('Drinks - Web');
-                    $email->to($customer->email, ($customer->hoten) ? $customer->hoten : "");
+                    $email->to($customer->email, ($customer->ten) ? $customer->ten : "");
                 });
-                return redirect()->back()->with('activeAcc', 'Mã xác thực đã được gửi đến email của bạn, Vui lòng kiểm tra email xác thực tài khoản để có thể đăng nhập.');
             }
+            return redirect()->route('get.home')->with('activeAcc', 'Mã xác thực đã được gửi đến email của bạn, Vui lòng kiểm tra email xác thực tài khoản để có thể đăng nhập.');
         }
     }
 
@@ -79,13 +80,13 @@ class RegisterController extends Controller
     public function postforgetPasss(ForgetRequest $request)
     {
         $token = $request->_token;
-        $customer = Customer::where('email', $request->email)->first();
+        $customer = Customer::where('email', $request->emailforget)->first();
         $customer->update(['token' => $token]);
         Mail::send('templates.clients.account.forgetPassword', compact('customer'), function ($email) use ($customer) {
             $email->subject('Drinks - Lấy Lại Mật Khẩu');
             $email->to($customer->email, ($customer->hoten) ? $customer->hoten : 'Khách hàng');
         });
-        return redirect()->back()->with('activeAcc', 'Vui lòng kiểm tra Email của bạn để lấy lại mật khẩu.');
+        return redirect()->route('get.home')->with('activeAcc', 'Vui lòng kiểm tra Email của bạn để lấy lại mật khẩu.');
     }
     public function getPass(Customer $customer, $token)
     {
@@ -93,7 +94,7 @@ class RegisterController extends Controller
 
             return view('templates.clients.account.getPassword', ['customer' => $customer]);
         } else {
-            return redirect()->back()->with('activeAcc', 'Đặt lại mật khẩu không thành công.');
+            return redirect()->route('get.home')->with('activeAcc', 'Đặt lại mật khẩu không thành công.');
         }
     }
 
@@ -102,6 +103,6 @@ class RegisterController extends Controller
 
         $pass = bcrypt($request->password);
         $customer->update(['password' => $pass, 'token' => null]);
-        return redirect()->back()->with('activeAcc', 'Đặt lại mật khẩu thành công, Bạn có thể đăng nhập');
+        return redirect()->route('get.home')->with('activeAcc', 'Đặt lại mật khẩu thành công, Bạn có thể đăng nhập');
     }
 }

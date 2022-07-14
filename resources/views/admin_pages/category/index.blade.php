@@ -1,11 +1,10 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-show">
-        <h3>Category</h3>
+        <h3>CATEGORY</h3>
     </div>
     <div class="them-nguyen-lieu-dung">
-        <button class="btn btn-success"> <a href="{{ route('categories.addview') }}" style="color:white" id="addModalMMU">Them danh
-                muc
+        <button class="btn btn-success"> <a href="{{ route('categories.addview') }}" style="color:white" id="addModalMMU">THÊM DANH MỤC
             </a> </button>
     </div>
     <div class="content-show">
@@ -32,8 +31,10 @@
                                 src="{{ asset('uploads/categories/' . $m->hinhanh) }}"></td>
                                 <td>{{$m->trangthai}}</td>
                         <td>
-                            <a href="{{ route('categories.del', $m->id) }}">Xoa</a>
-                            <a href="{{ route('categories.editview', $m->slug) }}">sua</a>
+                            <a href="{{ route('categories.del', $m->id) }}"><i class="fa fa-trash"
+                                style="width: 16px;height: 16px;color:red"></i></a>
+                            <a href="{{ route('categories.editview', $m->slug) }}"><i class="fa fa-edit"
+                                style="width: 16px;height: 16px;color:green"></i></a>
                         </td>
 
                     </tr>
@@ -43,3 +44,4 @@
     </div>
 
 @endsection
+{{-- composer require davejamesmiller/laravel-breadcrumbs:5.x --ignore-platform-req=ext-gd --}}

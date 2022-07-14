@@ -3,26 +3,52 @@
     <div class="title-show">
         <h3>Thêm tài khoản</h3>
     </div>
+    @if (session('add_staff_fail'))
+        {{ Session::get('add_staff_fail') }}
+    @endif
+    {{Session::forget('add_staff_fail')}}
+<?php //dd(session()->all()); ?>
+
     <div class="add-staff" style="font-weight: bold">
         <form action="{{ route('roles.addstaff') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="">Email</label>
                 <input type="text" name="email" id="email">
+                @if ($errors->first('email'))
+                    <div class="btn-danger">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
             </div>
             <div class="form-group">
-                <label for="">Ten</label>
+                <label for="">Tên nhân viên</label>
                 <input type="text" name="ten" id="ten">
+                @if ($errors->first('ten'))
+                    <div class="btn-danger">
+                        {{ $errors->first('ten') }}
+                    </div>
+                @endif
             </div>
             <div class="form-group">
-                <label for="">Mat khau</label>
-                <input type="text" name="matkhau" id="matkhau">
+                <label for="">Mật khẩu</label>
+                <input type="password" name="matkhau" id="matkhau" minlength="10" maxlength="15">
+                @if ($errors->first('matkhau'))
+                    <div class="btn-danger">
+                        {{ $errors->first('matkhau') }}
+                    </div>
+                @endif
             </div>
             <div class="form-group">
-                <label for="">So Dien Thoai</label>
-                <input type="text" name="dienthoai" id="dienthoai">
+                <label for="">Số điện thoại</label>
+                <input type="text" name="dienthoai" id="dienthoai" minlength="10" maxlength="11">
+                @if ($errors->first('dienthoai'))
+                    <div class="btn-danger">
+                        {{ $errors->first('dienthoai') }}
+                    </div>
+                @endif
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label>Quyen</label><br>
                 <input type="checkbox" id="access" name="roles[]" value="1">
                 <label for=""> Truy cap</label><br>
@@ -47,15 +73,17 @@
                 <label for=""> Quan ly nguyen lieu dung</label><br>
                 <input type="checkbox" id="pagerole" name="choosepage[]" value="6">
                 <label for=""> Phan quyen</label><br><br>
-            </div>
+            </div> --}}
 
             <div class="type-account">
+                <label for="">Chọn loại tài khoản</label>
                 <select name="typeaccount" id="">
-                    <option value="2" selected>nhan vien ban hang</option>
-                    <option value="3">nha vien thu ngan</option>
+                    <option value="2" selected>Nhân viên bán hàng</option>
+                    <option value="3">Nhân viên pha chế</option>
+                    <option value="4">Nhân viên thu ngân</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-success">Luu</button>
+            <button type="submit" class="btn btn-success">Lưu thông tin</button>
         </form>
     </div>
 @endsection

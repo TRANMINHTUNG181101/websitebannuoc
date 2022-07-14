@@ -20,7 +20,7 @@ class MaterialController extends Controller
 
     public function show()
     {
-        $nglieu = Materials::paginate(20);
+        $nglieu = Materials::paginate(10);
         return view('admin_pages.material.index', compact('nglieu'));
     }
 
@@ -39,7 +39,8 @@ class MaterialController extends Controller
             'MaterialName' => 'required|max:255',
             'MaterialImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:100000',
             'MaterialQuantily' => 'required|integer|min:0',
-            'ImportPrice' => 'required|integer|min:0'
+            'ImportPrice' => 'required|integer|min:0',
+            'ExpiredDate' => 'required',
         ]);
 
         $slug = Str::slug($req->MaterialName);

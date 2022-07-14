@@ -46,12 +46,12 @@
                                 <td scope=" col">
 
                                     @if($val->FeeShip)
-                                    <input type="checkbox" value="{{$val->FeeShip->feeship}}" name="checkfee"
+                                    <input type="checkbox" hidden value="{{$val->FeeShip->feeship}}" name="checkfee"
                                         data-id_dis="{{$val->district_code}}"
                                         {{$val->trangthai === 1 ? 'checked' : ''}} />
                                     @else
 
-                                    <input type="checkbox" value="{{$value->feeship}}" name="checkfee"
+                                    <input type="checkbox" hidden value="{{$value->feeship}}" name="checkfee"
                                         data-id_dis="{{$val->district_code}}" checked />
 
                                     @endif
@@ -156,10 +156,11 @@ changeFeeship.forEach(item => {
         const pro_id = e.target.dataset.id_pro;
         const ward_id = e.target.dataset.id_ward;
         const value = e.target.value;
+        const url = "{{ asset('/')}}";
         if (value) {
             (async () => {
                 const response = await fetch(
-                    'http://localhost/website_ban_nuoc/public/changefeeship', {
+                    `${url}changefeeship`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector(

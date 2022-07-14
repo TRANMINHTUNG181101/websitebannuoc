@@ -46,7 +46,7 @@ class User extends Authenticatable
     public function isAdmin($id)
     {
         $getAcc = User::where('id', $id)->first();
-        $typeAcc=$getAcc->type_account;
+        $typeAcc = $getAcc->type_account;
 
         if ($typeAcc == 1) {
             return true;
