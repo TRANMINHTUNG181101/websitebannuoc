@@ -29,7 +29,7 @@ class DashboardController extends Controller
     public function show()
     {
         $name_login = auth()->user()->name_staff;
-        if($name_login==null){
+        if ($name_login == null) {
             return view('auths.login');
         }
         return view('templates.admins.index', compact('name_login'));
@@ -227,6 +227,8 @@ class DashboardController extends Controller
 
     public function ExportFiles(Request $request)
     {
+
+
         $codeQ = $request->chooseTypeExport;
         $dataMonth = $request->chooseMonthExport;
         $dataDay = $request->chooseDayExport;
@@ -248,7 +250,7 @@ class DashboardController extends Controller
         ob_end_clean(); // this
         ob_start(); // and this
         $nameFile = "thong_ke.xlsx";
-        Excel::store(new multipleExport($codeQ, $data), 'file_exel/' . $nameFile);
+        Excel::store(new multipleExport($codeQ, $data, $request->datepickyear), 'file_exel/' . $nameFile);
         return  Storage::download('file_exel/' . $nameFile);
     }
 
@@ -270,7 +272,7 @@ class DashboardController extends Controller
         $newpass = $req->newpass;
         $idLog = auth()->user()->id;
         $getAccountLogin = User::where('id', $idLog)->first();
-        $emailUser=$getAccountLogin->email;
+        $emailUser = $getAccountLogin->email;
         $getPass = $getAccountLogin->password;
         if (Hash::check($oldpass, $getPass)) {
             $user = User::find($idLog);
@@ -288,5 +290,21 @@ class DashboardController extends Controller
         // $idLogin = auth()->user()->id;
         // $getLogin = User::where('id', $idLogin)->get();
         // return view('admin_pages.infologin.index', compact('getLogin'));
+    }
+
+
+
+    function getMoneySaleDaily()
+    {
+        $today = Carbon::now('asia/Ho_Chi_Minh');
+        $f_today = Carbon::parse($today)->format('y-m-d');
+        $getMoney = Sale_statisticals::where('ngay_ban', $f_today)->get();
+        $sumMoney = 0;
+        foreach ($getMoney as $value) {
+            $sumMoney += $value->tien_don_hang;
+        }
+        return response()->json([
+            'data' => $sumMoney
+        ]);
     }
 }

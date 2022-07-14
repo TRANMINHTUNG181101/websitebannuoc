@@ -13,4 +13,9 @@ class SizePros extends Model
     protected $fillable=[
         'id','id_pro','id_size'
     ];
+
+    public function sanpham()
+    {
+        return $this->belongsToMany(Products::class, 'size_pros', 'id_size', 'id_pro');
+    }
 }

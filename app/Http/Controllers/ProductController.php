@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Nette\Utils\Json;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\VarDumper\Caster\ImgStub;
+use Symfony\Polyfill\Intl\Idn\Resources\unidata\Regex;
 
 class ProductController extends Controller
 {
 
     public function show()
     {
-        $spham = Products::where('trangthai', 1)->paginate(10);
+        $spham = Products::paginate(10);
         return view('admin_pages.products.index', compact('spham'));
     }
 
@@ -31,6 +34,17 @@ class ProductController extends Controller
         return view('admin_pages.products.add', compact('size', 'categories'));
     }
 
+
+
+    function checknameExists($name)
+    {
+        $check = Products::where('tensp', $name)->get();
+        if ($check->count() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public function addProductHandle(Request $req)
     {
         //kiem tra du lieu dau vao
@@ -39,9 +53,8 @@ class ProductController extends Controller
             'ProductImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:100000',
             'SellPrice' => 'required|integer|min:0',
             'Description' => 'required',
-            'contenproduct'=>'required'
+            'contenproduct' => 'required'
         ]);
-
         //them hinh anh
         $imageName = $this->uploadImage($req);
         $newPro = new Products();
@@ -52,17 +65,28 @@ class ProductController extends Controller
         $newPro->mota = $req->Description;
         $newPro->noidung = $req->contenproduct;
         $newPro->id_loaisanpham = $req->select_cat;
-        $newPro->save();
 
+        if ($this->checknameExists($req->ProductName)) {
+            return redirect(route('products.addview'))->with("error_nameexists", "Tên sản phẩm đã tồn tại!");
+        } else {
+            $newPro->save();
+        }
         $getPro = Products::all()->sortByDesc('id')->first();
+        $choose = array();
+        if ($req->sizePro != null) {
+            $choose = array(1, 3);
+        } else {
+            $choose = array(1);
+        }
         $idProLast = $getPro->id;
-        $choose = $req->sizePro;
+
         foreach ($choose as $ch) {
             $newSizePro = new SizePros();
             $newSizePro->id_pro = $idProLast;
             $newSizePro->id_size = $ch;
             $newSizePro->save();
         }
+        session()->put('success_add_pro', "Thêm thành công");
         return redirect('admin/san-pham');
     }
 
@@ -81,12 +105,20 @@ class ProductController extends Controller
     //update product
     public function updateProduct(Request $req)
     {
+        $req->validate([
+            'ten_spham' => 'required|max:255',
+            'giaban' => 'required|integer|min:0',
+            'conten_edit' => 'required',
+            'description_edit' => 'required'
+        ]);
+
         $editProduct = Products::find($req->id);
         $editProduct->tensp = $req->ten_spham;
         $editProduct->giaban = $req->giaban;
-        $editProduct->mota = $req->mota;
+        $editProduct->mota = $req->description_edit;
+        $editProduct->noidung = $req->conten_edit;
         $editProduct->id_loaisanpham = $req->select_cat;
-
+        $editProduct->trangthai = $req->status_product;
 
         if ($req->ProductImage != null) {
             $imageName = $this->uploadImage($req);
@@ -95,9 +127,9 @@ class ProductController extends Controller
         }
 
         $editProduct->hinhanh = $imageName;
+        session()->put('success_edit_pro', true);
         $editProduct->save();
         return redirect('admin/san-pham');
-
     }
 
     public function editProductView($slug)
@@ -109,9 +141,60 @@ class ProductController extends Controller
 
     public function deleteProduct($id)
     {
-        $delProduct = Products::find($id);
-        $delProduct->trangthai = 0;
-        $delProduct->save();
-        return redirect('admin/san-pham');
+        $delProduct = Products::where('id',$id)->first();
+        $image_path = "uploads/product/" . $delProduct->hinh_anh;
+        if (file_exists($image_path)) {
+            @unlink(public_path($image_path));
+        }
+
+        $delProduct->size()->detach([1,3]);
+        $delProduct->delete();
+        session()->put('success_del_pro', true);
+        return redirect()->back();
+    }
+
+    public function updateStatus(Request $req)
+    {
+        $getData = Products::find($req->id);
+        $statusP = $getData->trangthai;
+        $newStatus = 0;
+        if ($statusP == 1) {
+            $newStatus = 0;
+        } else {
+            $newStatus = 1;
+        }
+        $getData->trangthai = $newStatus;
+        $getData->save();
+        return response()->json([
+            "data" => $req->id
+        ]);
+    }
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = '';
+            $products = DB::table('Products')->where('tensp', 'LIKE', '%' . $request->search . '%')->get();
+            if ($products) {
+                foreach ($products as $key => $product) {
+                    $imgpath = "<img src=" . '{{asset(' . 'uploads/product/ca-phe-nong59.jpg' . ')}}">' . "";
+                    $url_del = "<a href={{route('products.del',22) }}>del</a>";
+                    $output .= '<tr>
+                    <td>' . $product->id . '</td>
+                    <td>' . $product->tensp . '</td>
+                    <td>' . $product->giaban . '</td>
+                    <td>' . $imgpath . '</td>
+                    <td>' . $product->trangthai . '</td>
+                    <td></td>
+                    <td>' . $product->mota . '</td>
+                    <td>' . $product->noidung . '</td>
+                    <td>' . $url_del . '</td>
+                    </tr>';
+                    // <a href="{{ route('products.del', 55) }}"></a>
+                    //<a href="{{route('products.del', $sp->id) }}">
+                }
+            }
+
+            return Response($output);
+        }
     }
 }

@@ -17,15 +17,17 @@ class buyMaterialExport implements FromCollection, WithTitle, WithHeadings, With
 {
     private $codeQuery;
     private $getDate;
+    private $year;
     public $sumMoneyBuy = 0;
     //code query 
     //1 by day
     //2 by moth
 
-    function __construct($code, $data)
+    function __construct($code, $data,$year)
     {
         $this->codeQuery = $code;
         $this->getDate = $data;
+        $this->year=$year;
     }
     /**
      * @return \Illuminate\Support\Collection
@@ -37,8 +39,8 @@ class buyMaterialExport implements FromCollection, WithTitle, WithHeadings, With
             $getData = ManagerMaterialUse::where('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
             return $getData;
         }
-        $nowYear = Carbon::now()->year;
-        $getData = ManagerMaterialUse::whereYear('ngay_tong_ket', $nowYear)->whereMonth('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
+
+        $getData = ManagerMaterialUse::whereYear('ngay_tong_ket', $this->year)->whereMonth('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
         return $getData;
     }
 
@@ -57,8 +59,7 @@ class buyMaterialExport implements FromCollection, WithTitle, WithHeadings, With
             $row1 = $getData->count();
             return [$row1, $money];
         }
-        $nowYear = Carbon::now()->year;
-        $getData = ManagerMaterialUse::whereYear('ngay_tong_ket', $nowYear)->whereMonth('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
+        $getData = ManagerMaterialUse::whereYear('ngay_tong_ket', $this->year)->whereMonth('ngay_tong_ket', $this->getDate)->get(["id_nguyen_lieu", "so_luong", "don_gia", "ngay_tong_ket"]);
         $row = $getData->count();
         foreach ($getData as $v) {
             $sumMoney = $v['don_gia'] * $v['so_luong'];
@@ -70,9 +71,9 @@ class buyMaterialExport implements FromCollection, WithTitle, WithHeadings, With
     {
 
         if ($this->codeQuery == 1) {
-            return "MUA NGUYEN LIEU NGAY " . $this->getDate;
+            return "MUA NGUYÊN LIỆU NGÀY" . $this->getDate;
         }
-        return "MUA NGUYEN LIEU THANG " . $this->getDate;
+        return "MUA NGUYÊN LIỆU THÁNG " . $this->getDate;
     }
     public function headings(): array
     {

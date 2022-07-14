@@ -9,6 +9,7 @@
  * @return    string
  */
 
+use App\Models\Materials;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -65,5 +66,12 @@ if (!function_exists('getNameLog')) {
         $getInfo = User::where('id', $getIDLogin)->first();
         $nameLog = $getInfo->name_staff;
         return $nameLog;
+    }
+}
+if (!function_exists('laydonvinl')) {
+    function laydonvinl($nameMal)
+    {
+        $getUnit=Materials::where('name', $nameMal)->first();
+        return $getUnit->don_vi_nglieu;
     }
 }

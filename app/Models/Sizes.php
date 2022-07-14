@@ -17,4 +17,10 @@ class Sizes extends Model
     {
         return $this->belongsToMany(Products::class, 'size_pros', 'id_size', 'id_pro');
     }
+
+
+    public function products(){
+        return $this->belongsToMany(Products::class);
+
+    }
 }

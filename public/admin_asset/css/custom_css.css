@@ -259,8 +259,8 @@ td {
 }
 .content-show {
     text-align: center;
-    overflow: auto;
-    height: 1000px;
+    /* overflow: auto;
+    height: 1000px; */
 }
 /* .content-show thead th {
     position: sticky;
@@ -335,12 +335,42 @@ input[type="password"] {
     border: black solid 1px;
 }
 
-.dropdown-toggle-menu{
+.dropdown-toggle-menu {
     margin-right: 38px;
 }
 
-
-.infologin{
+.infologin {
     background-color: lightblue;
     padding: 20px;
+}
+
+#contenpro {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    height: 200px;
+    width: 280px;
+}
+#dropdownMenuButton {
+    width: auto;
+}
+#indexpro {
+    font-size: 18px;
+}
+#btnshowstatus {
+    background-color: green;
+    color: white;
+}
+#btnhidestatus {
+    background-color: red;
+    color: white;
+}
+.showind{
+    font-size: 16px;
+    font-weight: bold;
+}
+.editind{
+    font-size: 18px;
+    font-weight: bold; 
 }

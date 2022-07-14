@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ManagerStaff;
+use App\Models\type_account;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -27,7 +28,7 @@ class RoleController extends Controller
         //         return view('admin_pages.managerpermission.index', compact('getStaff'));
         //     }
         // }
-                return view('admin_pages.managerpermission.index', compact('getStaff'));
+        return view('admin_pages.managerpermission.index', compact('getStaff'));
 
 
         return view('admin_pages.denyaccess.index');
@@ -105,9 +106,59 @@ class RoleController extends Controller
 
     public function delstaff($id)
     {
-        $getdel = User::where('id', $id)->get();
+        $getdel = User::where('id', $id)->first();
         $getdel->delete();
-        $getStaff = User::all();
-        return view('admin_pages.managerpermission.index', compact('getStaff'));
+        $checkdel = User::where('id', $id)->first();
+        if($checkdel==null){
+            session()->put('status_delstaff', true);
+        }
+        return redirect('admin/phan-quyen');
+    }
+    public function edit($id)
+    {
+        $staff = User::where('id', $id)->first();
+        $typeAcc = type_account::all();
+        return view('admin_pages.managerpermission.edit', compact('staff', 'typeAcc'));
+    }
+    public function update(Request $req)
+    {
+        $req->validate([
+            'email' => 'required|email|max:255',
+            'ten' => 'required|max:255',
+            'dienthoai' => 'required|max:10',
+        ]);
+
+        $id = $req->id_nv;
+        $getStaff = User::find($id);
+        $getStaff->name_staff = $req->ten_nv;
+        $getStaff->email = $req->email_nv;
+        $getStaff->phone_number = $req->sdt_nv;
+        $getStaff->type_account = $req->typeaccount;
+        $getStaff->save();
+        session()->put('update_success', true);
+        return redirect('admin/phan-quyen');
+    }
+    public function editinfo()
+    {
+        $id=Auth::user()->id;
+        $staff = User::where('id', $id)->first();
+        return view('admin_pages.infologin.edit1', compact('staff'));
+    }
+    public function updateinfo(Request $req)
+    {
+        $req->validate([
+            'email' => 'required|email|max:255',
+            'ten' => 'required|max:255',
+            'dienthoai' => 'required|max:10',
+        ]);
+
+        $id = $req->id_nv;
+        $getStaff = User::find($id);
+        $getStaff->name_staff = $req->ten_nv;
+        $getStaff->email = $req->email_nv;
+        $getStaff->phone_number = $req->sdt_nv;
+        $getStaff->save();
+        session()->put('update_success', true);
+        return redirect('admin/phan-quyen');
     }
 }

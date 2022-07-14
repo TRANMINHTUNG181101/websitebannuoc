@@ -12,7 +12,6 @@
     @endif
     {{ Session::forget('change_pass') }}
     <div class="infologin" style="font-weight: bold">
-        {{-- @foreach ($getLogin as $item) --}}
             <div class="infolog">
                 Email: {{ $getLogin->email }}
             </div>
@@ -22,9 +21,8 @@
             <div class="infolog">
                 Số điện thoại: {{ $getLogin->phone_number }}
             </div>
-        {{-- @endforeach --}}
-        <a href="">Sửa thông tin</a>
+        <a href="{{route('updateinfo.view')}}">Sửa thông tin</a>
         <a href="{{ route('viewupdatepass') }}">Đổi mật khẩu</a>
-        <a href="{{ route('showDashboard') }}">Quay lạ<i></i></a>
+        <a href="{{ route('showDashboard') }}">Quay lại</a>
     </div>
 @endsection

@@ -15,14 +15,16 @@ class saleExport implements FromCollection, WithTitle, WithHeadings, WithStyles,
 {
     private $codeQ;
     private $dataQ;
+    private $year;
     //code query 
     //1 by day
     //2 by moth
 
-    public function __construct($c, $d)
+    public function __construct($c, $d,$y)
     {
         $this->codeQ = $c;
         $this->dataQ = $d;
+        $this->year = $y;
     }
     public function collection()
     {
@@ -31,8 +33,7 @@ class saleExport implements FromCollection, WithTitle, WithHeadings, WithStyles,
             $getData = sale_statisticals::where('ngay_ban', $this->dataQ)->get(["id_don_hang", "ngay_ban", "tien_don_hang"]);
             return $getData;
         }
-        $nowYear = Carbon::now()->year;
-        $getData = sale_statisticals::whereYear('ngay_ban', $nowYear)->whereMonth('ngay_ban', $this->dataQ)->get(["id_don_hang", "ngay_ban", "tien_don_hang"]);
+        $getData = sale_statisticals::whereYear('ngay_ban', $this->year)->whereMonth('ngay_ban', $this->dataQ)->get(["id_don_hang", "ngay_ban", "tien_don_hang"]);
         return $getData;
     }
 
@@ -51,8 +52,7 @@ class saleExport implements FromCollection, WithTitle, WithHeadings, WithStyles,
             $row1 = $getData->count();
             return [$row1, $tempMoney];
         }
-        $nowYear = Carbon::now()->year;
-        $getData = sale_statisticals::whereYear('ngay_ban', $nowYear)->whereMonth('ngay_ban', $dataQ)->get(["id_don_hang", "ngay_ban", "tien_don_hang"]);
+        $getData = sale_statisticals::whereYear('ngay_ban', $this->year)->whereMonth('ngay_ban', $dataQ)->get(["id_don_hang", "ngay_ban", "tien_don_hang"]);
         $row = $getData->count();
         foreach ($getData as $v) {
             $sumMoney += $v['tien_don_hang'];
