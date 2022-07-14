@@ -29,9 +29,14 @@
     <link href="{!! asset('admin_asset/css/app.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/css/custom_css.css') !!}" rel="stylesheet">
     <link href="{!! asset('admin_asset/toastr/toastr.min.css') !!}" rel="stylesheet">
+    <link href="{{ asset('admin_asset/css/datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin_asset/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/assets/alert/css/themes/bootstrap.css') }}" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js">
+    </script>
 </head>
 
 <body>
@@ -220,6 +225,13 @@
                             <span class="align-middle">Bình luận</span>
                         </a>
                     </li>
+
+                    <li class="sidebar-item" style="margin-bottom: 100px">
+                        <a class="sidebar-link" href="{{ route('category.show') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Loại sản phẩm</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -242,13 +254,13 @@
 
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
 
-    <!-- <script src="{{ asset('ckeditor/ckeditor.js')}}"></script> -->
-    <script src="{{ asset('ckfinder/ckfinder.js')}}"></script>
+    <!-- <script src="{{ asset('ckeditor/ckeditor.js') }}"></script> -->
+    <script src="{{ asset('ckfinder/ckfinder.js') }}"></script>
     <script src="//cdn.ckeditor.com/4.19.0/full/ckeditor.js"></script>
     <script>
     CKEDITOR.replace('contentEmail', {
-        filebrowserBrowseUrl: '{{ asset("/ckfinder/ckfinder.html")}}',
-        filebrowserUploadUrl: '{{ asset("/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files")}}',
+        filebrowserBrowseUrl: "{{ asset('/ckfinder/ckfinder.html') }}",
+        filebrowserUploadUrl: "{{ asset('/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}",
     });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -257,6 +269,7 @@
     <link href="{!! asset('jsconfirm/jquery-confirm.min.css') !!}" rel="stylesheet">
     <script src="{!! asset('jsconfirm/jquery-confirm.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/sweetalert2.all.min.js') !!}"></script>
+    <script src="{!! asset('admin_asset/js/bootstrap-datepicker.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
     <div class="modal_t">
         <div class="modal_overlay"></div>
@@ -284,18 +297,6 @@
             </footer>
         </div>
     </div>
-    <script>
-    close.addEventListener("click", () => {
-        modal.classList.remove('showModal_t')
-    })
-
-    modal.addEventListener("click", () => {
-        modal.classList.remove('showModal_t')
-    })
-    modalBody.addEventListener("click", (e) => {
-        e.stopPropagation();
-    })
-    </script>
     <script>
     const close = document.querySelector('.modal_close');
     const modal = document.querySelector('.modal_t');

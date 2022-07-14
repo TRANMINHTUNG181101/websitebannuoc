@@ -7,7 +7,7 @@ use App\Models\Materials;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-
+use Illuminate\Support\Facades\DB;
 
 class ManagerMaterialUseController extends Controller
 {
@@ -42,20 +42,42 @@ class ManagerMaterialUseController extends Controller
 
     public function create(Request $request)
     {
+        $request->validate([
+            'namemmu' => 'required|max:255',
+            'quantymmu' => 'required|integer|min:0'
+        ]);
+
         $newmmu = new ManagerMaterialUse();
         $slug_name = Str::slug($request->namemmu);
         $newmmu->so_luong = $request->quantymmu;
         $timenow = Carbon::now('asia/Ho_Chi_Minh')->toDateString();
         $newmmu->ngay_tong_ket = $timenow;
-        $getmmu = Materials::where('slug', $slug_name)->first();
-        $newmmu->don_gia = $getmmu->gia_nhap;
-        $newmmu->id_nguyen_lieu = $getmmu->id;
-        if ($getmmu->gia_nhap == null) {
+        $getmmu = Materials::where('ten_nglieu', $request->namemmu)->first();
+        $getData = Materials::where('ten_nglieu', $request->namemmu)->get();
+        if ($getData->count() == 0) {
             session()->put('errors_add', 'nguyên liệu không tồn tại');
             return view('admin_pages.managerMaterialUse.add');
-        } else {
+        } 
+        else {
+            $newmmu->don_gia = $getmmu->gia_nhap;
+            $newmmu->id_nguyen_lieu = $getmmu->id;
             session()->forget('add_mmu');
-            // session()->put("add_mmu", 'Them thanh cong');
+            //update quality material
+            $qualityCurrent =  $getmmu->so_luong;
+            if ($qualityCurrent <$request->quantymmu) {
+                session()->put('loisoluong','số lượng nhập vào lớn hơn số lượng đang có');
+                return view('admin_pages.managerMaterialUse.add');
+
+            }
+            if ($this->checknameExists($getmmu->id)) {
+                
+                session()->put('loi_ten_ton_tai','nguyên liệu này đã có trong bảng');
+                return view('admin_pages.managerMaterialUse.add')->with('loi_ten_ton_tai', 'nguyên liệu này đã có trong bảng');
+            }
+           
+            $newQuanty = $qualityCurrent - $request->quantymmu;
+            $getmmu->so_luong = $newQuanty;
+            $getmmu->save();
             $newmmu->save();
             $managerM = ManagerMaterialUse::paginate(20);
             $nameM = Materials::all();
@@ -85,6 +107,10 @@ class ManagerMaterialUseController extends Controller
             session()->put('errors_add', 'nguyên liệu không tồn tại');
             return view('admin_pages.managerMaterialUse.add');
         }
+
+        // if($this->checknameExists($request->namemmu)){
+        //     return view('admin_pages.managerMaterialUse.add')->with('loi_ten_ton_tai','nguyên liệu này đã có trong bảng');
+        // }
         $updatemmu->save();
         $managerM = ManagerMaterialUse::paginate(20);
         $nameM = Materials::all();
@@ -92,6 +118,26 @@ class ManagerMaterialUseController extends Controller
 
         return view('admin_pages.managerMaterialUse.index', compact('managerM', 'nameM'));
     }
+
+
+    function checknameExists($id)
+    {
+
+        $getData = ManagerMaterialUse::where('id_nguyen_lieu', $id)->get();
+        if ($getData->count() > 0) {
+            return true;
+        }
+        return false;
+    }
+    function checkNameMal($name)
+    {
+        $getDT = Materials::where('ten_nglieu', $name)->get();
+        if ($getDT->count() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public function turnover(Request $req)
     {
         $tienThu = 0;
@@ -103,5 +149,19 @@ class ManagerMaterialUseController extends Controller
             $tienvatlieu += $val->so_luong * $val->don_gia;
         }
         return $tienvatlieu;
+    }
+    public function searchmal(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = '';
+            $products = DB::table('materials')->where('ten_nglieu', 'LIKE', '%' . $request->search . '%')->get();
+            if ($products) {
+                foreach ($products as $key => $product) {
+                    $output .= '<h4><button id="choosenamemal type="button">' . $product->ten_nglieu . '</button></h4>';
+                }
+            }
+
+            return Response($output);
+        }
     }
 }

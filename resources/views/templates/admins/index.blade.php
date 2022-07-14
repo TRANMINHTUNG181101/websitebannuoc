@@ -35,29 +35,21 @@
             <canvas class="" id="top-product-sale" style="width:100%;max-width:600px;color:black;font-weight:bold">
             </canvas> -->
 
+
             <div class="show-doanh-thu" id="showdoanhthu">
                 <h3 id="showdoanhso"></h3>
             </div>
             <div class="export-file">
-                <button id="exportFile" class="btn btn-primary">xuất file exel</button>
+                <button id="exportFile">Xuất file exel</button>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <figure class="highcharts-figure">
-                    <div id="container-staticbyyear" data-staticbyyear="{{$statisByYear}}"
-                        data-staticbyday="{{$statisByDay}}"></div>
-                </figure>
-            </div>
-            <div class="col-12">
-                <figure class="highcharts-figure">
-                    <div id="container-topproduct" data-topproduct="{{$topproduct}}"></div>
-                </figure>
+            <div class="test-url">
+
+
             </div>
         </div>
     </main>
 </div>
-@endsection
+
 
 {{-- modal 'exportFile' --}}
 <div class="modal fade" id="exportModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,34 +63,38 @@
                 <form action="{{ route('exportFile') }}" method="post">
                     @csrf
                     <div class="form-group">
-                        <label>chon xuat file theo</label>
+                        <label>Chọn xuất theo: </label>
                         <select name="chooseTypeExport" id="chooseTypeExport">
-                            <option value="1">theo ngay</option>
-                            <option value="2">theo thang</option>
+                            <option value="1">Theo ngày</option>
+                            <option value="2">Theo tháng</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>chon thoi gian</label>
+                        <label>Chọn thời gian</label>
                         <div class="chooseDayExport" id="chooseDayExport">
-                            <label for="">chon ngay</label>
-                            <input type="date" name="dataExport" id="dataExport">
+                            <label for="">Chọn ngày</label>
+                            <input type="date" name="dataExport" id="dataExport" class="form-control">
                         </div>
                         <div class="exportbyMonth" id="exportbyMonth">
-                            <label for="">chon thang</label>
+                            <label for="">Chọn tháng</label>
                             <select name="chooseMonthExport" id="chooseMonthExport">
-
                                 <?php $monthCurr = date('m'); ?>
 
                                 @for ($i = 1; $i < 13; $i++) { @if ($i <=$monthCurr) <option value="{{ $i }}">Tháng:
                                     {{ $i }}</option>
                                     @endif
-
                                     }
                                     @endfor
                             </select>
                         </div>
+                        <div class="exportbyyear">
+                            <label for="">Chọn năm</label>
+                            <input type="text" class="form-control" name="datepickyear" id="datepickyear" />
+                        </div>
                     </div>
             </div>
+
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 <button type="submit" class="btn btn-primary" id="exportExel">Xuất file</button>
@@ -231,4 +227,3 @@ Highcharts.chart('container-staticbyyear', {
     }
 });
 </script>
-@stop

@@ -10,6 +10,7 @@ use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class MaterialController extends Controller
 {
@@ -46,12 +47,7 @@ class MaterialController extends Controller
         $slug = Str::slug($req->MaterialName);
         if ($this->checkNameMalExisted($slug)) {
             $dv_nglieu = MaterialUnit::all();
-            session()->put('oldname', $req->MaterialName);
-            session()->put('oldprice', $req->ImportPrice);
-            session()->put('oldquantity', $req->MaterialQuantily);
-            session()->put('olddate', $req->ExpiredDate);
-            session()->put('oldunit', $req->select_unit);
-
+            session()->put('error_nameexists', true);
             return view('admin_pages.material.add', compact('dv_nglieu'));
         } else {
             $imageName = $this->uploadImage($req);
@@ -65,9 +61,15 @@ class MaterialController extends Controller
             $nglieu->ngay_nhap = $timecurr->getTimestamp();
             $tam = $req->ExpiredDate;
             $date = new DateTime($tam);
+
             $nglieu->ngay_het_han = $date->getTimestamp();
             $nglieu->hinh_anh = $imageName;
             $nglieu->don_vi_nglieu = $req->input('select_unit');
+
+            if ($date->getTimestamp() - $timecurr->getTimestamp() < 0) {
+                session()->put('error_date',true);
+                return redirect()->back();
+            }
             $nglieu->save();
             session()->put('success_add_mal', 'them thanh cong');
         }
@@ -136,14 +138,30 @@ class MaterialController extends Controller
 
     public function update(Request $req)
     {
-
-        // dd($req->all()) ;
+        $req->validate([
+            'ten_nglieu' => 'required|max:255',
+            'MaterialImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:100000',
+            'so_luong' => 'required|integer|min:0',
+            'gia_nhap' => 'required|integer|min:0',
+            'ngay_nhap' => 'required',
+        ]);
 
         $nglieu = Materials::findOrFail($req->id);
-        $nglieu->ten_nglieu = $req->ten_nglieu;
+        $nameMal = "";
+        $oldNameMal = $nglieu->ten_nglieu;
+        $newNameMal = $req->ten_nglieu;
+        if ($newNameMal == $oldNameMal) {
+            $nameMal = $oldNameMal;
+        } else {
+            $nameMal = $newNameMal;
+            if ($this->checkNameMalExisted(Str::slug($nameMal))) {
+                session()->put('error_nameexists', true);
+                return redirect()->back();
+            }
+        }
+        $nglieu->ten_nglieu = $nameMal;
         $nglieu->gia_nhap = $req->gia_nhap;
         $nglieu->so_luong = $req->so_luong;
-
 
         if ($req->MaterialImage != null) {
             $imageName = $this->uploadImage($req);
@@ -154,16 +172,18 @@ class MaterialController extends Controller
         $date = new DateTime($tam);
         $nglieu->ngay_het_han = $date->getTimestamp();
         $tamin = $req->dateIn;
-        $date = new DateTime($tamin);
-        $nglieu->ngay_nhap = $date->getTimestamp();
+        $datein = new DateTime($tamin);
+        $nglieu->ngay_nhap = $datein->getTimestamp();
+        if ($date->getTimestamp() - $datein->getTimestamp() < 0) {
+            session()->put('error_timeexp', "Ngày hết hạn nhỏ hơn ngày nhập");
+            return redirect()->back();
+        }
         $nglieu->hinh_anh = $imageName;
         $nglieu->don_vi_nglieu = $req->select_unit;
         $nglieu->save();
-        $nglieu = Materials::paginate(20);
-
-        return view('admin_pages.material.index', compact('nglieu'));
+        session()->put('success_edit_mal', 'cap nhat thanh cong');
+        return redirect('admin/nguyen-lieu');
     }
-
 
     public function searchMaterial(Request $req)
     {
@@ -189,7 +209,6 @@ class MaterialController extends Controller
         } else {
             session()->put('success_del_mal', 'xoa nguyen lieu thanh cong!');
         }
-
         return redirect('admin/nguyen-lieu');
     }
 

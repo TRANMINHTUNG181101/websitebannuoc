@@ -16,7 +16,10 @@
             </script>
         </div>
     @endif
-
+    @if (session('loi_ten_ton_tai'))
+        <h4 style="color: red">{{ Session::get('loi_ten_ton_tai') }}</h4>
+    @endif
+    {{ Session::forget('loi_ten_ton_tai') }}
     @if (session('update_success'))
         <div class="show-alert-succes">
             <script type="text/javascript">
@@ -31,13 +34,14 @@
         </div>
     @endif
 
-    {{Session::forget('update_success') ;}}
-    {{Session::forget('delete_success') ;}}
-    {{Session::forget('add_success') ;}}
-    
+    {{ Session::forget('update_success') }}
+    {{ Session::forget('delete_success') }}
+    {{ Session::forget('add_success') }}
+
 
     <div class="them-nguyen-lieu-dung">
-        <button class="btn btn-success"> <a href="{{ route('mmu.addview') }}" style="color:white" id="addModalMMU">Thêm nguyên liệu dùng</a> </button>
+        <button class="btn btn-success"> <a href="{{ route('mmu.addview') }}" style="color:white" id="addModalMMU">Thêm nguyên
+                liệu dùng</a> </button>
     </div>
     <br>
     {{-- <div class="sap-xep-nguyen-lieu-sd">

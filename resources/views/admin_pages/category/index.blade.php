@@ -1,7 +1,7 @@
 @extends('templates.admins.layout')
 @section('content')
     <div class="title-show">
-        <h3>CATEGORY</h3>
+        <h3>LOẠI SẢN PHẨM</h3>
     </div>
     <div class="them-nguyen-lieu-dung">
         <button class="btn btn-success"> <a href="{{ route('categories.addview') }}" style="color:white" id="addModalMMU">THÊM DANH MỤC
@@ -29,7 +29,7 @@
                         <td>{{ $m->mota }}</td>
                         <td> <img style="widtd:80px;height:120px"
                                 src="{{ asset('uploads/categories/' . $m->hinhanh) }}"></td>
-                                <td>{{$m->trangthai}}</td>
+                                <td>{{$m->trangthai==1?"Hoạt động":"Không hoạt động"}}</td>
                         <td>
                             <a href="{{ route('categories.del', $m->id) }}"><i class="fa fa-trash"
                                 style="width: 16px;height: 16px;color:red"></i></a>
@@ -44,4 +44,3 @@
     </div>
 
 @endsection
-{{-- composer require davejamesmiller/laravel-breadcrumbs:5.x --ignore-platform-req=ext-gd --}}

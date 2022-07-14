@@ -20,7 +20,10 @@ class Products extends Model
         return $this->belongsToMany(Sizes::class, 'size_pros', 'id_pro', 'id_size');
     }
 
-
+    public function sizes()
+    {
+        return $this->belongsToMany(Sizes::class);
+    }
 
     public function wishlist()
     {
@@ -52,4 +55,8 @@ class Products extends Model
     // public function size(){
     //     return $this->belongsToMany(Sizes::class,'size_pros','id_pro','id_size');
     // }
+
+    	
+
+
 }

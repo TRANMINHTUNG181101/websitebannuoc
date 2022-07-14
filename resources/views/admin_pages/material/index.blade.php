@@ -14,27 +14,34 @@
                 </script>
             </div>
         @endif
-
-        {{-- @if (session('success_del_mal'))
+        @if (session('success_del_mal'))
             <div class="show-alert-del-succes">
                 <script type="text/javascript">
-                    Swal.fire({
-                        title: 'Xoá thành công!',
-                        // text: 'Xoá thành công',
-                        icon: 'success',
-                        timer: 2000
+                    $(document).ready(function() {
+                        Swal.fire({
+                            title: 'Xoá thành công!',
+                            icon: 'success',
+                            timer: 2000
+                        });
                     });
                 </script>
             </div>
-        @endif --}}
-        {{ Session::forget('success_add_mal') }}
+        @endif
+        @if (session('success_edit_mal'))
+            <div class="show-alert-del-succes">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        Swal.fire({
+                            title: 'Thay đổi thành công!',
+                            icon: 'success',
+                            timer: 2000
+                        });
+                    });
+                </script>
+            </div>
+            <input id="result_edit" value="thanh cong" hidden>
+        @endif
 
-        <?php
-        // session_start();
-        // unset($_SESSION['success_add_mal']);
-        // unset($_SESSION['success_del_mal']);
-        // session_destroy();
-        ?>
 
     </div>
 
@@ -67,7 +74,7 @@
                     <th>THAO TÁC</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="showind">
                 <?php $i = 1; ?>
                 @foreach ($nglieu as $item)
                     <tr style="font-weight: bold">
@@ -78,16 +85,28 @@
                         <td> <img style="widtd:100px;height:150px"
                                 src="{{ asset('uploads/materials/' . $item->hinh_anh) }}"></td>
 
-                        <td>{{ $item->so_luong }}</td>
+                        <td>
+                            <?php
+                            if ($item->so_luong == 0) {
+                                echo '<h4 style="background-color:red;color:white">' . $item->so_luong . '</h4>';
+                            }
+                            if ($item->so_luong > 1 && $item->so_luong < 50) {
+                                echo '<h4 style="background-color:yellow;color:white">' . $item->so_luong . '</h4>';
+                            }
+                            if ($item->so_luong > 50) {
+                                echo '<h4 style="background-color:green;color:white">' . $item->so_luong . '</h4>';
+                            }
+                            ?>
+                        </td>
                         <td>{{ $item->don_vi_nglieu }}</td>
-                        <td>{{ $item->ngay_nhap }}</td>
-                        <td>{{ $item->ngay_het_han }}</td>
+                        <td>{{ date('d/m/Y', $item->ngay_nhap) }}</td>
+                        <td>{{ date('d/m/Y', $item->ngay_het_han) }}</td>
                         <td>{{ $item->trang_thai }}</td>
                         <td>
                             <a href="{{ route('material.delete', $item->id) }}"><i class="fa fa-trash"
-                                style="width: 16px;height: 16px;color:red"></i></a>
+                                    style="width: 16px;height: 16px;color:red"></i></a>
                             <a href="{{ route('material.editview', $item->slug) }}"><i class="fa fa-edit"
-                                style="width: 16px;height: 16px;color:green"></i></a>
+                                    style="width: 16px;height: 16px;color:green"></i></a>
                         </td>
                     </tr>
                 @endforeach
@@ -101,7 +120,10 @@
             }
         </style>
     </div>
-
+    {{ Session::forget('success_add_mal') }}
+    {{ Session::forget('success_edit_mal') }}
+    {{ Session::forget('success_del_mal') }}
+   
 
     <!-- Modal Add new materials-->
     <div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel" aria-hidden="true">

@@ -18,7 +18,7 @@ class CreateSizeProsTable extends Migration
             $table->unsignedInteger('id_pro');
             $table->integer('id_size')->unsigned();
             $table->timestamps();
-            $table->foreign('id_pro')->references('id')->on('products');
+            $table->foreign('id_pro')->references('id')->onDelete('cascade');
             $table->foreign('id_size')->references('id')->on('sizes');
         });
     }

@@ -553,18 +553,18 @@ $(document).ready(function () {
     }
 });
 
-$(document).ready(function () {
-    $.ajax({
-        type: "post",
-        url: "/admin/showSaleDaily",
-        dataType: "json",
-        success: function (res) {
-            let moneyDaily = res.today;
-            document.getElementById("numberMoney").innerHTML =
-                moneyDaily.toLocaleString();
-        },
-    });
-});
+// $(document).ready(function () {
+//     $.ajax({
+//         type: "post",
+//         url: "/admin/showSaleDaily",
+//         dataType: "json",
+//         success: function (res) {
+//             let moneyDaily = res.today;
+//             document.getElementById("numberMoney").innerHTML =
+//                 moneyDaily.toLocaleString();
+//         },
+//     });
+// });
 
 //set default day export
 $(document).ready(function () {
@@ -641,7 +641,7 @@ $(document).ready(function () {
 
     var getLength = ar.length;
     var strURl = ar[getLength - 1];
-   
+
     var urlp = strURl.split("?");
     var getLength = ar.length;
     // //get parameters last
@@ -656,7 +656,7 @@ $(document).ready(function () {
     for (var i = 0; i < li.length; i++) {
         var getStr = li[i].innerText;
         var str = toSlug(getStr);
-        if (str == strURl||str == urlPage) {
+        if (str == strURl || str == urlPage) {
             $("li:eq(" + i + ")").addClass("active");
         }
     }
@@ -691,16 +691,88 @@ function toSlug(str) {
     return str;
 }
 
-const dropdownMenuButton = document.querySelector('#dropdownMenuButton')
-dropdownMenuButton.addEventListener('click', () => {
-    document.querySelector('.dropdown-menu').classList.toggle('show');
-})
-// $('.dropdown-toggle-menu').dropdown('toggle');dropdownMenuButton
-
-
-
-
-$('.dropdown-toggle-menu').click(function (e) { 
-    e.preventDefault();
-    
+//show more dropdown info account
+$(document).ready(function () {
+    const dropdownMenuButton = document.querySelector("#dropdownMenuButton");
+    dropdownMenuButton.addEventListener("click", () => {
+        document.querySelector(".dropdown-menu").classList.toggle("show");
+    });
 });
+
+//show modal export file exel
+$("#exportExel").click(function (e) {
+    e.preventDefault();
+    setInterval(hideExport, 3000);
+    function hideExport() {
+        $("#exportModel").modal("hide");
+    }
+});
+
+// *** (month and year only) ***
+$(document).ready(function () {
+    $("#datepickyear").datepicker({
+        format: "yyyy",
+        viewMode: "years",
+        minViewMode: "years",
+        autoclose: true, //to close picker once year is selected
+    });
+
+    //set year defaul
+    var yearcurr = new Date().getFullYear();
+    document.getElementById("datepickyear").val = yearcurr;
+});
+
+//search products live use ajax
+$("#keysearch_product").on("keyup", function () {
+    $value = $(this).val();
+    $.ajax({
+        type: "get",
+        url: "/admin/tim-kiem-san-pham",
+        data: {
+            search: $value,
+        },
+        success: function (data) {
+            $("#indexpro").html("");
+            $("#indexpro").html(data);
+            console.log(data);
+        },
+    });
+});
+
+//update status product (show or hide)
+$(".btnstatus").click(function (e) {
+    e.preventDefault();
+    var idchange = $(this).val();
+    $.ajax({
+        type: "post",
+        url: "/admin/cap-nhat-trang-thai",
+        data: {
+            id: idchange,
+        },
+        dataType: "json",
+        success: function (response) {
+            location.reload();
+            toastr.success("Thay đổi trạng thái thành công");
+        },
+    });
+});
+
+//set money buy products daily
+$(document).ready(function () {
+    $.ajax({
+        type: "get",
+        url: "/admin/get-sales",
+        dataType: "json",
+        success: function (response) {
+            document.getElementById("numberMoney").innerHTML = response.data;
+        },
+    });
+});
+
+//test image
+$(document).ready(function () {
+    // var image='<img src="'+"{{asset('uploads/product/1657402889.png')}}"+'">';
+    document.getElementById("test-image").innerHTML = image;
+});
+
+

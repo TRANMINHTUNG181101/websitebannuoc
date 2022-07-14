@@ -140,25 +140,54 @@ return [
     |
     */
     'custom' => [
+
+        //nguyên liệu
         'MaterialName' => [
-            'required' => 'Ban chua nhap ten nguyen lieu!',
+            'required' => 'Bạn chưa nhập tên nguyên liệu!',
+            'max' => "chỉ tối đa 255 ký tự"
         ],
         'MaterialQuantily' => [
-            'required' => 'Ban chua nhap sp luong!',
-            'min' => 'Khong duoc nhap so am'
+            'required' => 'Bạn chưa nhập số lượng!',
+            'min' => 'Không được nhập số âm',
+            'integer' => 'Chỉ được kiểu số nguyên dương'
         ],
         'ImportPrice' => [
-            'required' => 'Ban chua nhap gia!',
-            'min' => 'Khong duoc nhap so am'
+            'required' => 'Bạn chưa nhập giá !',
+            'min' => 'Không được nhập số âm',
+            'integer' => 'Chỉ được kiểu số nguyên dương'
         ],
-         'ExpiredDate' => [
-            'required' => 'Ban chua nhap ngay het han!',
-         ],
-         'MaterialImage' =>[
-            'required' => 'Ban chua chon hinh anh',
+        'ExpiredDate' => [
+            'required' => 'Bạn chưa nhập ngày hết hạn!',
+        ],
+        'MaterialImage' => [
+            'required' => 'Bạn chưa chọn hình ảnh',
+            'image' => 'Chỉ được file jpeg,png,jpg,gif,svg',
+            'max' => "tối đa file 100000"
+        ],
 
-         ]
 
+        //sản phẩm
+        'ten_spham' => [
+            'required' => 'Bạn chưa nhập tên sản phẩm',
+            'max' => "chỉ tối đa 255 ký tự",
+        ],
+        'ProductImage' => [
+            'required' => 'Bạn chưa chọn hình ảnh',
+            'image' => 'Chỉ được file jpeg,png,jpg,gif,svg',
+            'max' => "tối đa file 100000"
+        ],
+        'giaban' => [
+            'required' => 'Bạn chưa nhập giá !',
+            'min' => 'Không được nhập số âm',
+            'integer' => 'Chỉ được kiểu số nguyên dương'
+        ],
+        'conten_edit' =>[
+            'required' => 'Bạn chưa nhập nội dung sản phẩm',
+        ],
+        'description_edit' =>[
+            'required' => 'Bạn chưa nhập nội dung sản phẩm',
+        ],
+        
     ],
 
     /*
