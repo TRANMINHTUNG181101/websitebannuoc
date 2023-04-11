@@ -122,19 +122,25 @@ class RoleController extends Controller
     }
     public function update(Request $req)
     {
-        $req->validate([
-            'email' => 'required|email|max:255',
-            'ten' => 'required|max:255',
-            'dienthoai' => 'required|max:10',
-        ]);
+
+        // $req->validate([
+        //     'email' => 'required|email|max:255',
+        //     'ten' => 'required|max:255',
+        //     'dienthoai' => 'required|max:10',
+        // ]);
 
         $id = $req->id_nv;
         $getStaff = User::find($id);
+
         $getStaff->name_staff = $req->ten_nv;
         $getStaff->email = $req->email_nv;
         $getStaff->phone_number = $req->sdt_nv;
         $getStaff->type_account = $req->typeaccount;
-        $getStaff->save();
+
+        $status = $getStaff->save();
+        var_dump($status);
+        $status = $getStaff->save();
+
         session()->put('update_success', true);
         return redirect('admin/phan-quyen');
     }

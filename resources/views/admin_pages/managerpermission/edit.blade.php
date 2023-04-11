@@ -3,9 +3,9 @@
     <div class="title-edit-show">
         <h3>SỬA NHÂN VIÊN</h3>
     </div>
-
+{{-- {{ route('staff.edithandle', $staff->id) }} --}}
     <div class="content-edit-show showind">
-        <form action="{{ route('staff.edithandle', $staff->id) }}" method="post" enctype="multipart/form-data">
+        <form action="http://127.0.0.1:8000/admin/phan-quyen/sua-nv/{{ ($staff->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="">
                 <div class="form-edit-left">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="type-account">
                         <label for="">Chọn loại tài khoản</label>
-                        <select name="typeaccount" id="">
+                        <select name="typeaccount" id="typeaccount">
                             @foreach ($typeAcc as $value)
                                 @if ($value->id == $staff->type_account)
                                     <option value="{{ $value->id }}"selected="selected"> {{ $value->type_account }}
@@ -52,8 +52,10 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-success" style="margin-left: 200px">Lưu thay đổi</button>
+                    <button type="submit" id='btnSubmit' class="btn btn-success" style="margin-left: 200px">Lưu thay đổi</button>
         </form>
 
     </div>
+
 @endsection
+

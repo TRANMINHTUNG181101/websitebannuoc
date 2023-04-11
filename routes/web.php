@@ -78,7 +78,7 @@ Route::group(['middleware' => ['checkrole', 'auth']], function () {
 });
 
 
-//manager material use  
+//manager material use
 Route::group(['middleware' => ['checkrole', 'auth']], function () {
     Route::get('/admin/quan-ly-nguyen-lieu-su-dung', 'ManagerMaterialUseController@index')->name('quanlysudungnglieu');
     Route::get('admin/add-material-use', 'ManagerMaterialUseController@add')->name('mmu.addview');
@@ -146,7 +146,7 @@ Route::group(['middleware' => ['checkrole', 'auth']], function () {
 //auth
 
 
-// Route::get('/fetchData','ProductController@sendData');   
+// Route::get('/fetchData','ProductController@sendData');
 // Route::get('/admin/them-nguyen-lieu-ajax', 'MaterialController@addMaterialViewAjax');
 // Route::post('/admin/them-nguyen-lieu-ajax1', 'MaterialController@addMaterialHandleAjax');
 // Route::get('/register', 'RegisterController@showFormRegister')->name('auth.register');
@@ -218,7 +218,7 @@ Route::group(['middleware' => ['auth', 'checkrole']], function () {
 });
 
 
-// gioi thieu 
+// gioi thieu
 
 Route::get('intro', 'AdminController@getIntro')->name('get.intro');
 Route::post('saveintro', 'AdminController@saveIntro')->name('save.intro');
@@ -307,7 +307,7 @@ Route::post('sendallMail', 'AdminController@sendmailAll')->name('sendmail.all.co
 Route::group(['namespace' => 'frontend'], function () {
     //trang chủ
     Route::get('/', 'HomeController@index')->name('get.home');
-    //quickview 
+    //quickview
     Route::post('/quickview', 'HomeController@quickView')->name('quickview');
 
     //giỏ hàng
@@ -320,7 +320,7 @@ Route::group(['namespace' => 'frontend'], function () {
 
     Route::get('/delCart', 'CartController@delCart')->name('testdl');
 
-    //cart update 
+    //cart update
     Route::post('/upCart', 'CartController@upCart')->name('get.upCart');
     Route::post('/pupCart', 'CartController@postupCart')->name('postup.cart');
     Route::post('/checkout', 'CartController@postPay')->name('post.checkout');
@@ -403,7 +403,7 @@ Route::group(['namespace' => 'frontend'], function () {
 
 
 
-    //đăng kí 
+    //đăng kí
     Route::get('register', 'RegisterController@index')->name('get.register');
     Route::post('Pregister', 'RegisterController@register')->name('post.register');
     Route::get('active/{customer}/{token}', 'RegisterController@active')->name('register.active');
@@ -417,7 +417,7 @@ Route::group(['namespace' => 'frontend'], function () {
     Route::get('x', 'RegisterController@get');
 
 
-    //quên mật khẩu 
+    //quên mật khẩu
     Route::post('forgetPassword', 'LoginSocialController@loginAcc')->name('post.login');
     Route::post('forget-password', 'RegisterController@postforgetPasss')->name('post.forget');
     Route::get('/get-password/{customer}/{token}', 'RegisterController@getPass')->name('get.pass');
