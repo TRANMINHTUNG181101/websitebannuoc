@@ -5,6 +5,13 @@
 alertify.success("{{session()->get('message')}}", 1);
 </script>
 @endif
+@if(session()->has('message'))
+<script>
+window.addEventListener('load', (e) => {
+    toastr.warning("{{session()->get('message')}}");
+})
+</script>
+@endif
 <div class="container-fluid">
     <h4 class="h4 mb-2 text-gray-800 mg-tb">Quản Lý Đơn Hàng</h4>
     <div class="card shadow mb-4 ">
@@ -136,8 +143,8 @@ alertify.success("{{session()->get('message')}}", 1);
                                                     <a class="dropdown-item"
                                                         href="{{ route('get.action', ['success', $value->id])}}"><i
                                                             class="fa fa-check" aria-hidden="true"></i> Đã giao</a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('get.action', ['cancel', $value->id])}}"><i
+                                                    <a class="dropdown-item" id="cancel-order"
+                                                        href="{{ route('cancel.order', $value->id)}}"><i
                                                             class="fa fa-ban" aria-hidden="true"></i> Huỷ</a>
                                                 </div>
                                             </div>
@@ -236,6 +243,56 @@ window.onload = () => {
     const allCheckBox = document.querySelectorAll('input[name="checkdel[]"]');
     const btnDel = document.querySelector('.submitDelAll');
     const btnDropDown = document.querySelectorAll('.dropdownMenuButtonCus');
+    const cancelOrder = document.querySelector('#cancel-order');
+    cancelOrder.addEventListener('click', (e) => {
+        e.preventDefault();
+        let url = e.target.href;
+        $.confirm({
+            title: 'Huỷ đơn hàng!',
+            content: '' +
+                '<form action="" method="post" class="formName formConfirmReason"> @csrf' +
+                '<div class="form-group">' +
+                '<label>Lý do huỷ đơn hàng: </label>' +
+                '<textarea type="text" name="reason" rows="5" style="font-size:16px" class="reason form-control" required></textarea>' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                formSubmit: {
+                    text: 'Huỷ đơn',
+                    btnClass: 'btn-red',
+                    action: function() {
+                        var name = this.$content.find('.reason').val();
+                        if (!name || name === "") {
+                            $.alert('Lý do không được để trống.');
+                            return false;
+                        }
+                        let form = document.querySelector('.formConfirmReason');
+                        form.action = url;
+                        form.submit();
+                    }
+                },
+                cancel: {
+                    text: 'Đóng',
+                    btnClass: 'btn-light',
+                    action: function() {
+                        //close
+                    },
+                },
+
+            },
+            onContentReady: function() {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function(e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger(
+                        'click'); // reference the button and click it
+                });
+            }
+        });
+
+    })
     checkbox.addEventListener('change', (e) => {
         let isCheck = e.target.checked;
         allCheckBox.forEach(item => {

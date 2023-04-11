@@ -68,7 +68,7 @@
             </div>
             <div class="col-12 col-lg-auto">
                 <a href="{{route('get.user.wishlist', $product->id)}}"
-                    class="btn btn-gray btn-block mb-2 btn-wishlist">Yêu Thích <i class="fas fa-heart ml-2"></i></a>
+                    class="btn btn-theme btn-block mb-2 btn-wishlist">Yêu Thích <i class="fas fa-heart ml-2"></i></a>
             </div>
         </div>
 

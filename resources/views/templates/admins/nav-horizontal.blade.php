@@ -18,7 +18,7 @@
                 <div class="dropdown">
                     <img style="height:50px;width:50px;border-radius:50%;object-fit: cover"
                         src="{{asset('img/v2.png')}}">
-                    <button class="btn btn-secondary dropdown-toggle-menu" type="button" id="dropdownMenuButton"
+                    <button class="btn btn-secondary dropdown-toggle-menu" type="button" id="dropdownMenuButton1"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ getNameLog() }}
                     </button>

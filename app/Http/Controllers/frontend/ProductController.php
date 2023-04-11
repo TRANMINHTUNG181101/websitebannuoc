@@ -31,6 +31,15 @@ class ProductController extends Controller
         $meta = [];
         if ($slug) {
             $product = Products::where('slug', $slug)->first();
+            $discount = 0;
+            if (count($product->Coupon) > 0) {
+                if ($product->Coupon[0]->loaigiam === 1) {
+                    $discount = $product->giaban *  $product->Coupon[0]->giamgia / 100;
+                } else {
+                    $discount = $product->Coupon[0]->giamgia;
+                }
+            }
+            $product->giaban = ($product->giaban - $discount < 0) ? 0 : $product->giaban - $discount;
             $comments = Comments::where('id_sanpham', $product->id)
                 ->where('type', 'product')
                 ->where('parent_id', 0)

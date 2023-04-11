@@ -98,7 +98,7 @@ class LoginSocialController extends Controller
         $id =  get_user('customer', 'id') ? get_user('customer', 'id') : null;
 
         if ($id) {
-            $order = Order::where('id_khachhang', $id)->orderByDesc('trangthai')->get();
+            $order = Order::where('id_khachhang', $id)->orderByDesc('ngaytao')->get();
             $user = Customer::find($id);
             $wislist = Products::whereHas('wishlist', function ($query) use ($id) {
                 $query->where('id_khachhang', $id);

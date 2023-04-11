@@ -395,6 +395,7 @@ class CartController extends Controller
                     $saleStatisticals->ngay_ban = date('Y-m-d', $request->responseTime);
                     $saleStatisticals->id_don_hang = $donhang->id;
                     $saleStatisticals->tien_don_hang = $donhang['tongtien'];
+                    $saleStatisticals->trang_thai = 0;
                     $saleStatisticals->save();
                 }
                 $request->session()->forget('cart');
@@ -415,10 +416,14 @@ class CartController extends Controller
                 'order' => $orderMail,
                 'orderDetail' => $orderDetail
             ];
-            Mail::send('templates.clients.cart.mailOrder', $viewData, function ($email) use ($orderMail) {
-                $email->subject('Drinks - Web');
-                $email->to($orderMail->email, ($orderMail->hoten) ? $orderMail->hoten : "");
-            });
+            try {
+                Mail::send('templates.clients.cart.mailOrder', $viewData, function ($email) use ($orderMail) {
+                    $email->subject('Drinks - Web');
+                    $email->to($orderMail->email, ($orderMail->hoten) ? $orderMail->hoten : "");
+                });
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
     }
 
@@ -540,7 +545,7 @@ class CartController extends Controller
             $saleStatisticals = new Sale_statisticals();
 
             date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $saleStatisticals->ngay_ban = date("Y-m-d", strtotime($request->responseTime));
+            $saleStatisticals->ngay_ban = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
             $saleStatisticals->id_don_hang = $donhang->id;
             $saleStatisticals->tien_don_hang = $request->amount;
             $saleStatisticals->save();

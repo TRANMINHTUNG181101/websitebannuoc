@@ -14,6 +14,7 @@ use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\category;
 use App\Models\Province;
+use App\Models\Sale_statisticals;
 use App\Models\Sizes;
 use App\Models\Ward;
 use Carbon\Carbon;
@@ -22,6 +23,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Svg\Tag\Rect;
 
 class OrderController extends Controller
@@ -38,10 +40,10 @@ class OrderController extends Controller
                 $order = Order::where('trangthai', -1);
                 break;
             case 'success':
-                $order = Order::where('trangthai', 4);
+                $order = Order::where('trangthai', 4)->orWhere('trangthai', 5);
                 break;
             case 'process':
-                $order = Order::whereNotIn('trangthai', [1, 4, -1]);
+                $order = Order::whereNotIn('trangthai', [1, 4, -1, 5]);
                 break;
 
             default:
@@ -111,12 +113,60 @@ class OrderController extends Controller
                 case 'success':
                     $order->trangthai = 4;
                     $order->trangthaithanhtoan = 1;
+                    if (+$order->httt === 0) {
+                        Sale_statisticals::where('id_don_hang', $order->id)->update(['trang_thai' => 1]);
+                    }
                     break;
 
                 case 'cancel':
                     $order->trangthai = -1;
                     break;
             }
+            $order->save();
+        }
+        return redirect()->back();
+    }
+
+    public function calcelOrder(Request $request, $id)
+    {
+        if ($id && $request->reason) {
+            $flag =  $this->sendMail($id, $request->reason);
+            if ($flag === 1) {
+                return redirect()->route('get.order', 'all')->with('message', 'Đã huỷ đơn hàng thành công.');
+            }
+        }
+    }
+    public function sendMail($id, $reason)
+    {
+        $orderMail = Order::find($id);
+        if ($orderMail) {
+            $orderDetail = OrderDetail::where('id_donhang', $orderMail->id)->get();
+            $img_url = env('APP_URL_LINK');
+            $viewData = [
+                'img_url' => $img_url,
+                'order' => $orderMail,
+                'orderDetail' => $orderDetail,
+                'reason' => $reason
+            ];
+            try {
+                Mail::send('admin_pages.order.cancelOrder', $viewData, function ($email) use ($orderMail) {
+                    $email->subject('Drinks - Web - Huỷ đơn hàng');
+                    $email->to($orderMail->email, ($orderMail->hoten) ? $orderMail->hoten : "");
+                });
+                $orderMail->trangthai = -1;
+                $orderMail->save();
+            } catch (\Throwable $th) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    public function confirmOrder($id)
+    {
+        if ($id) {
+            $order = Order::find($id);
+            $order->trangthai = 5;
             $order->save();
         }
         return redirect()->back();
@@ -138,6 +188,8 @@ class OrderController extends Controller
 
         return redirect()->back();
     }
+
+
 
     //cập nhật đơn hàng 
     public function update($madh)

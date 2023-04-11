@@ -32,6 +32,11 @@ class Order extends Model
             'name' => 'Đã giao',
             'progress' => 'load100'
         ],
+        '5' => [
+            'class' => 'success',
+            'name' => 'Đã giao - Đã nhận',
+            'progress' => 'load100'
+        ],
         '-1' => [
             'class' => 'danger',
             'name' => 'Đã huỷ',

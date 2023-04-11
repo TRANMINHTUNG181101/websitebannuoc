@@ -39,8 +39,8 @@ return [
             'host' => 'smtp.gmail.com',
             'port' => 587,
             'encryption' => 'tls',
-            'username' => 'phanminhtri11800@gmail.com',
-            'password' => 'hmupxgqfhmbfvesa',
+            'username' => 'tranminhtung11182001@gmail.com',
+            'password' => 'kuqbfugucthpbzpx',
             'timeout' => null,
             'auth_mode' => null,
             'stream' => [

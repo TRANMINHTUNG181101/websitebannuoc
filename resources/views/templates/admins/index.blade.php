@@ -1,10 +1,9 @@
 @extends('templates.admins.layout')
 @section('content')
-
 <div class="main">
     <main class="content">
         <div class="container-fluid p-0">
-            <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
+            <!-- <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1> -->
 
             <div class="row" style="gap:20px;">
                 <div class="col show-visitor text-view-visitor" style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%
@@ -14,37 +13,36 @@
                 </div>
                 <div class="col sale-by-date text-view-visitor" id="statis-view"
                     style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold">
-                    <h3>Doanh thu hôm nay</h3><br><span style="font-size: 24px" id="numberMoney"></span> đ
+                    <h3>Doanh thu hôm nay</h3><span style="font-size: 24px" id="numberMoney"></span> đ
 
                 </div>
                 <div class="col"
-                    style="background-color: #C4DFAA;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
+                    style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
                     <h3>Sản phẩm</h3>
                     <span style="font-size: 24px">{{$countProduct}}</span>
                 </div>
                 <div class="col"
-                    style="background-color: #C4DFAA;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
+                    style="background-color: aquamarine;padding-top:30px;padding-bottom:30px;text-align:center;margin: 0%;font-weight:bold; border-radius: 16px;">
                     <h3>Đơn hàng hôm nay</h3>
                     <span style="font-size: 24px">{{$countOrder}}</span>
                 </div>
             </div>
-            <br>
-            <!-- <div class="show-chart-statis">
-                <canvas id="show-statis-by-year"></canvas>
+        </div>
+        <div class="export-file">
+            <!-- <button id="exportFile" class="btn btn-primary">xuất file exel</button> -->
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <figure class="highcharts-figure">
+                    <div id="container-staticbyyear" data-staticbyyear="{{$statisByYear}}"
+                        data-staticbyday="{{$statisByDay}}">
+                    </div>
+                </figure>
             </div>
-            <canvas class="" id="top-product-sale" style="width:100%;max-width:600px;color:black;font-weight:bold">
-            </canvas> -->
-
-
-            <div class="show-doanh-thu" id="showdoanhthu">
-                <h3 id="showdoanhso"></h3>
-            </div>
-            <div class="export-file">
-                <button id="exportFile">Xuất file exel</button>
-            </div>
-            <div class="test-url">
-
-
+            <div class="col-12">
+                <figure class="highcharts-figure">
+                    <div id="container-topproduct" data-topproduct="{{$topproduct}}"></div>
+                </figure>
             </div>
         </div>
     </main>
@@ -103,9 +101,9 @@
         </div>
     </div>
 </div>
-
 @section('script')
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts.js">
+</script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
@@ -227,3 +225,5 @@ Highcharts.chart('container-staticbyyear', {
     }
 });
 </script>
+@stop
+@stop

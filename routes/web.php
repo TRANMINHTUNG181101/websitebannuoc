@@ -176,6 +176,8 @@ Route::group(['middleware' => ['salestaff', 'checkrole', 'auth']], function () {
     Route::get('update/{madh}', 'OrderController@update')->name('get.update');
     Route::get('actionPayment/{action}/{id}', 'OrderController@actionPayment')->name('get.actionPayment');
     Route::get('print-order/{madh}', 'OrderController@print_order')->name('print.order');
+    Route::post('cancel-order/{id}', 'OrderController@calcelOrder')->name('cancel.order');
+    Route::get('confirm-order/{id}', 'OrderController@confirmOrder')->name('confirm.order');
     Route::post('dels', 'OrderController@dels')->name('dels');
     // tao mo don hang
     Route::get('createOrder', 'OrderController@createOrder')->name('create.order');
@@ -207,6 +209,9 @@ Route::group(['middleware' => ['auth', 'checkrole']], function () {
     Route::get('detailCoupon/{id}', 'CouponController@detailCoupon')->name('get.detail.coupon');
     Route::get('edit/{id}', 'CouponController@edit')->name('get.edit');
     Route::post('editpost/{id}', 'CouponController@editpost')->name('edit.coupon');
+    Route::post('editpost/{id}', 'CouponController@editpost')->name('edit.coupon');
+    Route::get('show-coupon/{id}', 'CouponController@showCoupon')->name('show.coupon');
+    Route::get('active-coupon/{id}', 'CouponController@activeCoupon')->name('active.coupon');
     Route::get('getCategoryPromo', 'CouponController@getCategoryPromo');
     Route::get('getProductPromo', 'CouponController@getProductPromo');
     Route::get('getListData', 'CouponController@getListData');

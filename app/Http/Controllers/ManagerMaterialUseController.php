@@ -57,24 +57,22 @@ class ManagerMaterialUseController extends Controller
         if ($getData->count() == 0) {
             session()->put('errors_add', 'nguyên liệu không tồn tại');
             return view('admin_pages.managerMaterialUse.add');
-        } 
-        else {
+        } else {
             $newmmu->don_gia = $getmmu->gia_nhap;
             $newmmu->id_nguyen_lieu = $getmmu->id;
             session()->forget('add_mmu');
             //update quality material
             $qualityCurrent =  $getmmu->so_luong;
-            if ($qualityCurrent <$request->quantymmu) {
-                session()->put('loisoluong','số lượng nhập vào lớn hơn số lượng đang có');
+            if ($qualityCurrent < $request->quantymmu) {
+                session()->put('loisoluong', 'số lượng nhập vào lớn hơn số lượng đang có');
                 return view('admin_pages.managerMaterialUse.add');
-
             }
             if ($this->checknameExists($getmmu->id)) {
-                
-                session()->put('loi_ten_ton_tai','nguyên liệu này đã có trong bảng');
+
+                session()->put('loi_ten_ton_tai', 'nguyên liệu này đã có trong bảng');
                 return view('admin_pages.managerMaterialUse.add')->with('loi_ten_ton_tai', 'nguyên liệu này đã có trong bảng');
             }
-           
+
             $newQuanty = $qualityCurrent - $request->quantymmu;
             $getmmu->so_luong = $newQuanty;
             $getmmu->save();

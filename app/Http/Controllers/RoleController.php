@@ -154,9 +154,9 @@ class RoleController extends Controller
 
         $id = $req->id_nv;
         $getStaff = User::find($id);
-        $getStaff->name_staff = $req->ten_nv;
-        $getStaff->email = $req->email_nv;
-        $getStaff->phone_number = $req->sdt_nv;
+        $getStaff->name_staff = $req->ten;
+        $getStaff->email = $req->email;
+        $getStaff->phone_number = $req->dienthoai;
         $getStaff->save();
         session()->put('update_success', true);
         return redirect('admin/phan-quyen');

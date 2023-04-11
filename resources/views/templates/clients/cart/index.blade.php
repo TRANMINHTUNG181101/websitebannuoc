@@ -84,7 +84,7 @@
                             <div class="form-group">
                                 <input class="form-control form-control-sm" require type="text"
                                     value="{{ (get_user('customer','diachi')) ?? '' }}" require name="address"
-                                    placeholder="Địa chỉ">
+                                    placeholder="Địa chỉ chi tiết">
                             </div>
                         </div>
 

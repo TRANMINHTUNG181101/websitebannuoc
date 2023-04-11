@@ -141,13 +141,13 @@ class ProductController extends Controller
 
     public function deleteProduct($id)
     {
-        $delProduct = Products::where('id',$id)->first();
+        $delProduct = Products::where('id', $id)->first();
         $image_path = "uploads/product/" . $delProduct->hinh_anh;
         if (file_exists($image_path)) {
             @unlink(public_path($image_path));
         }
 
-        $delProduct->size()->detach([1,3]);
+        $delProduct->size()->detach([1, 3]);
         $delProduct->delete();
         session()->put('success_del_pro', true);
         return redirect()->back();
@@ -158,7 +158,7 @@ class ProductController extends Controller
         $getData = Products::find($req->id);
         $statusP = $getData->trangthai;
         $newStatus = 0;
-        if ($statusP == 1) {
+        if (+$statusP === 1) {
             $newStatus = 0;
         } else {
             $newStatus = 1;
@@ -166,7 +166,7 @@ class ProductController extends Controller
         $getData->trangthai = $newStatus;
         $getData->save();
         return response()->json([
-            "data" => $req->id
+            "data" => $req->id,
         ]);
     }
     public function search(Request $request)

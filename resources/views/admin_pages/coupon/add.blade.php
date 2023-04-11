@@ -19,7 +19,7 @@
                             <label>Loại khuyến mãi</label>
                             <select name="loaikm" id="loaikm" class="form_control">
                                 <option value="1">Giảm giá cho từng sản phẩm.</option>
-                                <option value="2">Tạo mã Coupon áp dụng cho tổng đơn hàng.</option>
+                                <option value="2">Tạo mã giảm giá áp dụng cho tổng đơn hàng.</option>
                             </select>
                             @if($errors->first('loaikm'))
                             <span class="error text-danger">{{ $errors->first('loaikm') }}</span>

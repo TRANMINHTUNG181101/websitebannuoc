@@ -68,13 +68,7 @@
                             <span class="align-middle">Loại sản phẩm</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                    <li class="sidebar-item" value="material">
-                        <a class="sidebar-link" href="{{ route('showMaterial') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Nguyên liệu</span>
-                        </a>
-                    </li>
+
 
                     <li class="sidebar-item" value="product">
                         <a class="sidebar-link" href="{{ route('products.show') }}">
@@ -105,12 +99,12 @@
                             <span class="align-middle">Khách hàng</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <!-- <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('roles.show') }}">
                             <i class="align-middle" data-feather="user"></i>
                             <span class="align-middle">Phân quyền</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-header">
                         Tin tức
                     </li>
@@ -206,7 +200,6 @@
                             <span class="align-middle">Website</span>
                         </a>
                     </li>
-
                     <li class="sidebar-item" style="margin-bottom: 20px;">
                         <a class="sidebar-link" href="{{ route('get.banner') }}">
                             <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -226,12 +219,7 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-item" style="margin-bottom: 100px">
-                        <a class="sidebar-link" href="{{ route('category.show') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Loại sản phẩm</span>
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </nav>
@@ -251,7 +239,7 @@
     <script src="{!! asset('admin_asset/bootstrap-5.1.3-dist/js/bootstrap.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jquery-3.6.0.min.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/jqueryValidation.js') !!}"></script>
-
+    <script src="{!! asset('admin_asset/js/handle_web.js') !!}"></script>
     <script src="{!! asset('admin_asset/js/custom_js.js') !!}"></script>
 
     <!-- <script src="{{ asset('ckeditor/ckeditor.js') }}"></script> -->

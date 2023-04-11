@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 30, 2022 at 04:23 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Host: 127.0.0.1:3306
+-- Generation Time: Aug 25, 2022 at 02:27 AM
+-- Server version: 5.7.36
+-- PHP Version: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `web_ban_nuoc`
+-- Database: `websitebannuoc`
 --
 
 -- --------------------------------------------------------
@@ -27,16 +27,19 @@ SET time_zone = "+00:00";
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tenloai` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mota` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `hinhanh` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `categories_tenloai_unique` (`tenloai`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `categories`
@@ -47,7 +50,8 @@ INSERT INTO `categories` (`id`, `tenloai`, `slug`, `mota`, `hinhanh`, `trangthai
 (2, 'Trà Trái Cây', 'tra-trai-cay', 'trà trái cây', 'tra-trai-cay62.png', 1, NULL, NULL),
 (3, 'Đá Xay', 'da-xay', 'đá xay', 'da-xay70.png', 1, NULL, NULL),
 (4, 'Thưởng Thức Tại Nhà', 'thuong-thuc-tai-nha', 'thưởng thức tại nhà', 'thuong-thuc-tai-nha33.png', 1, NULL, NULL),
-(5, 'Bánh - Snacks', 'banh-snacks', 'Bánh', 'banh-snacks30.png', 1, NULL, NULL);
+(5, 'Bánh - Snacks', 'banh-snacks', 'Bánh', 'banh-snacks30.png', 1, NULL, NULL),
+(7, 'ca phe hoa tan', 'ca-phe-hoa-tan', 'day la co phe hoa tan', '1656664050.jpg', 1, '2022-07-01 01:27:30', '2022-07-01 01:27:30');
 
 -- --------------------------------------------------------
 
@@ -55,60 +59,59 @@ INSERT INTO `categories` (`id`, `tenloai`, `slug`, `mota`, `hinhanh`, `trangthai
 -- Table structure for table `comments`
 --
 
-CREATE TABLE `comments` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE IF NOT EXISTS `comments` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `noidung` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ngaybl` datetime NOT NULL,
   `id_sanpham` int(10) UNSIGNED DEFAULT NULL,
   `id_baiviet` int(10) UNSIGNED DEFAULT NULL,
   `id_khachhang` int(10) UNSIGNED NOT NULL,
-  `parent_id` int(11) NOT NULL DEFAULT 0,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
   `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `trangthai` int(11) NOT NULL DEFAULT 1,
+  `trangthai` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_khachhang` (`id_khachhang`),
+  KEY `id_sanpham` (`id_sanpham`),
+  KEY `id_post` (`id_baiviet`)
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `comments`
 --
 
 INSERT INTO `comments` (`id`, `noidung`, `ngaybl`, `id_sanpham`, `id_baiviet`, `id_khachhang`, `parent_id`, `type`, `trangthai`, `created_at`, `updated_at`) VALUES
-(11, 'ngon', '2022-03-02 13:10:59', 2, NULL, 2, 0, 'product', 1, '2022-03-01 23:10:59', '2022-03-01 23:10:59'),
-(12, 'ngon', '2022-03-02 13:11:04', 2, NULL, 2, 0, 'product', 1, '2022-03-01 23:11:04', '2022-03-01 23:11:04'),
-(13, 'ngon hơn', '2022-03-02 13:15:05', 2, NULL, 2, 0, 'product', 1, '2022-03-01 23:15:05', '2022-03-01 23:15:05'),
-(14, 'dữ quá', '2022-03-02 13:15:11', 2, NULL, 2, 13, 'product', 1, '2022-03-01 23:15:11', '2022-03-01 23:15:11'),
-(15, 'dữ quá', '2022-03-02 13:15:16', 2, NULL, 2, 13, 'product', 1, '2022-03-01 23:15:16', '2022-03-01 23:15:16'),
-(16, 'hihi', '2022-03-02 13:16:53', 2, NULL, 2, 13, 'product', 1, '2022-03-01 23:16:53', '2022-03-01 23:16:53'),
-(25, 'hi', '2022-03-02 13:20:38', 2, NULL, 2, 11, 'product', 1, '2022-03-01 23:20:39', '2022-03-01 23:20:39'),
-(26, 'sdfsfsd', '2022-03-02 13:20:42', 2, NULL, 2, 12, 'product', 1, '2022-03-01 23:20:42', '2022-03-01 23:20:42'),
-(27, 'sadfdfs', '2022-03-02 13:20:44', 2, NULL, 2, 12, 'product', 1, '2022-03-01 23:20:44', '2022-03-01 23:20:44'),
-(28, 'sdfasfasdfa gẻ agrerg', '2022-03-02 13:20:47', 2, NULL, 2, 12, 'product', 1, '2022-03-01 23:20:47', '2022-03-01 23:20:47'),
-(29, 'hjkhjkj', '2022-03-02 13:20:51', 2, NULL, 2, 0, 'product', 1, '2022-03-01 23:20:51', '2022-03-01 23:20:51'),
-(30, 'ngon quá', '2022-03-04 12:23:46', 3, NULL, 2, 0, 'product', 1, '2022-03-03 22:23:46', '2022-03-03 22:23:46'),
-(31, 'ngon quá ngon quá', '2022-03-04 12:23:57', 3, NULL, 2, 30, 'product', 1, '2022-03-03 22:23:57', '2022-03-03 22:23:57'),
-(32, 'hihi', '2022-03-04 12:24:04', 3, NULL, 2, 30, 'product', 1, '2022-03-03 22:24:04', '2022-03-03 22:24:04'),
-(33, 'sdadfasfasd', '2022-03-04 12:24:09', 3, NULL, 2, 30, 'product', 1, '2022-03-03 22:24:09', '2022-03-03 22:24:09'),
-(34, 'ngon quáfsadfsadfsadfs', '2022-03-04 12:24:13', 3, NULL, 2, 0, 'product', 1, '2022-03-03 22:24:13', '2022-03-03 22:24:13'),
-(36, 'hi', '2022-03-06 11:00:18', NULL, 2, 2, 35, 'post', 1, '2022-03-05 21:00:18', '2022-03-05 21:00:18'),
-(37, 'hay quá', '2022-03-06 11:01:30', NULL, 2, 2, 35, 'post', 1, '2022-03-05 21:01:30', '2022-03-05 21:01:30'),
-(38, 'kljkl', '2022-03-06 11:02:00', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:02:00', '2022-03-05 21:02:00'),
-(39, 'dfds', '2022-03-06 11:04:29', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:04:29', '2022-03-05 21:04:29'),
-(40, 'hfgh', '2022-03-06 11:06:34', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:06:34', '2022-03-05 21:06:34'),
-(41, 'hfgh', '2022-03-06 11:06:38', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:06:38', '2022-03-05 21:06:38'),
-(42, 'hfgh', '2022-03-06 11:06:39', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:06:39', '2022-03-05 21:06:39'),
-(43, 'hfgh', '2022-03-06 11:06:39', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:06:39', '2022-03-05 21:06:39'),
-(44, 'sàdf', '2022-03-06 11:07:09', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:07:09', '2022-03-05 21:07:09'),
-(45, 'sàdf', '2022-03-06 11:07:11', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:07:11', '2022-03-05 21:07:11'),
-(46, 'sàdf', '2022-03-06 11:08:08', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:08:08', '2022-03-05 21:08:08'),
-(47, 'fghgf', '2022-03-06 11:44:20', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:44:20', '2022-03-05 21:44:20'),
-(48, 'hh', '2022-03-06 11:44:25', NULL, 2, 2, 38, 'post', 1, '2022-03-05 21:44:25', '2022-03-05 21:44:25'),
-(49, 'dfghhg', '2022-03-06 11:44:28', NULL, 2, 2, 38, 'post', 1, '2022-03-05 21:44:28', '2022-03-05 21:44:28'),
-(50, 'fasdf', '2022-03-06 11:46:24', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:46:24', '2022-03-05 21:46:24'),
-(51, 'hihih', '2022-03-06 11:46:27', NULL, 2, 2, 0, 'post', 1, '2022-03-05 21:46:27', '2022-03-05 21:46:27'),
-(52, 'fasdfa', '2022-03-06 11:46:30', NULL, 2, 2, 51, 'post', 1, '2022-03-05 21:46:30', '2022-03-05 21:46:30'),
-(53, 'hay quá\nsdfsdf', '2022-03-06 11:51:10', NULL, 3, 2, 0, 'post', 1, '2022-03-05 21:51:10', '2022-03-05 21:51:10'),
-(54, 'oa oa', '2022-03-06 11:51:19', NULL, 3, 2, 53, 'post', 1, '2022-03-05 21:51:19', '2022-03-05 21:51:19');
+(95, 'OK', '2022-08-24 15:04:05', NULL, 2, 44, 0, 'post', 1, '2022-08-24 01:04:05', '2022-08-24 01:04:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact`
+--
+
+DROP TABLE IF EXISTS `contact`;
+CREATE TABLE IF NOT EXISTS `contact` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `ten` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `tieude` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `noidung` text COLLATE utf8_unicode_ci NOT NULL,
+  `trangthai` int(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `contact`
+--
+
+INSERT INTO `contact` (`id`, `ten`, `email`, `tieude`, `noidung`, `trangthai`, `created_at`, `updated_at`) VALUES
+(1, 'Phan Minh Trí', 'phanminhtri11800@gmail.com', 'hoi dap', 'hoi dap noi dung ne', 1, '2022-06-16 05:59:53', '2022-07-01 17:43:12'),
+(3, 'Phan Minh Trí', '0306181377@caothang.edu.vn', 'hoi dap', 'hoi dap noi dung ne', 1, '2022-06-16 05:59:53', '2022-07-01 17:43:12'),
+(12, 'tri', 'phanminhtri11800@gmail.com', 'hoi dap', 'a', 1, '2022-07-01 21:14:03', '2022-07-09 08:08:59');
 
 -- --------------------------------------------------------
 
@@ -116,33 +119,36 @@ INSERT INTO `comments` (`id`, `noidung`, `ngaybl`, `id_sanpham`, `id_baiviet`, `
 -- Table structure for table `coupon`
 --
 
-CREATE TABLE `coupon` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `coupon`;
+CREATE TABLE IF NOT EXISTS `coupon` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ten` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `hinhanh` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `code` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mota` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  `ngaybd` datetime NOT NULL,
-  `ngaykt` datetime NOT NULL,
+  `ngaybd` date NOT NULL,
+  `ngaykt` date NOT NULL,
   `giamgia` int(11) NOT NULL,
   `dieukien` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `loaigiam` int(11) NOT NULL,
-  `trangthai` int(11) NOT NULL DEFAULT 0,
+  `hienthi` int(11) NOT NULL DEFAULT '0',
+  `trangthai` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `coupon`
 --
 
-INSERT INTO `coupon` (`id`, `ten`, `hinhanh`, `code`, `mota`, `ngaybd`, `ngaykt`, `giamgia`, `dieukien`, `loaigiam`, `trangthai`, `created_at`, `updated_at`) VALUES
-(1, 'Giảm 30% cho tổng đơn hàng.', '6951107.jpg', 'GIAM30', 'giam 30% khi mua cac san pham thuoc danh muc tra trai cay', '2022-05-29 00:00:00', '2022-06-04 00:00:00', 12, '2', 1, 1, NULL, '2022-05-29 05:11:31'),
-(2, 'Giảm 10.00đ cho đơn hàng.', '4571231.jpg', 'GIAM10NGHIN', 'giam 10 nghin cho cac san pham mang ve', '2022-05-29 00:00:00', '2022-06-04 00:00:00', 10000, '2', 2, 1, NULL, '2022-05-29 00:49:37'),
-(3, 'Khuyến mãi tháng 5.', '5923285.jpg', 'GOJ8M5YX5E', 'day la khuyen mai', '2022-04-25 18:10:00', '2022-05-07 18:10:00', 10000, '2', 2, 2, '2022-04-25 04:21:02', '2022-05-30 06:51:26'),
-(4, 'Giảm 100% đơn hàng.', NULL, 'KA1EOVKCY6', 'dfasdfasdfsdafsdf', '2022-04-25 00:00:00', '2022-05-22 00:00:00', 100, '2', 1, 2, '2022-04-25 04:43:50', '2022-05-30 06:51:26'),
-(9, 'khuyen mai thang 12 khi mua cac san pham sau', '4905871.jpg', NULL, 'dsfasd', '2022-05-29 00:00:00', '2022-06-11 00:00:00', 10000, '1', 2, 1, '2022-05-19 06:29:44', '2022-05-29 00:59:09'),
-(10, 'khuyen mai thang 12 khi mua cac san pham sau1', NULL, NULL, 'dfggdfsg', '2022-05-19 00:00:00', '2022-05-28 00:00:00', 60, '1', 1, 2, '2022-05-19 07:24:17', '2022-05-30 06:51:26');
+INSERT INTO `coupon` (`id`, `ten`, `hinhanh`, `code`, `mota`, `ngaybd`, `ngaykt`, `giamgia`, `dieukien`, `loaigiam`, `hienthi`, `trangthai`, `created_at`, `updated_at`) VALUES
+(10, 'Khuyen mai thang 6', '7831320.jpg', NULL, 'dfggdfsg', '2022-06-05', '2022-07-30', 60, '1', 1, 1, 2, '2022-05-19 07:24:17', '2022-08-24 00:57:48'),
+(12, 'Giảm giá tháng 7.1', '4747366.jpg', '3T9J7V8Q2N', 'Giảm giá 10000 cho mỗi đơn hàng.', '2022-07-01', '2022-07-30', 10000, '2', 2, 1, 2, '2022-06-30 20:09:07', '2022-08-24 00:57:48'),
+(13, 'Khuyến mãi tháng 7 cho từng sản phẩm', '9742219.jpg', NULL, 'Khuyến mãi với các sản phẩm và phê và nước trái cây.', '2022-07-01', '2022-07-30', 2000, '1', 2, 1, 2, '2022-06-30 20:11:04', '2022-08-24 00:57:48'),
+(14, 'Khuyễn mãi giảm 10%', '4114106.jpg', 'E0IO3JQLW3H', 'khuyen mai', '2022-07-01', '2022-07-30', 10, '2', 1, 1, 2, '2022-06-30 20:43:39', '2022-08-24 00:57:48'),
+(16, 'Khuyễn mãi cho toàn bộ khách hàng', '7012063.jpg', 'FIT4TAFH2J', 'Đây là khuyễn mãi cho toàn bộ khách hàng.', '2022-07-05', '2022-07-30', 2000, '2', 2, 1, 2, '2022-07-04 21:08:12', '2022-08-24 00:57:48'),
+(17, 'Khuyễn mãi cho khách hàng thành viên 2', '7437879.jpeg', 'ECNS6RGAN7', 'Đây là khuyễn mãi mới cho khách hàng thành viên.', '2022-07-05', '2022-07-26', 10000, '2', 2, 0, 2, '2022-07-04 21:09:01', '2022-08-24 00:57:48');
 
 -- --------------------------------------------------------
 
@@ -150,8 +156,9 @@ INSERT INTO `coupon` (`id`, `ten`, `hinhanh`, `code`, `mota`, `ngaybd`, `ngaykt`
 -- Table structure for table `customers`
 --
 
-CREATE TABLE `customers` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `customers`;
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ten` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sodienthoai` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `diachi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -160,18 +167,23 @@ CREATE TABLE `customers` (
   `id_social` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type_social` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `customers_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `customers`
 --
 
 INSERT INTO `customers` (`id`, `ten`, `sodienthoai`, `diachi`, `email`, `password`, `id_social`, `type_social`, `token`, `trangthai`, `created_at`, `updated_at`) VALUES
-(2, 'Phan Minh Trí', '0334202221', 'Long an 1', 'phanminhtri11800@gmail.com', '$2y$10$x0t/rsxDwxfk7wju/ezEbeHmSqL/SzEUL7qoxFasbe4linzVHYkru', '112318135447223833110', 'google', NULL, 1, '2022-02-19 00:14:45', '2022-05-07 19:58:30'),
-(4, NULL, NULL, NULL, 'trip6013@gmail.com', '$2y$10$DzbGDQEAdr.yw5EsBZAbZ.TchzMF37..pKvSh0fEZO18svJ/FWOlO', NULL, NULL, 'EEzmuvggxhUQUBUew9XIQVbVrY4kY5UgBTu1gR62', 1, '2022-03-03 22:14:52', '2022-03-03 22:14:52');
+(40, 'Phan Minh Trí 12', NULL, 'Đường 1', 'triminhphan11800@gmail.com', '$2y$10$bHNjOTr0Ryv1y766vS15l.hODLMPpjL8Qqhg/2kZgVb4c430GgAsi', '103484945868798501416', 'google', NULL, 1, '2022-07-13 22:00:05', '2022-07-20 20:59:44'),
+(42, 'PMT', '', NULL, '0306181377@caothang.edu.vn', '$2y$10$e.UrRIbYI1wypkj5NvTY2eAaesmprlfMybyAPbvKQl5ba8dK6RydG', NULL, NULL, NULL, 1, '2022-07-20 14:19:27', '2022-08-24 00:59:11'),
+(43, 'do nguyen', '0328369701', 'thủ đức, tp HCM', 'phanminhtri11800@gmail.com', '$2y$10$qAoqoOsWwFwhmq8kJa8tPuNhasSrq1vjhENh1xtLFbiH2vXTQHPkO', NULL, NULL, NULL, 2, '2022-07-20 19:34:51', '2022-08-24 00:59:02'),
+(44, 'Nguyễn Khánh TV', NULL, NULL, 'kq909981@gmail.com', '$2y$10$w4aGDp601xc/Zz8KycFSmOE9GBA1SlMSP/zt7.gNTtF6u.4qQ2kLW', NULL, NULL, '4IM2504UEHksaraeOlcK04re00gXw8OyLiv4LEc2', 1, '2022-08-23 23:19:08', '2022-08-23 23:24:01'),
+(45, 'Nguyễn Thị Quỳnh Như', NULL, NULL, 'user@gmail.com', '$2y$10$C7470EWT6ilZjRynggCpLu4SOic76oORCJ3Yxl2W9O4cL4H2iEVcS', NULL, NULL, 'nCcgVOuCNgqzuZg7HxYm6Nc7IwAEZ7Z4D7krM9Rr', 1, '2022-08-24 17:30:59', '2022-08-24 17:31:39');
 
 -- --------------------------------------------------------
 
@@ -179,15 +191,17 @@ INSERT INTO `customers` (`id`, `ten`, `sodienthoai`, `diachi`, `email`, `passwor
 -- Table structure for table `district`
 --
 
-CREATE TABLE `district` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `district`;
+CREATE TABLE IF NOT EXISTS `district` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `district_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `district_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `district_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `province_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=714 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `district`
@@ -915,14 +929,17 @@ INSERT INTO `district` (`id`, `district_code`, `district_name`, `district_type`,
 -- Table structure for table `failed_jobs`
 --
 
-CREATE TABLE `failed_jobs` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `failed_jobs`;
+CREATE TABLE IF NOT EXISTS `failed_jobs` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -931,26 +948,32 @@ CREATE TABLE `failed_jobs` (
 -- Table structure for table `feeship`
 --
 
-CREATE TABLE `feeship` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `feeship`;
+CREATE TABLE IF NOT EXISTS `feeship` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `province_id` int(11) DEFAULT NULL,
   `district_id` int(11) DEFAULT NULL,
   `ward_id` int(11) DEFAULT NULL,
   `feeship` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `trangthai` int(11) NOT NULL DEFAULT 1,
+  `trangthai` int(11) NOT NULL DEFAULT '1',
   `parent` int(1) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `feeship`
 --
 
 INSERT INTO `feeship` (`id`, `province_id`, `district_id`, `ward_id`, `feeship`, `trangthai`, `parent`, `created_at`, `updated_at`) VALUES
-(12, 79, NULL, NULL, '10000', 1, 0, '2022-05-03 20:26:15', '2022-05-03 20:26:15'),
-(13, NULL, NULL, 27595, '15000', 1, NULL, '2022-05-24 06:43:10', '2022-05-24 06:43:10'),
-(14, NULL, 785, NULL, '12000', 1, NULL, '2022-05-30 06:33:23', '2022-05-30 06:33:23');
+(12, 79, NULL, NULL, '10000', 1, 0, '2022-05-03 20:26:15', '2022-07-14 05:46:09'),
+(13, NULL, NULL, 27595, '10000', 1, NULL, '2022-05-24 06:43:10', '2022-07-09 06:56:21'),
+(14, NULL, 785, NULL, '10000', 1, NULL, '2022-05-30 06:33:23', '2022-07-14 05:46:05'),
+(15, NULL, 787, NULL, '10000', 1, NULL, '2022-07-09 06:46:01', '2022-07-09 06:46:06'),
+(16, 80, NULL, NULL, '5000', 1, 0, '2022-07-09 19:34:04', '2022-07-09 19:34:04'),
+(17, NULL, 784, NULL, '10000', 1, NULL, '2022-07-10 20:59:27', '2022-07-10 20:59:27'),
+(18, 75, NULL, NULL, '25000', 1, 0, '2022-08-24 00:58:36', '2022-08-24 00:58:36');
 
 -- --------------------------------------------------------
 
@@ -958,26 +981,56 @@ INSERT INTO `feeship` (`id`, `province_id`, `district_id`, `ward_id`, `feeship`,
 -- Table structure for table `image`
 --
 
-CREATE TABLE `image` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE IF NOT EXISTS `image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ten` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `link` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `hinhanh` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `loai` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `vitri` int(10) NOT NULL,
-  `trangthai` int(11) NOT NULL DEFAULT 1,
+  `vitri` int(10) NOT NULL DEFAULT '1',
+  `trangthai` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `image`
 --
 
 INSERT INTO `image` (`id`, `ten`, `link`, `hinhanh`, `loai`, `vitri`, `trangthai`, `created_at`, `updated_at`) VALUES
-(2, 'slide2', 'http://localhost/website_ban_nuoc/public/addSlide', '4062392.jpg', 'slide', 1, 1, '2022-05-14 06:06:32', '2022-05-24 05:50:38'),
+(2, 'slide2', 'http://localhost/website_ban_nuoc/public/addSlide', '4062392.jpg', 'slide', 3, 1, '2022-05-14 06:06:32', '2022-06-18 19:37:48'),
 (3, 'day la slide 1', NULL, '1683694.jpeg', 'slide', 2, 1, '2022-05-15 06:28:00', '2022-05-25 06:07:36'),
-(4, 'slide2', NULL, '4802648.jpeg', 'slide', 3, 1, '2022-05-24 05:50:09', '2022-05-24 06:00:07');
+(4, 'slide2', 'http://127.0.0.1:8000/products', '4802648.jpeg', 'slide', 1, 1, '2022-05-24 05:50:09', '2022-06-18 19:38:23'),
+(5, 'banner', NULL, '6863503.jpg', 'bannerHome', 1, 1, '2022-06-16 00:51:45', '2022-07-01 21:11:02'),
+(7, 'banner', NULL, '585540.jpg', 'bannerProduct', 1, 1, '2022-06-16 01:07:06', '2022-06-16 01:25:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manager_material_uses`
+--
+
+DROP TABLE IF EXISTS `manager_material_uses`;
+CREATE TABLE IF NOT EXISTS `manager_material_uses` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_nguyen_lieu` int(11) NOT NULL,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
+  `so_luong` int(11) NOT NULL,
+  `don_gia` int(11) NOT NULL,
+  `ngay_tong_ket` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `manager_material_uses`
+--
+
+INSERT INTO `manager_material_uses` (`id`, `id_nguyen_lieu`, `trang_thai`, `so_luong`, `don_gia`, `ngay_tong_ket`, `created_at`, `updated_at`) VALUES
+(49, 2, 1, 12, 20000, '2022-07-21', '2022-07-20 18:46:57', '2022-07-20 18:46:57');
 
 -- --------------------------------------------------------
 
@@ -985,8 +1038,9 @@ INSERT INTO `image` (`id`, `ten`, `link`, `hinhanh`, `loai`, `vitri`, `trangthai
 -- Table structure for table `materials`
 --
 
-CREATE TABLE `materials` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `materials`;
+CREATE TABLE IF NOT EXISTS `materials` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ten_nglieu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gia_nhap` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hinh_anh` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -994,10 +1048,21 @@ CREATE TABLE `materials` (
   `don_vi_nglieu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ngay_nhap` int(11) NOT NULL,
   `ngay_het_han` int(11) NOT NULL,
-  `trang_thai` tinyint(4) NOT NULL DEFAULT 1,
+  `slug` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `materials`
+--
+
+INSERT INTO `materials` (`id`, `ten_nglieu`, `gia_nhap`, `hinh_anh`, `so_luong`, `don_vi_nglieu`, `ngay_nhap`, `ngay_het_han`, `slug`, `trang_thai`, `created_at`, `updated_at`) VALUES
+(2, 'siro', '20000', '1658301005.jpg', 0, 'cái', 1658301005, 1658448000, 'siro', 1, '2022-07-20 00:10:05', '2022-07-20 18:46:57'),
+(3, 'sữa đặc', '12000', '1658367841.jpg', 12, 'Lon', 1658367841, 1658448000, 'sua-dac', 1, '2022-07-20 18:44:01', '2022-07-20 18:44:01'),
+(4, 'CAm', '15000', '1661327759.jpg', 10, 'ký', 1661327759, 1671321600, 'cam', 1, '2022-08-24 00:55:59', '2022-08-24 00:55:59');
 
 -- --------------------------------------------------------
 
@@ -1005,13 +1070,15 @@ CREATE TABLE `materials` (
 -- Table structure for table `material_units`
 --
 
-CREATE TABLE `material_units` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `material_units`;
+CREATE TABLE IF NOT EXISTS `material_units` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ten_don_vi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trang_thai` tinyint(4) NOT NULL DEFAULT 1,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `material_units`
@@ -1028,26 +1095,27 @@ INSERT INTO `material_units` (`id`, `ten_don_vi`, `trang_thai`, `created_at`, `u
 -- Table structure for table `menu_posts`
 --
 
-CREATE TABLE `menu_posts` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `menu_posts`;
+CREATE TABLE IF NOT EXISTS `menu_posts` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tendanhmuc` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mota` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hinhanh` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `menu_posts_tendanhmuc_unique` (`tendanhmuc`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `menu_posts`
 --
 
-INSERT INTO `menu_posts` (`id`, `tendanhmuc`, `slug`, `mota`, `hinhanh`, `trangthai`, `created_at`, `updated_at`) VALUES
-(1, 'Cà Phê', 'ca-phe', 'cà phê', NULL, 1, NULL, NULL),
-(2, 'Sự Kiện', 'su-kien', 'sự kiện', NULL, 1, NULL, NULL),
-(3, 'Khuyến Mãi', 'khuyen-mai', 'khuyến mãi', NULL, 1, NULL, NULL),
-(4, 'Tin Tức', 'tin-tuc', 'tin tức', NULL, 1, NULL, NULL);
+INSERT INTO `menu_posts` (`id`, `tendanhmuc`, `slug`, `mota`, `trangthai`, `created_at`, `updated_at`) VALUES
+(1, 'Cà Phê', 'ca-phe', 'cà phê', 1, NULL, '2022-07-01 09:47:04'),
+(2, 'Sự Kiện', 'su-kien', 'sự kiện', 1, NULL, NULL),
+(4, 'Cửa Hàng', 'cua-hang', 'tin tức', 1, NULL, '2022-06-29 20:05:56');
 
 -- --------------------------------------------------------
 
@@ -1055,11 +1123,13 @@ INSERT INTO `menu_posts` (`id`, `tendanhmuc`, `slug`, `mota`, `hinhanh`, `trangt
 -- Table structure for table `migrations`
 --
 
-CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -1081,7 +1151,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2022_02_19_054610_create_posts_table', 1),
 (14, '2022_02_19_054642_create_orders_table', 1),
 (15, '2022_02_19_054710_create_order_details_table', 1),
-(16, '2022_02_19_054734_create_payments_table', 1);
+(16, '2022_02_19_054734_create_payments_table', 1),
+(17, '2022_04_06_113407_create_visitors_table', 2),
+(18, '2022_02_23_141229_create_order_statisticals_table', 3),
+(19, '2022_04_07_071252_create_manager_material_uses_table', 4),
+(20, '2022_04_09_114406_create_sale_statisticals_table', 5);
 
 -- --------------------------------------------------------
 
@@ -1089,8 +1163,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- Table structure for table `orders`
 --
 
-CREATE TABLE `orders` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `madh` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hoten` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `diachi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1105,22 +1180,58 @@ CREATE TABLE `orders` (
   `tongtien` int(11) NOT NULL,
   `id_coupon` int(10) DEFAULT NULL,
   `id_feeship` int(10) DEFAULT NULL,
-  `trangthaithanhtoan` int(11) NOT NULL DEFAULT 1,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `trangthaithanhtoan` int(11) NOT NULL DEFAULT '1',
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orders_id_nhanvien_foreign` (`id_nhanvien`),
+  KEY `orders_id_khachhang_foreign` (`id_khachhang`)
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`id`, `madh`, `hoten`, `diachi`, `email`, `ghichu`, `dienthoai`, `id_nhanvien`, `id_khachhang`, `httt`, `ngaytao`, `tongdonhang`, `tongtien`, `id_coupon`, `id_feeship`, `trangthaithanhtoan`, `trangthai`, `created_at`, `updated_at`) VALUES
-(51, 'DR93155', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-05-25 15:47:30', 31000, 42280, 1, 13, 0, 1, '2022-05-25 01:47:30', '2022-05-25 01:47:30'),
-(52, 'OD97207', 'Phan Minh Trí', 'Số 115, Phường Cầu Ông Lãnh, Quận 1, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmai.com', NULL, '0334202221', NULL, NULL, 2, '2022-05-25 16:03:15', 9600, 19600, NULL, 12, 1, 1, '2022-05-25 02:03:49', '2022-05-25 02:03:49'),
-(53, 'RD95790', 'Phan Minh Trí', 'Số 115, Thị trấn Cần Thạnh, Huyện Cần Giờ, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmai.com', NULL, '0334202221', NULL, NULL, 3, '2022-05-25 16:06:40', 27000, 37000, NULL, 12, 1, 1, '2022-05-25 02:08:14', '2022-05-25 02:08:14'),
-(54, 'DO90718', 'Minh Trí', 'Đường 835, Xã Tân Thới Nhì, Huyện Hóc Môn, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-05-25 16:27:22', 21000, 31000, NULL, 12, 1, 1, '2022-05-25 02:28:45', '2022-05-25 02:28:45'),
-(55, 'DO65096', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-05-30 20:26:53', 41000, 51080, 1, 13, 0, 1, '2022-05-30 06:26:53', '2022-05-30 06:26:53');
+(99, 'DR11936', 'Phan Minh Trí', 'Long an 1, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0334202221', NULL, NULL, 2, '2022-07-01 20:12:27', 18000, 33000, NULL, 13, 1, 1, '2022-07-01 06:13:54', '2022-07-01 06:13:54'),
+(100, 'DO83758', 'Phan Minh Trí', 'Long an 1, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0334202221', NULL, NULL, 0, '2022-07-01 21:41:42', 20000, 35000, NULL, 13, 0, 1, '2022-07-01 07:41:42', '2022-07-01 07:41:42'),
+(101, 'OD75714', 'Phan Minh Trí', 'Long an 1, Xã Tân Hiệp, Huyện Hóc Môn, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0334202221', NULL, NULL, 0, '2022-07-02 06:34:11', 18000, 28000, NULL, 12, 0, 1, '2022-07-01 16:34:11', '2022-07-01 16:34:11'),
+(102, 'DO35213', 'Phan Minh Trí', 'Long an 1, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', 'sdfasd', '0334202221', NULL, NULL, 1, '2022-07-02 07:24:12', 36000, 51000, NULL, 13, 1, 1, '2022-07-01 17:27:07', '2022-07-01 17:27:07'),
+(103, 'DO98804', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-02 08:01:20', 22000, 27000, 12, 13, 1, 1, '2022-07-01 18:03:20', '2022-07-01 18:03:20'),
+(104, 'OD94228', 'Phan Minh Trí', 'Long an 1, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0334202221', NULL, NULL, 2, '2022-07-02 11:00:55', 36000, 48000, NULL, 14, 1, 1, '2022-07-01 21:09:43', '2022-07-01 21:09:43'),
+(105, 'RD90508', 'Minh Trí', 'Đường 835, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-07-04 14:40:17', 72000, 84000, NULL, 14, 0, 1, '2022-07-04 00:40:17', '2022-07-04 00:40:17'),
+(106, 'DO76297', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-07-04 14:41:52', 20000, 35000, NULL, 13, 0, 1, '2022-07-04 00:41:52', '2022-07-04 00:41:52'),
+(107, 'DR30681', 'Minh Trí', 'Đường 835, Thị trấn Cần Thạnh, Huyện Cần Giờ, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 3, '2022-07-09 22:07:07', 36000, 46000, NULL, 15, 1, 1, '2022-07-09 08:07:43', '2022-07-09 08:07:43'),
+(108, 'DR47842', 'Minh Trí', 'Đường 835, Thị trấn Cần Thạnh, Huyện Cần Giờ, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-07-09 22:10:42', 19000, 29000, NULL, 15, 0, 1, '2022-07-09 08:10:42', '2022-07-09 08:10:42'),
+(109, 'RD70465', 'Minh Trí', 'Đường 835, Thị trấn Cần Thạnh, Huyện Cần Giờ, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 3, '2022-07-09 22:19:19', 9600, 19600, NULL, 15, 1, 1, '2022-07-09 08:19:38', '2022-07-09 08:19:38'),
+(110, 'DO31156', 'Minh Trí', 'Đường 835, Thị trấn Cần Thạnh, Huyện Cần Giờ, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-10 09:36:12', 18000, 18000, 12, 15, 1, 1, '2022-07-09 19:37:27', '2022-07-09 19:37:27'),
+(111, 'OD26844', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-11 11:00:57', 30000, 40000, NULL, 13, 1, 1, '2022-07-10 21:02:09', '2022-07-10 21:02:09'),
+(112, 'DO43133', 'Minh Trí', 'Đường 835, Thị trấn Cần Thạnh, Huyện Cần Giờ, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-12 10:24:58', 18000, 28000, NULL, 15, 1, 1, '2022-07-11 20:25:38', '2022-07-11 20:25:38'),
+(113, 'DR64679', 'Minh Trí', 'Đường 835, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-12 10:35:37', 22000, 32000, NULL, 14, 1, 4, '2022-07-11 20:36:23', '2022-07-13 07:27:40'),
+(114, 'OD34456', 'Phan Tris', 'Duong so 3, Phường 07, Quận 5, Thành phố Hồ Chí Minh', 'trip6013@gmail.com', NULL, '0334202221', 9, NULL, 0, '2022-07-13 21:15:31', 42000, 52000, NULL, 12, 1, 4, '2022-07-13 07:15:31', '2022-07-13 07:27:35'),
+(115, 'RD54340', 'Minh Trí', 'Đường 835, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-13 21:33:15', 18000, 28000, NULL, 14, 1, 4, '2022-07-13 07:33:33', '2022-07-13 07:40:02'),
+(116, 'DO86465', 'Phan Minh Trí', 'Số 115, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmai.com', 'dat hang', '0334202221', NULL, 40, 2, '2022-07-14 14:31:26', 56000, 56000, 12, 13, 1, 1, '2022-07-14 00:32:29', '2022-07-14 00:32:29'),
+(117, 'OD46824', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', 'dsfdsf', '0329859916', NULL, 40, 0, '2022-07-14 14:36:29', 18000, 28000, NULL, 13, 0, 1, '2022-07-14 00:36:29', '2022-07-14 00:36:29'),
+(118, 'RD58517', 'tri phan', 'Đường 1, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', 'đăt hàng', '0334202221', NULL, 40, 2, '2022-07-14 14:42:33', 76000, 76000, 12, 13, 1, 1, '2022-07-14 00:43:21', '2022-07-14 00:43:21'),
+(119, 'DR68219', 'minh trí', 'Đường 2, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', 'đặt hàng vnpay', '0334202221', NULL, 40, 3, '2022-07-14 14:58:38', 44000, 54000, NULL, 12, 1, 5, '2022-07-14 00:59:10', '2022-07-15 20:23:09'),
+(120, 'DO60308', 'tri phan', 'Đường 3, Phường 01, Quận 10, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', 'đặt hàng paypal', '0334202221', NULL, 40, 1, '2022-07-14 15:06:27', 63000, 73000, NULL, 12, 1, 5, '2022-07-14 01:07:13', '2022-07-15 20:05:22'),
+(121, 'DO22587', 'tri phan', 'Đường số 3, Phường An Phú Đông, Quận 12, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', 'đặt hàng paypal', '0334202221', NULL, 40, 1, '2022-07-14 15:12:14', 63000, 73000, NULL, 12, 1, -1, '2022-07-14 01:12:54', '2022-07-15 18:54:39'),
+(126, 'RD10352', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', '1111', '0329859916', NULL, NULL, 2, '2022-07-15 07:31:33', 18000, 28000, NULL, 13, 1, -1, '2022-07-14 17:33:57', '2022-07-15 19:40:39'),
+(128, 'DO65402', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', 'sdfsdaf', '0329859916', NULL, NULL, 2, '2022-07-17 20:45:30', 35000, 45000, NULL, 13, 1, 1, '2022-07-17 06:46:05', '2022-07-17 06:46:05'),
+(129, 'DR10311', 'Phan Minh Trí', 'Đường 1, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', NULL, '0334202221', NULL, 40, 2, '2022-07-19 21:51:58', 19000, 19000, 12, 13, 1, 1, '2022-07-19 07:52:41', '2022-07-19 07:52:41'),
+(130, 'RD61021', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-07-20 19:01:01', 40000, 40000, 12, 13, 0, 3, '2022-07-20 05:01:01', '2022-07-20 05:34:39'),
+(131, 'OD69332', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-20 19:02:42', 22000, 22000, 12, 13, 1, 4, '2022-07-20 05:04:10', '2022-07-20 05:34:23'),
+(132, 'RD85280', 'Phan Minh Trí', 'Đường 1, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', NULL, '0334202221', NULL, 40, 2, '2022-07-20 20:33:25', 40000, 40000, 12, 14, 1, 5, '2022-07-20 06:33:56', '2022-07-20 06:39:42'),
+(133, 'DO58324', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, 40, 3, '2022-07-20 20:46:07', 20000, 30000, NULL, 13, 1, -1, '2022-07-20 06:46:41', '2022-07-20 08:01:19'),
+(134, 'RD81954', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-21 04:21:55', 20000, 20000, 12, 13, 1, 1, '2022-07-20 14:22:29', '2022-07-20 14:22:29'),
+(135, 'OD20554', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 1, '2022-07-21 04:54:14', 32000, 42000, NULL, 13, 1, 1, '2022-07-20 14:55:15', '2022-07-20 14:55:15'),
+(136, 'DO28781', 'Minh Trí', 'Đường 835, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 2, '2022-07-21 08:31:20', 18000, 28000, NULL, 14, 1, 1, '2022-07-20 18:31:43', '2022-07-20 18:31:43'),
+(137, 'DR88910', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, 40, 2, '2022-07-21 10:21:23', 43000, 53000, NULL, 13, 1, 1, '2022-07-20 20:21:56', '2022-07-20 20:21:56'),
+(138, 'DO93779', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, 40, 2, '2022-07-21 10:57:05', 44000, 44000, 12, 13, 1, 1, '2022-07-20 20:57:32', '2022-07-20 20:57:32'),
+(139, 'OD26869', 'Phan Minh Trí 12', 'Đường 1, Xã An Phú Tây, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'triminhphan11800@gmail.com', NULL, '0334202221', NULL, 40, 1, '2022-07-21 11:07:39', 19000, 27000, 16, 14, 1, 2, '2022-07-20 21:08:36', '2022-07-20 21:14:23'),
+(140, 'OD20725', 'Minh Trí', 'Đường 835, Thị trấn Tân Túc, Huyện Bình Chánh, Thành phố Hồ Chí Minh', 'phanminhtri11800@gmail.com', NULL, '0329859916', NULL, NULL, 0, '2022-07-21 19:00:50', 18000, 28000, NULL, 13, 0, 3, '2022-07-21 05:00:50', '2022-08-24 01:05:41'),
+(141, 'RD69522', 'Nguyễn Khánh TV', '65 Huỳnh Thúc Kháng, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh', 'kq909981@gmail.com', NULL, '0343754517', NULL, 44, 0, '2022-08-24 15:02:12', 20000, 30000, NULL, 12, 0, 2, '2022-08-24 01:02:12', '2022-08-24 01:05:35');
 
 -- --------------------------------------------------------
 
@@ -1128,30 +1239,109 @@ INSERT INTO `orders` (`id`, `madh`, `hoten`, `diachi`, `email`, `ghichu`, `dient
 -- Table structure for table `order_details`
 --
 
-CREATE TABLE `order_details` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `order_details`;
+CREATE TABLE IF NOT EXISTS `order_details` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_donhang` int(10) UNSIGNED DEFAULT NULL,
   `id_sanpham` int(10) UNSIGNED DEFAULT NULL,
   `id_size` int(10) UNSIGNED DEFAULT NULL,
   `soluong` int(11) NOT NULL,
   `giaban` double NOT NULL,
-  `giagoc` int(11) DEFAULT NULL,
+  `giagoc` int(10) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_details_id_donhang_foreign` (`id_donhang`),
+  KEY `order_details_id_size_foreign` (`id_size`),
+  KEY `order_details_id_sanpham_foreign` (`id_sanpham`)
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `order_details`
 --
 
 INSERT INTO `order_details` (`id`, `id_donhang`, `id_sanpham`, `id_size`, `soluong`, `giaban`, `giagoc`, `created_at`, `updated_at`) VALUES
-(66, 51, 1, 1, 1, 10000, 9, '2022-05-25 01:47:30', '2022-05-25 01:47:30'),
-(67, 51, 2, 1, 1, 21000, NULL, '2022-05-25 01:47:30', '2022-05-25 01:47:30'),
-(68, 52, 7, 2, 1, 9600, 10, '2022-05-25 02:03:49', '2022-05-25 02:03:49'),
-(69, 53, 13, 2, 1, 27000, NULL, '2022-05-25 02:08:14', '2022-05-25 02:08:14'),
-(70, 54, 2, 1, 1, 21000, NULL, '2022-05-25 02:28:45', '2022-05-25 02:28:45'),
-(71, 55, 2, 1, 1, 21000, NULL, '2022-05-30 06:26:53', '2022-05-30 06:26:53'),
-(72, 55, 3, 2, 1, 20000, 10, '2022-05-30 06:26:53', '2022-05-30 06:26:53');
+(136, 99, 1, 1, 1, 18000, 13, '2022-07-01 06:13:54', '2022-07-01 06:13:54'),
+(137, 100, 3, 1, 1, 20000, 10, '2022-07-01 07:41:42', '2022-07-01 07:41:42'),
+(138, 101, 1, 1, 1, 18000, 13, '2022-07-01 16:34:11', '2022-07-01 16:34:11'),
+(139, 102, 1, 1, 2, 36000, 13, '2022-07-01 17:27:07', '2022-07-01 17:27:07'),
+(140, 103, 4, 1, 1, 22000, NULL, '2022-07-01 18:03:20', '2022-07-01 18:03:20'),
+(141, 104, 1, 1, 2, 36000, 13, '2022-07-01 21:09:43', '2022-07-01 21:09:43'),
+(142, 105, 1, 1, 1, 18000, 13, '2022-07-04 00:40:17', '2022-07-04 00:40:17'),
+(143, 105, 1, 3, 1, 24000, 13, '2022-07-04 00:40:17', '2022-07-04 00:40:17'),
+(144, 105, 5, 1, 1, 30000, NULL, '2022-07-04 00:40:17', '2022-07-04 00:40:17'),
+(145, 106, 3, 1, 1, 20000, 10, '2022-07-04 00:41:52', '2022-07-04 00:41:52'),
+(146, 107, 1, 1, 2, 36000, 13, '2022-07-09 08:07:43', '2022-07-09 08:07:43'),
+(147, 108, 2, 1, 1, 19000, 13, '2022-07-09 08:10:42', '2022-07-09 08:10:42'),
+(148, 109, 7, 1, 1, 9600, 10, '2022-07-09 08:19:38', '2022-07-09 08:19:38'),
+(149, 110, 1, 1, 1, 18000, 13, '2022-07-09 19:37:27', '2022-07-09 19:37:27'),
+(150, 111, 5, 1, 1, 30000, NULL, '2022-07-10 21:02:09', '2022-07-10 21:02:09'),
+(151, 112, 1, 1, 1, 18000, 13, '2022-07-11 20:25:38', '2022-07-11 20:25:38'),
+(152, 113, 4, 1, 1, 22000, NULL, '2022-07-11 20:36:23', '2022-07-11 20:36:23'),
+(153, 114, 1, 1, 1, 18000, 13, '2022-07-13 07:15:31', '2022-07-13 07:15:31'),
+(154, 114, 1, 3, 1, 24000, 13, '2022-07-13 07:15:31', '2022-07-13 07:15:31'),
+(155, 115, 1, 1, 1, 18000, 13, '2022-07-13 07:33:33', '2022-07-13 07:33:33'),
+(156, 116, 1, 1, 2, 36000, 13, '2022-07-14 00:32:29', '2022-07-14 00:32:29'),
+(157, 116, 16, 1, 1, 20000, NULL, '2022-07-14 00:32:29', '2022-07-14 00:32:29'),
+(158, 117, 1, 1, 1, 18000, 13, '2022-07-14 00:36:29', '2022-07-14 00:36:29'),
+(159, 118, 1, 1, 2, 36000, 13, '2022-07-14 00:43:21', '2022-07-14 00:43:21'),
+(160, 118, 16, 1, 2, 40000, NULL, '2022-07-14 00:43:21', '2022-07-14 00:43:21'),
+(161, 119, 11, 1, 1, 24000, 10, '2022-07-14 00:59:10', '2022-07-14 00:59:10'),
+(162, 119, 14, 1, 1, 20000, 13, '2022-07-14 00:59:10', '2022-07-14 00:59:10'),
+(163, 120, 12, 1, 1, 43000, NULL, '2022-07-14 01:07:13', '2022-07-14 01:07:13'),
+(164, 120, 3, 1, 1, 20000, 10, '2022-07-14 01:07:13', '2022-07-14 01:07:13'),
+(165, 121, 12, 1, 1, 43000, NULL, '2022-07-14 01:12:54', '2022-07-14 01:12:54'),
+(166, 121, 3, 1, 1, 20000, 10, '2022-07-14 01:12:54', '2022-07-14 01:12:54'),
+(171, 126, 1, 1, 1, 18000, 13, '2022-07-14 17:33:57', '2022-07-14 17:33:57'),
+(173, 128, 8, 1, 1, 35000, NULL, '2022-07-17 06:46:05', '2022-07-17 06:46:05'),
+(174, 129, 2, 1, 1, 19000, 13, '2022-07-19 07:52:41', '2022-07-19 07:52:41'),
+(175, 130, 16, 1, 2, 40000, NULL, '2022-07-20 05:01:01', '2022-07-20 05:01:01'),
+(176, 131, 4, 1, 1, 22000, NULL, '2022-07-20 05:04:10', '2022-07-20 05:04:10'),
+(177, 132, 16, 1, 2, 40000, NULL, '2022-07-20 06:33:56', '2022-07-20 06:33:56'),
+(178, 133, 3, 1, 1, 20000, 10, '2022-07-20 06:46:41', '2022-07-20 06:46:41'),
+(179, 134, 3, 1, 1, 20000, 10, '2022-07-20 14:22:29', '2022-07-20 14:22:29'),
+(180, 135, 6, 1, 1, 32000, NULL, '2022-07-20 14:55:15', '2022-07-20 14:55:15'),
+(181, 136, 1, 1, 1, 18000, 13, '2022-07-20 18:31:43', '2022-07-20 18:31:43'),
+(182, 137, 12, 1, 1, 43000, NULL, '2022-07-20 20:21:56', '2022-07-20 20:21:56'),
+(183, 138, 4, 1, 2, 44000, NULL, '2022-07-20 20:57:32', '2022-07-20 20:57:32'),
+(184, 139, 2, 1, 1, 19000, 13, '2022-07-20 21:08:36', '2022-07-20 21:08:36'),
+(185, 140, 1, 1, 1, 18000, 13, '2022-07-21 05:00:50', '2022-07-21 05:00:50'),
+(186, 141, 16, 1, 1, 20000, NULL, '2022-08-24 01:02:12', '2022-08-24 01:02:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_statisticals`
+--
+
+DROP TABLE IF EXISTS `order_statisticals`;
+CREATE TABLE IF NOT EXISTS `order_statisticals` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_san_pham_order` int(11) NOT NULL,
+  `so_luot_dat` int(11) NOT NULL,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_statisticals`
+--
+
+INSERT INTO `order_statisticals` (`id`, `id_san_pham_order`, `so_luot_dat`, `trang_thai`, `created_at`, `updated_at`) VALUES
+(1, 1, 37, 1, '2022-07-01 01:05:10', '2022-07-21 05:00:50'),
+(2, 14, 3, 1, '2022-07-01 05:40:33', '2022-07-14 15:48:10'),
+(3, 4, 7, 1, '2022-07-01 05:53:53', '2022-07-20 20:57:32'),
+(4, 7, 2, 1, '2022-07-01 06:09:28', '2022-07-09 08:19:38'),
+(5, 3, 4, 1, '2022-07-01 07:41:42', '2022-07-20 14:22:29'),
+(6, 5, 2, 1, '2022-07-04 00:40:17', '2022-07-10 21:02:09'),
+(7, 2, 2, 1, '2022-07-09 08:10:42', '2022-07-19 07:52:41'),
+(8, 16, 8, 1, '2022-07-14 00:32:29', '2022-08-24 01:02:12'),
+(9, 11, 2, 1, '2022-07-14 00:59:10', '2022-07-14 17:46:49'),
+(10, 6, 2, 1, '2022-07-14 15:49:05', '2022-07-14 15:51:30'),
+(11, 8, 1, 1, '2022-07-17 06:46:05', '2022-07-17 06:46:05'),
+(12, 12, 1, 1, '2022-07-20 20:21:56', '2022-07-20 20:21:56');
 
 -- --------------------------------------------------------
 
@@ -1159,10 +1349,12 @@ INSERT INTO `order_details` (`id`, `id_donhang`, `id_sanpham`, `id_size`, `soluo
 -- Table structure for table `password_resets`
 --
 
-CREATE TABLE `password_resets` (
+DROP TABLE IF EXISTS `password_resets`;
+CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1171,8 +1363,9 @@ CREATE TABLE `password_resets` (
 -- Table structure for table `payments`
 --
 
-CREATE TABLE `payments` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mancc` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `loaithanhtoan` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sohoadon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1182,19 +1375,46 @@ CREATE TABLE `payments` (
   `id_donhang` int(10) UNSIGNED DEFAULT NULL,
   `ngaythanhtoan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tongtien` double NOT NULL,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `payments_id_donhang_foreign` (`id_donhang`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `payments`
 --
 
 INSERT INTO `payments` (`id`, `mancc`, `loaithanhtoan`, `sohoadon`, `magiaodichBank`, `magiaodich`, `noidung`, `id_donhang`, `ngaythanhtoan`, `tongtien`, `trangthai`, `created_at`, `updated_at`) VALUES
-(13, 'MOMOBKUN20180529', 'qr', '1653469395', NULL, '2680551584', 'Thanh toán qua MoMo', 52, '1653469421076', 19600, 1, '2022-05-25 02:03:49', '2022-05-25 02:03:49'),
-(14, 'NCB', 'ATM', '1653469600', 'VNP13756478', '13756478', 'Thanh toán đơn hàng VNPAY', 53, '20220525160807', 37000, 1, '2022-05-25 02:08:14', '2022-05-25 02:08:14'),
-(15, 'MOMOBKUN20180529', 'qr', '1653470842', NULL, '2680552110', 'Thanh toán qua MoMo', 54, '1653470917206', 31000, 1, '2022-05-25 02:28:45', '2022-05-25 02:28:45');
+(23, 'MOMOBKUN20180529', 'qr', '1656681147', NULL, '2695913127', 'Thanh toán qua MoMo', 99, '1656681229828', 33000, 1, '2022-07-01 06:13:54', '2022-07-01 06:13:54'),
+(24, 'Paypal', 'Paypal', '0HT00815HS615224G', NULL, '9VV862312D0021332', 'Thanh toán Paypal', 102, '2022-07-02T00:27:05Z', 2.2, 1, '2022-07-02 00:27:07', '2022-07-02 00:27:07'),
+(25, 'MOMOBKUN20180529', 'webApp', '1656723680', NULL, '2695933348', 'Thanh toán qua MoMo', 103, '1656723794928', 27000, 1, '2022-07-01 18:03:20', '2022-07-01 18:03:20'),
+(26, 'MOMOBKUN20180529', 'qr', '1656734455', NULL, '2695936405', 'Thanh toán qua MoMo', 104, '1656734976923', 48000, 1, '2022-07-01 21:09:43', '2022-07-01 21:09:43'),
+(27, 'NCB', 'ATM', 'DR30681', 'VNP13792813', '13792813', 'Thanh toán đơn hàng VNPAY', 107, '20220709220738', 46000, 1, '2022-07-09 08:07:43', '2022-07-09 08:07:43'),
+(28, 'NCB', 'ATM', 'RD70465', 'VNP13792820', '13792820', 'Thanh toán đơn hàng VNPAY', 109, '20220709221932', 19600, 1, '2022-07-09 08:19:38', '2022-07-09 08:19:38'),
+(29, 'MOMOBKUN20180529', 'qr', '1657420572', NULL, '2698851627', 'Thanh toán qua MoMo', 110, '1657420615474', 18000, 1, '2022-07-09 19:37:27', '2022-07-09 19:37:27'),
+(30, 'MOMOBKUN20180529', 'qr', '1657512057', NULL, '2699021964', 'Thanh toán qua MoMo', 111, '1657512110940', 40000, 1, '2022-07-10 21:02:09', '2022-07-10 21:02:09'),
+(31, 'MOMOBKUN20180529', 'qr', '1657596298', NULL, '2699127489', 'Thanh toán qua MoMo', 112, '1657596333627', 28000, 1, '2022-07-11 20:25:38', '2022-07-11 20:25:38'),
+(32, 'MOMOBKUN20180529', 'qr', 'DR64679', NULL, '2699127763', 'Thanh toán qua MoMo', 113, '1657596979514', 32000, 1, '2022-07-11 20:36:23', '2022-07-11 20:36:23'),
+(33, 'MOMOBKUN20180529', 'qr', 'RD54340', NULL, '2699931910', 'Thanh toán qua MoMo', 115, '1657722808684', 28000, 1, '2022-07-13 07:33:33', '2022-07-13 07:33:33'),
+(34, 'MOMOBKUN20180529', 'qr', 'DO86465', NULL, '2699961177', 'Thanh toán qua MoMo', 116, '1657783941927', 56000, 1, '2022-07-14 00:32:29', '2022-07-14 00:32:29'),
+(35, 'MOMOBKUN20180529', 'qr', 'RD58517', NULL, '2699961637', 'Thanh toán qua MoMo', 118, '1657784595477', 76000, 1, '2022-07-14 00:43:21', '2022-07-14 00:43:21'),
+(36, 'NCB', 'ATM', 'DR68219', 'VNP13796585', '13796585', 'Thanh toán đơn hàng VNPAY', 119, '20220714145901', 54000, 1, '2022-07-14 00:59:10', '2022-07-14 00:59:10'),
+(37, 'Paypal', 'Paypal', '0BV28442XW290852P', NULL, '8JY4082247634912D', 'Thanh toán Paypal', 120, '2022-07-14T08:07:12Z', 3.15, 1, '2022-07-14 08:07:14', '2022-07-14 08:07:14'),
+(38, 'Paypal', 'Paypal', '0XL99309JR661314D', NULL, '5T8660073A978102S', 'Thanh toán Paypal', 121, '2022-07-14T08:12:53Z', 3.15, 1, '2022-07-14 08:12:54', '2022-07-14 08:12:54'),
+(41, 'MOMOBKUN20180529', 'qr', 'RD10352', NULL, '2700071003', 'Thanh toán qua MoMo', 126, '1657845232630', 28000, 1, '2022-07-14 17:33:57', '2022-07-14 17:33:57'),
+(43, 'MOMOBKUN20180529', 'qr', 'DO65402', NULL, '2700342352', 'Thanh toán qua MoMo', 128, '1658065561388', 45000, 1, '2022-07-17 06:46:05', '2022-07-17 06:46:05'),
+(44, 'MOMOBKUN20180529', 'qr', 'DR10311', NULL, '2700960494', 'Thanh toán qua MoMo', 129, '1658242355982', 19000, 1, '2022-07-19 07:52:41', '2022-07-19 07:52:41'),
+(45, 'MOMOBKUN20180529', 'qr', 'OD69332', NULL, '2701379709', 'Thanh toán qua MoMo', 131, '1658318635918', 22000, 1, '2022-07-20 05:04:10', '2022-07-20 05:04:10'),
+(46, 'MOMOBKUN20180529', 'qr', 'RD85280', NULL, '2701420886', 'Thanh toán qua MoMo', 132, '1658324031525', 40000, 1, '2022-07-20 06:33:56', '2022-07-20 06:33:56'),
+(47, 'NCB', 'ATM', 'DO58324', 'VNP13800854', '13800854', 'Thanh toán đơn hàng VNPAY', 133, '20220720204637', 30000, 1, '2022-07-20 06:46:41', '2022-07-20 06:46:41'),
+(48, 'MOMOBKUN20180529', 'qr', 'RD81954', NULL, '2701429844', 'Thanh toán qua MoMo', 134, '1658352145628', 20000, 1, '2022-07-20 14:22:29', '2022-07-20 14:22:29'),
+(49, 'Paypal', 'Paypal', '3SV84647C60124429', NULL, '73L8753843638042E', 'Thanh toán Paypal', 135, '2022-07-20T21:55:15Z', 1.81, 1, '2022-07-20 21:55:15', '2022-07-20 21:55:15'),
+(50, 'MOMOBKUN20180529', 'qr', 'DO28781', NULL, '2701433696', 'Thanh toán qua MoMo', 136, '1658367099525', 28000, 1, '2022-07-20 18:31:43', '2022-07-20 18:31:43'),
+(51, 'MOMOBKUN20180529', 'qr', 'DR88910', NULL, '2701584325', 'Thanh toán qua MoMo', 137, '1658373711387', 53000, 1, '2022-07-20 20:21:56', '2022-07-20 20:21:56'),
+(52, 'MOMOBKUN20180529', 'qr', 'DO93779', NULL, '2701585494', 'Thanh toán qua MoMo', 138, '1658375848632', 44000, 1, '2022-07-20 20:57:32', '2022-07-20 20:57:32'),
+(53, 'Paypal', 'Paypal', '7WF953750H777000V', NULL, '8E842763E0261572A', 'Thanh toán Paypal', 139, '2022-07-21T04:08:35Z', 1.16, 1, '2022-07-21 04:08:36', '2022-07-21 04:08:36');
 
 -- --------------------------------------------------------
 
@@ -1202,16 +1422,20 @@ INSERT INTO `payments` (`id`, `mancc`, `loaithanhtoan`, `sohoadon`, `magiaodichB
 -- Table structure for table `personal_access_tokens`
 --
 
-CREATE TABLE `personal_access_tokens` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `personal_access_tokens`;
+CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1220,31 +1444,39 @@ CREATE TABLE `personal_access_tokens` (
 -- Table structure for table `posts`
 --
 
-CREATE TABLE `posts` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `posts`;
+CREATE TABLE IF NOT EXISTS `posts` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tieude` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `noidung` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hinhanh` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_danhmuc` int(10) UNSIGNED NOT NULL,
-  `hot` tinyint(4) NOT NULL DEFAULT 0,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `hinhanh` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_danhmuc` int(10) UNSIGNED DEFAULT NULL,
+  `hot` tinyint(4) NOT NULL DEFAULT '0',
+  `loaibaiviet` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `posts_tieude_unique` (`tieude`),
+  KEY `posts_id_danhmuc_foreign` (`id_danhmuc`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `tieude`, `slug`, `noidung`, `hinhanh`, `id_danhmuc`, `hot`, `trangthai`, `created_at`, `updated_at`) VALUES
-(1, '\"DỌN\" BEAN NĂM CŨ - ĐÓN KHỞI ĐẦU SUNG', 'don-dep', '<p>Đến hẹn lại l&ecirc;n, bean năm cũ bạn t&iacute;ch lũy từ 01/03 - 30/06/2021 được bao nhi&ecirc;u rồi n&egrave;? The Coffee House nhắn nhỏ bean sẽ hết hạn v&agrave;o ng&agrave;y 28.02 n&agrave;y đ&oacute;.</p>\n\n<p><br />\nNhanh nhanh c&ugrave;ng The Coffee House mở app dọn bean năm cũ v&agrave; đ&oacute;n năm mới sung với loạt ưu đ&atilde;i hấp dẫn nh&eacute;:</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/02/SOCIAL.jpg\" /></p>\n\n<p>- Miễn ph&iacute; 1 C&agrave; ph&ecirc; Việt Nam</p>\n\n<p>- Miễn ph&iacute; 1 Tr&agrave; Tr&aacute;i c&acirc;y</p>\n\n<p>- Miễn ph&iacute; 1 Tr&agrave; sữa</p>\n\n<p>- Miễn ph&iacute; 1 Tr&agrave; sữa &Ocirc; Long nướng Tr&acirc;n ch&acirc;u</p>\n\n<p>- Miễn ph&iacute; 1 Hồng tr&agrave; sữa Tr&acirc;n ch&acirc;u</p>\n\n<p>- Cash voucher 10k- Cash voucher 20k</p>\n\n<p>- C&ugrave;ng rất nhiều voucher kh&aacute;c đến từ PNJ, Flower Store,...</p>\n\n<p><br />\n<strong><em>Mở app &quot;dọn&quot; bean liền tay n&agrave;o bạn ơi!</em></strong></p>\n', 'post1.jpg', 1, 1, 1, NULL, NULL),
-(2, 'GHÉ THE COFFEE HOUSE CHUYỆN TRÒ, CÓ QUÀ TRAO TAY', 'ghe-the', '<p>Thưởng thức m&oacute;n y&ecirc;u th&iacute;ch, chuyện tr&ograve; r&ocirc;m rả th&ocirc;i chưa đủ, m&igrave;nh gh&eacute; Nh&agrave; m&agrave; c&oacute; th&ecirc;m qu&agrave; ng&agrave;y c&agrave;ng th&ecirc;m vui<br />\nTừ ng&agrave;y 07.02 đến hết ng&agrave;y 28.02, Nh&agrave; tặng bạn 1 lon c&agrave; ph&ecirc; sữa đ&aacute; tiện lợi, thơm ngon, đ&uacute;ng gu bạn th&iacute;ch khi hẹn h&ograve; n&egrave;.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/02/FB--19--1.jpg\" /></p>\n\n<p><br />\nGh&eacute; Nh&agrave; ngay, nhận qu&agrave; liền tay!</p>\n\n<p><strong>-------------</strong></p>\n\n<p><strong>Đặt h&agrave;ng ngay c&ugrave;ng Nh&agrave;</strong></p>\n\n<p>👉Web: https://order.thecoffeehouse.com/</p>\n\n<p>👉App The Coffee House: https://tchapp.page.link/installv5</p>\n\n<p>👉Số điện thoại: 18006936</p>\n\n<p><em>Danh s&aacute;ch hoạt động của c&aacute;c cửa h&agrave;ng trong hệ thống The Coffee House sẽ được update li&ecirc;n tục, bạn c&oacute; thể theo d&otilde;i tại đ&acirc;y:<a href=\"https://bit.ly/3Epaotz?fbclid=IwAR3il5EhQWeE37QUBQgerv45Bxm09Pa1VDhSuBnzQtdC1ncM3eWWGkCcRJE\">&nbsp;https://bit.ly/3Epaotz</a></em></p>\n\n<ul>\n	<li>The Coffee House lu&ocirc;n tu&acirc;n thủ về an to&agrave;n ph&ograve;ng dịch</li>\n	<li>Nh&acirc;n vi&ecirc;n của The Coffee House nghi&ecirc;m t&uacute;c thực hiện 5K trong suốt qu&aacute; tr&igrave;nh hoạt động</li>\n	<li>Thời gian giao h&agrave;ng c&oacute; thể k&eacute;o d&agrave;i hơn th&ocirc;ng thường do hạn chế về t&agrave;i xế v&agrave; quy định ph&ograve;ng dịch của ch&iacute;nh phủ, mong c&aacute;c bạn th&ocirc;ng cảm v&agrave; cảm ơn c&aacute;c bạn đ&atilde; đồng h&agrave;nh c&ugrave;ng The Coffee House.</li>\n</ul>\n', 'post2.jpg', 1, 1, 1, NULL, NULL),
-(3, 'CÒN “MÙNG” LÀ CÒN TẾT - THE COFFEE HOUSE LÌ XÌ NƯỚC NGON ĐỒNG GIÁ 39K', 'con-mung-con-tet', '<p>Ai bảo hết 3 m&ugrave;ng l&agrave; hết Tết, c&ograve;n m&ugrave;ng l&agrave; c&ograve;n Tết, c&ograve;n Tết l&agrave; c&ograve;n l&igrave; x&igrave; đ&uacute;ng kh&ocirc;ng n&egrave;. Vậy th&igrave; ngại g&igrave; kh&ocirc;ng nhận l&igrave; x&igrave; từ The Coffee House.</p>\n\n<p>Từ ng&agrave;y&nbsp;<strong>09/02 - 11/02,&nbsp;</strong>The Coffee House mời bạn ưu đ&atilde;i đồng gi&aacute; 39K để team m&igrave;nh vui cả ng&agrave;y kh&ocirc;ng ngớt.</p>\n\n<p><a href=\"https://order.thecoffeehouse.com/product-listing\">ĐẶT H&Agrave;NG NGAY</a></p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/02/FB--16--1.jpg\" /></p>\n\n<p>Deal chớp nho&aacute;ng, đặt nước ngon liền tay!</p>\n\n<p><strong>-------------</strong><br />\n<strong>Đặt h&agrave;ng ngay</strong><br />\n👉Web: https://order.thecoffeehouse.com/<br />\n👉App The Coffee House: https://tchapp.page.link/installv5<br />\n👉Số điện thoại: 18006936</p>\n\n<p><em>- Đồng gi&aacute; 39K cho tất cả c&aacute;c sản phẩm Tr&agrave; tr&aacute;i c&acirc;y, Tr&agrave; sữa, Sinh tố đ&aacute; xay<br />\n- Ưu đ&atilde;i kh&ocirc;ng &aacute;p dụng cho topping, b&aacute;nh, snack<br />\n- &Aacute;p dụng dịch vụ giao h&agrave;ng<br />\n- Ưu đ&atilde;i &aacute;p dụng duy nhất 03 ng&agrave;y 09,10,11 th&aacute;ng 2<br />\n- Kh&ocirc;ng &aacute;p dụng cho chương tr&igrave;nh khuyến m&atilde;i song song<br />\n- Số lượng ưu đ&atilde;i c&oacute; hạn</em></p>\n\n<p><em>Danh s&aacute;ch hoạt động của c&aacute;c cửa h&agrave;ng trong hệ thống The Coffee House sẽ được update li&ecirc;n tục, bạn c&oacute; thể theo d&otilde;i tại đ&acirc;y:<a href=\"https://bit.ly/3Epaotz?fbclid=IwAR3il5EhQWeE37QUBQgerv45Bxm09Pa1VDhSuBnzQtdC1ncM3eWWGkCcRJE\">&nbsp;https://bit.ly/3Epaotz</a></em></p>\n\n<ul>\n	<li>The Coffee House lu&ocirc;n tu&acirc;n thủ về an to&agrave;n ph&ograve;ng dịch</li>\n	<li>Nh&acirc;n vi&ecirc;n của The Coffee House nghi&ecirc;m t&uacute;c thực hiện 5K trong suốt qu&aacute; tr&igrave;nh hoạt động</li>\n	<li>Thời gian giao h&agrave;ng c&oacute; thể k&eacute;o d&agrave;i hơn th&ocirc;ng thường do hạn chế về t&agrave;i xế v&agrave; quy định ph&ograve;ng dịch của ch&iacute;nh phủ, mong c&aacute;c bạn th&ocirc;ng cảm v&agrave; cảm ơn c&aacute;c bạn đ&atilde; đồng h&agrave;nh c&ugrave;ng The Coffee House.</li>\n</ul>\n', 'post3.jpg', 1, 0, 1, NULL, NULL),
-(4, 'VUI LỄ HỘI - NHÀ TẶNG QUÀ CÓ ĐÔI', 'vui-le-hoi', '<p>Từ 01.02 đến hết 28.02, Nh&agrave; tặng bạn ưu đ&atilde;i MUA 1 TẶNG 1 khi mua bộ sưu tập qu&agrave; tặng đặc biệt đến từ The Coffee House. &nbsp;Một cho bạn, một d&agrave;nh cho người thương, để m&ugrave;a Valentine năm nay th&ecirc;m gắn kết ngọt ng&agrave;o bạn nh&eacute;.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/FB--11--4.jpg\" /></p>\n\n<p><br />\n💕 B&igrave;nh giữ nhiệt Inox Quả Dứa/ Con Thuyền</p>\n\n<p>💕 Ly Farm to Cup Cao/ Thấp</p>\n\n<p>💕 Ly Inox Ống H&uacute;t Xanh Biển</p>\n\n<p>💕 Ly Inox Ống H&uacute;t Hồng Xanh/ Đen Nh&aacute;m</p>\n\n<p>💕 Ly Nhựa 2 Lớp Con Thuyền/ Quả Dứa</p>\n\n<p>💕 Ống h&uacute;t Inox c&aacute;c loại</p>\n\n<p>💕 Cốc sứ The Coffee House c&aacute;c loại</p>\n\n<p>💕 T&uacute;i Canvas c&aacute;c loại<br />\nChọn qu&agrave; ngay c&ugrave;ng Nh&agrave;</p>\n\n<p>-------------</p>\n\n<p>Đặt h&agrave;ng ngay c&ugrave;ng Nh&agrave;</p>\n\n<p>👉Web: https://order.thecoffeehouse.com/</p>\n\n<p>👉App The Coffee House: https://tchapp.page.link/installv5</p>\n\n<p>👉Số điện thoại: 18006936</p>\n\n<ul>\n	<li><em>Chương tr&igrave;nh tặng &aacute;p dụng cho sản phẩm c&oacute; gi&aacute; trị bằng hoặc nhỏ hơn khi mua trực tiếp tại cửa h&agrave;ng.</em></li>\n	<li><em>Ưu đ&atilde;i chỉ &aacute;p dụng cho đơn h&agrave;ng từ 01/02 đến hết ng&agrave;y 28/02/2022.</em></li>\n	<li><em>Kh&ocirc;ng &aacute;p dụng cho c&aacute;c chương tr&igrave;nh khuyến m&atilde;i song song.</em></li>\n	<li><em>Số lượng ưu đ&atilde;i c&oacute; hạn, c&oacute; thể sẽ kết th&uacute;c sớm hơn dự kiến.</em></li>\n</ul>\n\n<p><em>Danh s&aacute;ch hoạt động của c&aacute;c cửa h&agrave;ng trong hệ thống The Coffee House sẽ được update li&ecirc;n tục, bạn c&oacute; thể theo d&otilde;i tại đ&acirc;y:<a href=\"https://bit.ly/3Epaotz?fbclid=IwAR3il5EhQWeE37QUBQgerv45Bxm09Pa1VDhSuBnzQtdC1ncM3eWWGkCcRJE\">&nbsp;https://bit.ly/3Epaotz</a></em></p>\n\n<ul>\n	<li>The Coffee House lu&ocirc;n tu&acirc;n thủ về an to&agrave;n ph&ograve;ng dịch</li>\n	<li>Nh&acirc;n vi&ecirc;n của The Coffee House nghi&ecirc;m t&uacute;c thực hiện 5K trong suốt qu&aacute; tr&igrave;nh hoạt động</li>\n	<li>Thời gian giao h&agrave;ng c&oacute; thể k&eacute;o d&agrave;i hơn th&ocirc;ng thường do hạn chế về t&agrave;i xế v&agrave; quy định ph&ograve;ng dịch của ch&iacute;nh phủ, mong c&aacute;c bạn th&ocirc;ng cảm v&agrave; cảm ơn c&aacute;c bạn đ&atilde; đồng h&agrave;nh c&ugrave;ng The Coffee House.</li>\n</ul>\n', 'post4.jpg', 1, 0, 1, NULL, NULL),
-(5, 'BỘ 3 “KHỞI ĐẦU SUNG” SUM VẦY – SUNG SỨC – SUNG TÚC CẢ NĂM', 'bo-3-khoi-dau', '<p><strong><em><strong>Chia tay năm cũ với những nốt trầm, Tết n&agrave;y h&atilde;y c&ugrave;ng The Coffee House nạp cho m&igrave;nh 3 &ldquo;Sung&rdquo; để bắt đầu một năm Hổ đầy năng lượng, m&atilde;nh liệt v&agrave; đủ sức bứt ph&aacute;.</strong></em></strong></p>\n\n<p>Trải qua một năm 2021 với những nốt trầm kh&oacute; qu&ecirc;n, ai cũng th&ecirc;m tr&acirc;n trọng từng khoảnh khắc cuộc sống. Được g&igrave; v&agrave; mất g&igrave; m&igrave;nh để lại cho năm cũ nh&eacute;, năm mới đến h&atilde;y c&ugrave;ng Nh&agrave; đ&oacute;n một c&aacute;i Tết con Hổ thật &ldquo;b&ugrave;ng nổ&rdquo;. Đặc biệt phải trọn vẹn hơn cả về sức khỏe, t&igrave;nh cảm gia đ&igrave;nh v&agrave; sự thịnh vượng. V&agrave; đừng qu&ecirc;n khởi động năm mới thật sung, thật năng lượng với bộ 3 khởi đầu &quot;Sung&quot; tại The Coffee House bạn nh&eacute;!</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/Noti_Khoidausung.jpg\" /></p>\n\n<p><strong>Tr&agrave; Sen Nh&atilde;n Sum Vầy</strong><br />\nNhững ng&agrave;y Tết c&ograve;n hạnh ph&uacute;c n&agrave;o hơn l&agrave; khi được trở về nh&agrave;, đ&oacute;n năm mới c&ugrave;ng gia đ&igrave;nh, nh&igrave;n những người th&acirc;n y&ecirc;u qu&acirc;y quần, sum họp. Một c&aacute;i Tết thật an vui, thật đầm ấm v&agrave; rộn r&atilde; y&ecirc;u thương l&agrave; niềm mong mỏi của bất kỳ ai. Tết 2022 Nh&agrave; ra mắt sản phẩm mới với t&ecirc;n gọi Tr&agrave; Sen Nh&atilde;n Sum Vầy, hy vọng bạn c&oacute; thể kề cạnh người th&acirc;n, c&ugrave;ng thưởng thức một hương vị ng&agrave;y Tết tươi m&aacute;t, đặc sắc v&agrave; hứng khởi.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/tra-sen-nhan-sum-vay.jpg\" /></p>\n\n<p>Tr&agrave; Sen Nh&atilde;n Sum Vầy với vị thanh m&aacute;t, ngọt dịu d&agrave;ng. Nh&atilde;n tươi ngọt, sen b&eacute;o b&ugrave;i, đem lại một cảm nhận thật sảng kho&aacute;i. Chắc chắn đ&acirc;y sẽ l&agrave; chọn lựa ưng &yacute; của bạn trong dịp Tết n&agrave;y.</p>\n\n<p><strong>Tr&agrave; Dưa Đ&agrave;o Sung T&uacute;c</strong><br />\nNăm mới ngo&agrave;i b&igrave;nh an, ngo&agrave;i sum vầy, The Coffee House c&ograve;n mong ch&uacute;c sự sung t&uacute;c sẽ đến với mọi nh&agrave;. Hy vọng những kh&oacute; khăn sẽ đi qua, một cuộc sống sung t&uacute;c hơn sẽ đến, để bạn kh&ocirc;ng c&ograve;n qu&aacute; nhiều những bận l&ograve;ng, kh&ocirc;ng c&ograve;n nhiều những ch&ecirc;nh v&ecirc;nh.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/tra-dua-dao-sung-tuc-min.jpg\" /></p>\n\n<p>Tr&agrave; Dưa Đ&agrave;o Sung T&uacute;c g&oacute;p mặt trong thực đơn ng&agrave;y Tết chắc chắn sẽ đem đến cho bạn, gia đ&igrave;nh v&agrave; bạn b&egrave; một cảm gi&aacute;c thật tươi mới, m&aacute;t l&agrave;nh. Cả dưa lưới v&agrave; đ&agrave;o tươi đều sở hữu vị thơm ngọt v&agrave; m&agrave;u v&agrave;ng tươi r&oacute;i, cho bạn một ấn tượng thật đặc biệt nh&acirc;n ng&agrave;y đầu năm. Gi&uacute;p kh&ocirc;ng kh&iacute; th&ecirc;m rộn r&atilde;, c&agrave;ng tươi vui v&agrave; phấn khởi trong giai điệu của những ng&agrave;y xu&acirc;n. Cụng ly Tr&agrave; Dưa Đ&agrave;o Sung T&uacute;c của The Coffee House để rước lộc đầu năm bạn nh&eacute;!</p>\n\n<p><strong>Tr&agrave; Sữa Sung Sức (Masala Chai)</strong><br />\nNăm Hổ, biểu tượng của sức mạnh, sự m&atilde;nh liệt. Tr&agrave; Sữa Sung Sức Masala Chai với vị tr&agrave; sữa ngọt ngọt, cay cay, b&eacute;o b&eacute;o v&agrave; nồng n&agrave;n như một m&oacute;n qu&agrave; tặng đặc biệt m&agrave; The Coffee House đưa đến để c&ugrave;ng bạn tăng th&ecirc;m sức lực. Nh&agrave; ch&uacute;c bạn sẽ mạnh mẽ, ki&ecirc;n cường, căng tr&agrave;n sức sống v&agrave; khẳng định được &ldquo;đẳng cấp chiến binh&rdquo; trong năm mới n&agrave;y.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/Tra-sua-sung-tuc-min.jpg\" /></p>\n\n<p>&ldquo;Bộ ba&rdquo; Tr&agrave; Sen Nh&atilde;n Sum Vầy, Tr&agrave; Dưa Đ&agrave;o Sung Sức, Tr&agrave; Sữa Sung T&uacute;c (Masala Chai) ch&iacute;nh l&agrave; một khởi đầu năm mới tr&agrave;n đầy niềm tin v&agrave; hy vọng m&agrave; The Coffee House muốn trao gửi đến bạn. Nạp th&ecirc;m những nguồn năng lượng m&atilde;nh liệt n&agrave;y để sẵn s&agrave;ng b&ugrave;ng nổ trong năm mới, đ&oacute;n may mắn, b&igrave;nh an v&agrave; một cuộc sống tươi hồng nh&eacute;.<br />\n<em>Vậy n&ecirc;n, Tết đ&atilde; đến c&ugrave;ng thưởng thức menu khai xu&acirc;n cực &ldquo;Sung&rdquo; của The Coffee House để bắt đầu năm Hổ 2022 thật tưng bừng, b&ugrave;ng ch&aacute;y v&agrave; rực rỡ hơn!</em></p>\n', 'post5.jpg', 2, 1, 1, NULL, NULL),
-(6, 'HẠT CÀ PHÊ ROBUSTA & NHỮNG ĐIỀU THÚ VỊ CÓ THỂ BẠN CHƯA BIẾT', 'hat-ca-phe', '<p>Mỗi loại c&agrave; ph&ecirc; mỗi c&aacute; t&iacute;nh v&agrave; trải nghiệm kh&aacute;c biệt. Tại The Coffee House chất nguy&ecirc;n bản được giữ trọn vẹn để bạn c&oacute; thể thưởng thức hương vị c&agrave; ph&ecirc; đ&iacute;ch thực.<br />\nGần đ&acirc;y gh&eacute; The Coffee House chắc bạn cũng đ&atilde; được nghe v&agrave; thưởng thức hương vị đặc biệt từ hạt c&agrave; ph&ecirc; Robusta Đắk Lắk vậy bạn c&oacute; bao giờ t&ograve; m&ograve; về loại hạt n&agrave;y kh&ocirc;ng?</p>\n\n<p>Để đến được tay bạn, hạt c&agrave; ph&ecirc; tại The Coffee House đ&atilde; trải qua qu&aacute; tr&igrave;nh thử th&aacute;ch chặt chẽ về chất lượng: vun trồng, chăm s&oacute;c, chọn lọc tr&aacute;i ch&iacute;n đỏ theo phương ph&aacute;p thủ c&ocirc;ng, rang xay v&agrave; pha chế để chắt chiu những tinh chất c&agrave; ph&ecirc; đậm đ&agrave;, đượm vị</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/HERO--1--min.jpg\" /></p>\n\n<p>Bạn c&oacute; thể dễ d&agrave;ng nhận biết Robusta bằng những đặc điểm như: &nbsp;hạt tr&ograve;n v&agrave; nhỏ, r&atilde;nh giữa thường d&aacute;ng thẳng. Hạt thường c&oacute; m&agrave;u đậm, với h&agrave;m lượng caffeine từ 2 - 4% nhiều hơn gần gấp đ&ocirc;i so với hạt Arabica. Đ&acirc;y cũng l&agrave; loại hạt được trồng nhiều tại nước ta.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/CFVN-min.jpg\" /></p>\n\n<p>Với hương vị đặc trưng, Robusta mang đến cảm gi&aacute;c mạnh mẽ, đậm đ&agrave; v&agrave; vị đắng tinh tế khi thưởng thức.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/B--3-min.jpg\" /></p>\n\n<p>Bộ sản phẩm c&agrave; ph&ecirc; Việt phi&ecirc;n bản mới được tạo n&ecirc;n từ hạt Robusta Đắk Lắk, được fans Nh&agrave; y&ecirc;u th&iacute;ch nhờ hương vị đậm đ&agrave; truyền thống.</p>\n\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/1.jpg\" /></p>\n\n<p>C&agrave; ph&ecirc; tại nh&agrave; nhưng vẫn ngon như tại qu&aacute;n, Nh&agrave; c&oacute; Original 1 gi&uacute;p bạn thưởng thức trọn vẹn hương vị đặc trưng từ hạt c&agrave; ph&ecirc; Robusta Đắk Lắk.</p>\n', 'post6.jpg', 2, 0, 1, NULL, NULL),
-(7, 'Nghệ thuật pha chế -V60', 'nghe-thuat-da-che', '<p><em><strong>THE SHAPE OF NATURE</strong></em><br />\nĐ&uacute;ng với t&ecirc;n gọi, V60 mang h&igrave;nh d&aacute;ng một Vector với g&oacute;c 60 độ. Vector n&agrave;y được tạo n&ecirc;n từ parabol &quot;chuẩn&quot; y = x&sup2; xuất hiện rất nhiều trong cuộc sống h&agrave;ng ng&agrave;y.V&igrave; vậy b&igrave;nh V60 được mệnh danh l&agrave; Thiết kế của Tự nhi&ecirc;n - The shape of Nature<br />\n<img alt=\"img_8089_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8089_grande.jpg\" /><br />\n<em><strong>Step 1 - Đặt giấy lọc v&agrave;o V60</strong></em><br />\nSau đ&oacute; tr&aacute;ng qua nước s&ocirc;i để khử đi m&ugrave;i của giấy lọc, đồng thời l&agrave;m n&oacute;ng dripper v&agrave; server.<br />\n<em><strong>Step 2 - C&acirc;n v&agrave; xay hạt c&agrave; ph&ecirc;</strong></em><br />\nV60 th&iacute;ch hợp với c&aacute;ch rang s&aacute;ng m&agrave;u, mang lại nhiều hương vị tr&aacute;i c&acirc;y, hoa. Những hạt c&agrave; ph&ecirc; nổi tiếng tr&ecirc;n thế giới như ở Kenya, Ethiopia,&hellip; sẽ c&oacute; hương vị tốt nhất khi pha với c&aacute;ch pha n&agrave;y.<br />\n<em><strong>Step 3 - Sẵn s&agrave;ng pha chế</strong></em><br />\nCho bột c&agrave; ph&ecirc; vừa xay v&agrave;o phễu v&agrave; đặt V60 l&ecirc;n gi&aacute; đỡ hoặc b&igrave;nh.<br />\n<img alt=\"img_8142_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8142_grande.jpg\" /><br />\n<em><strong>Step 4 - Pour over</strong></em><br />\nPour over (&quot;đổ nước&quot;) theo từng đợt, chậm, đều tay theo h&igrave;nh xoắn ốc từ t&acirc;m ra ngo&agrave;i để đảm bảo to&agrave;n bộ bột c&agrave; ph&ecirc; thấm đều nước s&ocirc;i.<br />\n&bull; Đợt đầu ti&ecirc;n l&agrave; để c&agrave; ph&ecirc; bloom (&ldquo;nở&rdquo;). Bạn c&oacute; thể dễ d&agrave;ng quan s&aacute;t thấy c&agrave; ph&ecirc; c&oacute; những b&oacute;ng kh&iacute; C02 xuất hiện tho&aacute;t ra ngo&agrave;i.<br />\n<img alt=\"img_8149_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8149_grande.jpg\" /><br />\n&bull; Tiếp tục pour over trong khoảng 2 ph&uacute;t. Một lần pha tốt th&igrave; bề mặt c&agrave; ph&ecirc; sẽ hơi nh&ocirc; l&ecirc;n một ch&uacute;t ở t&acirc;m v&agrave; th&agrave;nh phễu kh&ocirc;ng bị d&iacute;nh qu&aacute; nhiều bột c&agrave; ph&ecirc;.<br />\n<img alt=\"img_8149_grande-1\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8149_grande-1.jpg\" /><br />\nSau thời gian n&agrave;y, c&agrave; ph&ecirc; sẽ mất khoảng 30s để chảy hết<br />\n<img alt=\"img_8153_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8153_grande.jpg\" /><br />\nV60 ho&agrave;n to&agrave;n kh&ocirc;ng &ldquo;dễ chiều&rdquo;. Để khai th&aacute;c trọn vẹn phẩm chất của c&agrave; ph&ecirc;, đ&ograve;i hỏi Barista của The Coffee House phải đ&aacute;p ứng những kỹ thuật nhất định. V&igrave; c&agrave; ph&ecirc; rất dễ bị tắc ở phần đ&aacute;y dẫn đến bị over (tắc) nếu pour (r&oacute;t) kh&ocirc;ng cẩn thận.<br />\n<img alt=\"img_8166_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8166_grande.jpg\" /></p>\n', 'post7.jpg', 4, 1, 1, NULL, NULL);
+INSERT INTO `posts` (`id`, `tieude`, `slug`, `noidung`, `hinhanh`, `id_danhmuc`, `hot`, `loaibaiviet`, `trangthai`, `created_at`, `updated_at`) VALUES
+(2, 'GHÉ THE COFFEE HOUSE CHUYỆN TRÒ, CÓ QUÀ TRAO TAY', 'ghe-the-coffee-house-chuyen-tro-co-qua-trao-tay', '<p>Thưởng thức m&oacute;n y&ecirc;u th&iacute;ch, chuyện tr&ograve; r&ocirc;m rả th&ocirc;i chưa đủ, m&igrave;nh gh&eacute; Nh&agrave; m&agrave; c&oacute; th&ecirc;m qu&agrave; ng&agrave;y c&agrave;ng th&ecirc;m vui<br />\r\nTừ ng&agrave;y 07.02 đến hết ng&agrave;y 28.02, Nh&agrave; tặng bạn 1 lon c&agrave; ph&ecirc; sữa đ&aacute; tiện lợi, thơm ngon, đ&uacute;ng gu bạn th&iacute;ch khi hẹn h&ograve; n&egrave;.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/02/FB--19--1.jpg\" /></p>\r\n\r\n<p><br />\r\nGh&eacute; Nh&agrave; ngay, nhận qu&agrave; liền tay!</p>\r\n\r\n<p><strong>-------------</strong></p>\r\n\r\n<p><strong>Đặt h&agrave;ng ngay c&ugrave;ng Nh&agrave;</strong></p>\r\n\r\n<p>👉Web: https://order.thecoffeehouse.com/</p>\r\n\r\n<p>👉App The Coffee House: https://tchapp.page.link/installv5</p>\r\n\r\n<p>👉Số điện thoại: 18006936</p>\r\n\r\n<p><em>Danh s&aacute;ch hoạt động của c&aacute;c cửa h&agrave;ng trong hệ thống The Coffee House sẽ được update li&ecirc;n tục, bạn c&oacute; thể theo d&otilde;i tại đ&acirc;y:<a href=\"https://bit.ly/3Epaotz?fbclid=IwAR3il5EhQWeE37QUBQgerv45Bxm09Pa1VDhSuBnzQtdC1ncM3eWWGkCcRJE\">&nbsp;https://bit.ly/3Epaotz</a></em></p>\r\n\r\n<ul>\r\n	<li>The Coffee House lu&ocirc;n tu&acirc;n thủ về an to&agrave;n ph&ograve;ng dịch</li>\r\n	<li>Nh&acirc;n vi&ecirc;n của The Coffee House nghi&ecirc;m t&uacute;c thực hiện 5K trong suốt qu&aacute; tr&igrave;nh hoạt động</li>\r\n	<li>Thời gian giao h&agrave;ng c&oacute; thể k&eacute;o d&agrave;i hơn th&ocirc;ng thường do hạn chế về t&agrave;i xế v&agrave; quy định ph&ograve;ng dịch của ch&iacute;nh phủ, mong c&aacute;c bạn th&ocirc;ng cảm v&agrave; cảm ơn c&aacute;c bạn đ&atilde; đồng h&agrave;nh c&ugrave;ng The Coffee House.</li>\r\n</ul>', '1892860.jpg', 1, 1, 'tin-tuc', 1, '2022-06-21 20:04:35', '2022-07-19 20:53:36'),
+(3, 'CÒN “MÙNG” LÀ CÒN TẾT - THE COFFEE HOUSE LÌ XÌ NƯỚC NGON ĐỒNG GIÁ 39K', 'con-mung-la-con-tet-the-coffee-house-li-xi-nuoc-ngon-dong-gia-39k', '<p>Ai bảo hết 3 m&ugrave;ng l&agrave; hết Tết, c&ograve;n m&ugrave;ng l&agrave; c&ograve;n Tết, c&ograve;n Tết l&agrave; c&ograve;n l&igrave; x&igrave; đ&uacute;ng kh&ocirc;ng n&egrave;. Vậy th&igrave; ngại g&igrave; kh&ocirc;ng nhận l&igrave; x&igrave; từ The Coffee House.</p>\r\n\r\n<p>Từ ng&agrave;y&nbsp;<strong>09/02 - 11/02,&nbsp;</strong>The Coffee House mời bạn ưu đ&atilde;i đồng gi&aacute; 39K để team m&igrave;nh vui cả ng&agrave;y kh&ocirc;ng ngớt.</p>\r\n\r\n<p><a href=\"https://order.thecoffeehouse.com/product-listing\">ĐẶT H&Agrave;NG NGAY</a></p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/02/FB--16--1.jpg\" /></p>\r\n\r\n<p>Deal chớp nho&aacute;ng, đặt nước ngon liền tay!</p>\r\n\r\n<p><strong>-------------</strong><br />\r\n<strong>Đặt h&agrave;ng ngay</strong><br />\r\n👉Web: https://order.thecoffeehouse.com/<br />\r\n👉App The Coffee House: https://tchapp.page.link/installv5<br />\r\n👉Số điện thoại: 18006936</p>\r\n\r\n<p><em>- Đồng gi&aacute; 39K cho tất cả c&aacute;c sản phẩm Tr&agrave; tr&aacute;i c&acirc;y, Tr&agrave; sữa, Sinh tố đ&aacute; xay<br />\r\n- Ưu đ&atilde;i kh&ocirc;ng &aacute;p dụng cho topping, b&aacute;nh, snack<br />\r\n- &Aacute;p dụng dịch vụ giao h&agrave;ng<br />\r\n- Ưu đ&atilde;i &aacute;p dụng duy nhất 03 ng&agrave;y 09,10,11 th&aacute;ng 2<br />\r\n- Kh&ocirc;ng &aacute;p dụng cho chương tr&igrave;nh khuyến m&atilde;i song song<br />\r\n- Số lượng ưu đ&atilde;i c&oacute; hạn</em></p>\r\n\r\n<p><em>Danh s&aacute;ch hoạt động của c&aacute;c cửa h&agrave;ng trong hệ thống The Coffee House sẽ được update li&ecirc;n tục, bạn c&oacute; thể theo d&otilde;i tại đ&acirc;y:<a href=\"https://bit.ly/3Epaotz?fbclid=IwAR3il5EhQWeE37QUBQgerv45Bxm09Pa1VDhSuBnzQtdC1ncM3eWWGkCcRJE\">&nbsp;https://bit.ly/3Epaotz</a></em></p>\r\n\r\n<ul>\r\n	<li>The Coffee House lu&ocirc;n tu&acirc;n thủ về an to&agrave;n ph&ograve;ng dịch</li>\r\n	<li>Nh&acirc;n vi&ecirc;n của The Coffee House nghi&ecirc;m t&uacute;c thực hiện 5K trong suốt qu&aacute; tr&igrave;nh hoạt động</li>\r\n	<li>Thời gian giao h&agrave;ng c&oacute; thể k&eacute;o d&agrave;i hơn th&ocirc;ng thường do hạn chế về t&agrave;i xế v&agrave; quy định ph&ograve;ng dịch của ch&iacute;nh phủ, mong c&aacute;c bạn th&ocirc;ng cảm v&agrave; cảm ơn c&aacute;c bạn đ&atilde; đồng h&agrave;nh c&ugrave;ng The Coffee House.</li>\r\n</ul>', '4993001.jpg', 1, 0, 'tin-tuc', 1, '2022-06-30 20:04:35', '2022-07-10 22:23:43'),
+(4, 'VUI LỄ HỘI - NHÀ TẶNG QUÀ CÓ ĐÔI', 'vui-le-hoi-nha-tang-qua-co-doi', '<p>Từ 01.02 đến hết 28.02, Nh&agrave; tặng bạn ưu đ&atilde;i MUA 1 TẶNG 1 khi mua bộ sưu tập qu&agrave; tặng đặc biệt đến từ The Coffee House. &nbsp;Một cho bạn, một d&agrave;nh cho người thương, để m&ugrave;a Valentine năm nay th&ecirc;m gắn kết ngọt ng&agrave;o bạn nh&eacute;.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/FB--11--4.jpg\" /></p>\r\n\r\n<p><br />\r\n💕 B&igrave;nh giữ nhiệt Inox Quả Dứa/ Con Thuyền</p>\r\n\r\n<p>💕 Ly Farm to Cup Cao/ Thấp</p>\r\n\r\n<p>💕 Ly Inox Ống H&uacute;t Xanh Biển</p>\r\n\r\n<p>💕 Ly Inox Ống H&uacute;t Hồng Xanh/ Đen Nh&aacute;m</p>\r\n\r\n<p>💕 Ly Nhựa 2 Lớp Con Thuyền/ Quả Dứa</p>\r\n\r\n<p>💕 Ống h&uacute;t Inox c&aacute;c loại</p>\r\n\r\n<p>💕 Cốc sứ The Coffee House c&aacute;c loại</p>\r\n\r\n<p>💕 T&uacute;i Canvas c&aacute;c loại<br />\r\nChọn qu&agrave; ngay c&ugrave;ng Nh&agrave;</p>\r\n\r\n<div class=\"ddict_btn\" style=\"left:76.2812px; top:1505px\"><img src=\"chrome-extension://bpggmmljdiliancllaapiggllnkbjocb/logo/48.png\" /></div>', '6294667.jpg', 1, 1, 'tin-tuc', 1, '2022-06-29 20:04:35', '2022-07-14 17:46:06'),
+(5, 'BỘ 3 “KHỞI ĐẦU SUNG” SUM VẦY – SUNG SỨC – SUNG TÚC CẢ NĂM', 'bo-3-khoi-dau-sung-sum-vay-sung-suc-sung-tuc-ca-nam', '<p><strong><em><strong>Chia tay năm cũ với những nốt trầm, Tết n&agrave;y h&atilde;y c&ugrave;ng The Coffee House nạp cho m&igrave;nh 3 &ldquo;Sung&rdquo; để bắt đầu một năm Hổ đầy năng lượng, m&atilde;nh liệt v&agrave; đủ sức bứt ph&aacute;.</strong></em></strong></p>\r\n\r\n<p>Trải qua một năm 2021 với những nốt trầm kh&oacute; qu&ecirc;n, ai cũng th&ecirc;m tr&acirc;n trọng từng khoảnh khắc cuộc sống. Được g&igrave; v&agrave; mất g&igrave; m&igrave;nh để lại cho năm cũ nh&eacute;, năm mới đến h&atilde;y c&ugrave;ng Nh&agrave; đ&oacute;n một c&aacute;i Tết con Hổ thật &ldquo;b&ugrave;ng nổ&rdquo;. Đặc biệt phải trọn vẹn hơn cả về sức khỏe, t&igrave;nh cảm gia đ&igrave;nh v&agrave; sự thịnh vượng. V&agrave; đừng qu&ecirc;n khởi động năm mới thật sung, thật năng lượng với bộ 3 khởi đầu &quot;Sung&quot; tại The Coffee House bạn nh&eacute;!</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/Noti_Khoidausung.jpg\" /></p>\r\n\r\n<p><strong>Tr&agrave; Sen Nh&atilde;n Sum Vầy</strong><br />\r\nNhững ng&agrave;y Tết c&ograve;n hạnh ph&uacute;c n&agrave;o hơn l&agrave; khi được trở về nh&agrave;, đ&oacute;n năm mới c&ugrave;ng gia đ&igrave;nh, nh&igrave;n những người th&acirc;n y&ecirc;u qu&acirc;y quần, sum họp. Một c&aacute;i Tết thật an vui, thật đầm ấm v&agrave; rộn r&atilde; y&ecirc;u thương l&agrave; niềm mong mỏi của bất kỳ ai. Tết 2022 Nh&agrave; ra mắt sản phẩm mới với t&ecirc;n gọi Tr&agrave; Sen Nh&atilde;n Sum Vầy, hy vọng bạn c&oacute; thể kề cạnh người th&acirc;n, c&ugrave;ng thưởng thức một hương vị ng&agrave;y Tết tươi m&aacute;t, đặc sắc v&agrave; hứng khởi.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/tra-sen-nhan-sum-vay.jpg\" /></p>\r\n\r\n<p>Tr&agrave; Sen Nh&atilde;n Sum Vầy với vị thanh m&aacute;t, ngọt dịu d&agrave;ng. Nh&atilde;n tươi ngọt, sen b&eacute;o b&ugrave;i, đem lại một cảm nhận thật sảng kho&aacute;i. Chắc chắn đ&acirc;y sẽ l&agrave; chọn lựa ưng &yacute; của bạn trong dịp Tết n&agrave;y.</p>\r\n\r\n<p><strong>Tr&agrave; Dưa Đ&agrave;o Sung T&uacute;c</strong><br />\r\nNăm mới ngo&agrave;i b&igrave;nh an, ngo&agrave;i sum vầy, The Coffee House c&ograve;n mong ch&uacute;c sự sung t&uacute;c sẽ đến với mọi nh&agrave;. Hy vọng những kh&oacute; khăn sẽ đi qua, một cuộc sống sung t&uacute;c hơn sẽ đến, để bạn kh&ocirc;ng c&ograve;n qu&aacute; nhiều những bận l&ograve;ng, kh&ocirc;ng c&ograve;n nhiều những ch&ecirc;nh v&ecirc;nh.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/tra-dua-dao-sung-tuc-min.jpg\" /></p>\r\n\r\n<p>Tr&agrave; Dưa Đ&agrave;o Sung T&uacute;c g&oacute;p mặt trong thực đơn ng&agrave;y Tết chắc chắn sẽ đem đến cho bạn, gia đ&igrave;nh v&agrave; bạn b&egrave; một cảm gi&aacute;c thật tươi mới, m&aacute;t l&agrave;nh. Cả dưa lưới v&agrave; đ&agrave;o tươi đều sở hữu vị thơm ngọt v&agrave; m&agrave;u v&agrave;ng tươi r&oacute;i, cho bạn một ấn tượng thật đặc biệt nh&acirc;n ng&agrave;y đầu năm. Gi&uacute;p kh&ocirc;ng kh&iacute; th&ecirc;m rộn r&atilde;, c&agrave;ng tươi vui v&agrave; phấn khởi trong giai điệu của những ng&agrave;y xu&acirc;n. Cụng ly Tr&agrave; Dưa Đ&agrave;o Sung T&uacute;c của The Coffee House để rước lộc đầu năm bạn nh&eacute;!</p>\r\n\r\n<p><strong>Tr&agrave; Sữa Sung Sức (Masala Chai)</strong><br />\r\nNăm Hổ, biểu tượng của sức mạnh, sự m&atilde;nh liệt. Tr&agrave; Sữa Sung Sức Masala Chai với vị tr&agrave; sữa ngọt ngọt, cay cay, b&eacute;o b&eacute;o v&agrave; nồng n&agrave;n như một m&oacute;n qu&agrave; tặng đặc biệt m&agrave; The Coffee House đưa đến để c&ugrave;ng bạn tăng th&ecirc;m sức lực. Nh&agrave; ch&uacute;c bạn sẽ mạnh mẽ, ki&ecirc;n cường, căng tr&agrave;n sức sống v&agrave; khẳng định được &ldquo;đẳng cấp chiến binh&rdquo; trong năm mới n&agrave;y.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2022/01/Tra-sua-sung-tuc-min.jpg\" /></p>\r\n\r\n<p>&ldquo;Bộ ba&rdquo; Tr&agrave; Sen Nh&atilde;n Sum Vầy, Tr&agrave; Dưa Đ&agrave;o Sung Sức, Tr&agrave; Sữa Sung T&uacute;c (Masala Chai) ch&iacute;nh l&agrave; một khởi đầu năm mới tr&agrave;n đầy niềm tin v&agrave; hy vọng m&agrave; The Coffee House muốn trao gửi đến bạn. Nạp th&ecirc;m những nguồn năng lượng m&atilde;nh liệt n&agrave;y để sẵn s&agrave;ng b&ugrave;ng nổ trong năm mới, đ&oacute;n may mắn, b&igrave;nh an v&agrave; một cuộc sống tươi hồng nh&eacute;.<br />\r\n<em>Vậy n&ecirc;n, Tết đ&atilde; đến c&ugrave;ng thưởng thức menu khai xu&acirc;n cực &ldquo;Sung&rdquo; của The Coffee House để bắt đầu năm Hổ 2022 thật tưng bừng, b&ugrave;ng ch&aacute;y v&agrave; rực rỡ hơn!</em></p>', '4676894.jpg', 2, 1, 'tin-tuc', 1, '2022-06-29 20:04:35', '2022-06-29 20:31:41'),
+(6, 'HẠT CÀ PHÊ ROBUSTA & NHỮNG ĐIỀU THÚ VỊ CÓ THỂ BẠN CHƯA BIẾT', 'hat-ca-phe-robusta-nhung-dieu-thu-vi-co-the-ban-chua-biet', '<p>Mỗi loại c&agrave; ph&ecirc; mỗi c&aacute; t&iacute;nh v&agrave; trải nghiệm kh&aacute;c biệt. Tại The Coffee House chất nguy&ecirc;n bản được giữ trọn vẹn để bạn c&oacute; thể thưởng thức hương vị c&agrave; ph&ecirc; đ&iacute;ch thực.<br />\r\nGần đ&acirc;y gh&eacute; The Coffee House chắc bạn cũng đ&atilde; được nghe v&agrave; thưởng thức hương vị đặc biệt từ hạt c&agrave; ph&ecirc; Robusta Đắk Lắk vậy bạn c&oacute; bao giờ t&ograve; m&ograve; về loại hạt n&agrave;y kh&ocirc;ng?</p>\r\n\r\n<p>Để đến được tay bạn, hạt c&agrave; ph&ecirc; tại The Coffee House đ&atilde; trải qua qu&aacute; tr&igrave;nh thử th&aacute;ch chặt chẽ về chất lượng: vun trồng, chăm s&oacute;c, chọn lọc tr&aacute;i ch&iacute;n đỏ theo phương ph&aacute;p thủ c&ocirc;ng, rang xay v&agrave; pha chế để chắt chiu những tinh chất c&agrave; ph&ecirc; đậm đ&agrave;, đượm vị</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/HERO--1--min.jpg\" /></p>\r\n\r\n<p>Bạn c&oacute; thể dễ d&agrave;ng nhận biết Robusta bằng những đặc điểm như: &nbsp;hạt tr&ograve;n v&agrave; nhỏ, r&atilde;nh giữa thường d&aacute;ng thẳng. Hạt thường c&oacute; m&agrave;u đậm, với h&agrave;m lượng caffeine từ 2 - 4% nhiều hơn gần gấp đ&ocirc;i so với hạt Arabica. Đ&acirc;y cũng l&agrave; loại hạt được trồng nhiều tại nước ta.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/CFVN-min.jpg\" /></p>\r\n\r\n<p>Với hương vị đặc trưng, Robusta mang đến cảm gi&aacute;c mạnh mẽ, đậm đ&agrave; v&agrave; vị đắng tinh tế khi thưởng thức.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/B--3-min.jpg\" /></p>\r\n\r\n<p>Bộ sản phẩm c&agrave; ph&ecirc; Việt phi&ecirc;n bản mới được tạo n&ecirc;n từ hạt Robusta Đắk Lắk, được fans Nh&agrave; y&ecirc;u th&iacute;ch nhờ hương vị đậm đ&agrave; truyền thống.</p>\r\n\r\n<p><img src=\"https://feed.thecoffeehouse.com//content/images/2021/11/1.jpg\" /></p>\r\n\r\n<p>C&agrave; ph&ecirc; tại nh&agrave; nhưng vẫn ngon như tại qu&aacute;n, Nh&agrave; c&oacute; Original 1 gi&uacute;p bạn thưởng thức trọn vẹn hương vị đặc trưng từ hạt c&agrave; ph&ecirc; Robusta Đắk Lắk.</p>', '6967645.jpg', 1, 1, 'tin-tuc', 1, '2022-06-29 20:04:35', '2022-07-07 20:57:30'),
+(7, 'Nghệ thuật pha chế -V60', 'nghe-thuat-pha-che-v60', '<p><em><strong>THE SHAPE OF NATURE</strong></em><br />\r\nĐ&uacute;ng với t&ecirc;n gọi, V60 mang h&igrave;nh d&aacute;ng một Vector với g&oacute;c 60 độ. Vector n&agrave;y được tạo n&ecirc;n từ parabol &quot;chuẩn&quot; y = x&sup2; xuất hiện rất nhiều trong cuộc sống h&agrave;ng ng&agrave;y.V&igrave; vậy b&igrave;nh V60 được mệnh danh l&agrave; Thiết kế của Tự nhi&ecirc;n - The shape of Nature<br />\r\n<img alt=\"img_8089_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8089_grande.jpg\" /><br />\r\n<em><strong>Step 1 - Đặt giấy lọc v&agrave;o V60</strong></em><br />\r\nSau đ&oacute; tr&aacute;ng qua nước s&ocirc;i để khử đi m&ugrave;i của giấy lọc, đồng thời l&agrave;m n&oacute;ng dripper v&agrave; server.<br />\r\n<em><strong>Step 2 - C&acirc;n v&agrave; xay hạt c&agrave; ph&ecirc;</strong></em><br />\r\nV60 th&iacute;ch hợp với c&aacute;ch rang s&aacute;ng m&agrave;u, mang lại nhiều hương vị tr&aacute;i c&acirc;y, hoa. Những hạt c&agrave; ph&ecirc; nổi tiếng tr&ecirc;n thế giới như ở Kenya, Ethiopia,&hellip; sẽ c&oacute; hương vị tốt nhất khi pha với c&aacute;ch pha n&agrave;y.<br />\r\n<em><strong>Step 3 - Sẵn s&agrave;ng pha chế</strong></em><br />\r\nCho bột c&agrave; ph&ecirc; vừa xay v&agrave;o phễu v&agrave; đặt V60 l&ecirc;n gi&aacute; đỡ hoặc b&igrave;nh.<br />\r\n<img alt=\"img_8142_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8142_grande.jpg\" /><br />\r\n<em><strong>Step 4 - Pour over</strong></em><br />\r\nPour over (&quot;đổ nước&quot;) theo từng đợt, chậm, đều tay theo h&igrave;nh xoắn ốc từ t&acirc;m ra ngo&agrave;i để đảm bảo to&agrave;n bộ bột c&agrave; ph&ecirc; thấm đều nước s&ocirc;i.<br />\r\n&bull; Đợt đầu ti&ecirc;n l&agrave; để c&agrave; ph&ecirc; bloom (&ldquo;nở&rdquo;). Bạn c&oacute; thể dễ d&agrave;ng quan s&aacute;t thấy c&agrave; ph&ecirc; c&oacute; những b&oacute;ng kh&iacute; C02 xuất hiện tho&aacute;t ra ngo&agrave;i.<br />\r\n<img alt=\"img_8149_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8149_grande.jpg\" /><br />\r\n&bull; Tiếp tục pour over trong khoảng 2 ph&uacute;t. Một lần pha tốt th&igrave; bề mặt c&agrave; ph&ecirc; sẽ hơi nh&ocirc; l&ecirc;n một ch&uacute;t ở t&acirc;m v&agrave; th&agrave;nh phễu kh&ocirc;ng bị d&iacute;nh qu&aacute; nhiều bột c&agrave; ph&ecirc;.<br />\r\n<img alt=\"img_8149_grande-1\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8149_grande-1.jpg\" /><br />\r\nSau thời gian n&agrave;y, c&agrave; ph&ecirc; sẽ mất khoảng 30s để chảy hết<br />\r\n<img alt=\"img_8153_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8153_grande.jpg\" /><br />\r\nV60 ho&agrave;n to&agrave;n kh&ocirc;ng &ldquo;dễ chiều&rdquo;. Để khai th&aacute;c trọn vẹn phẩm chất của c&agrave; ph&ecirc;, đ&ograve;i hỏi Barista của The Coffee House phải đ&aacute;p ứng những kỹ thuật nhất định. V&igrave; c&agrave; ph&ecirc; rất dễ bị tắc ở phần đ&aacute;y dẫn đến bị over (tắc) nếu pour (r&oacute;t) kh&ocirc;ng cẩn thận.<br />\r\n<img alt=\"img_8166_grande\" src=\"https://feed.thecoffeehouse.com//content/images/2021/08/img_8166_grande.jpg\" /></p>', '7970654.jpg', 4, 0, 'tin-tuc', 1, '2022-06-29 20:04:35', '2022-07-19 20:53:29'),
+(8, 'Chính sách mua hàng', 'chinh-sach-mua-hang', '<h1 style=\"margin-left:120px; text-align:center\"><span style=\"color:#e74c3c\"><strong>ĐIỀU KHOẢN V&Agrave; ĐIỀU KIỆN CAM KẾT</strong></span></h1>\r\n\r\n<h3><em><strong>Cập nhật ng&agrave;y: 15.03.2022</strong></em></h3>\r\n\r\n<p>VUI L&Ograve;NG ĐỌC KỸ NHỮNG ĐIỀU KHOẢN &amp; ĐIỀU KIỆN SỬ DỤNG N&Agrave;Y. BẰNG C&Aacute;CH TRUY CẬP HAY THAM GIA V&Agrave;O CHƯƠNG TR&Igrave;NH THẺ TH&Agrave;NH VI&Ecirc;N PH&Uacute;C LONG, BẠN ĐỒNG &Yacute; BỊ R&Agrave;NG BUỘC BỞI NHỮNG ĐIỀU KHOẢN &amp; ĐIỀU KIỆN SỬ DỤNG N&Agrave;Y V&Agrave; TẤT CẢ C&Aacute;C ĐIỀU KHOẢN ĐƯỢC KẾT HỢP BẰNG VIỆC THAM CHIẾU. NẾU BẠN KH&Ocirc;NG ĐỒNG &Yacute; VỚI NHỮNG ĐIỀU KHOẢN &amp; ĐIỀU KIỆN SỬ DỤNG N&Agrave;Y, VUI L&Ograve;NG KH&Ocirc;NG THAM GIA V&Agrave;O CHƯƠNG TR&Igrave;NH THẺ TH&Agrave;NH VI&Ecirc;N PH&Uacute;C LONG KỂ TỪ B&Acirc;Y GIỜ.</p>\r\n\r\n<p>C&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y được &aacute;p dụng đối với việc bạn truy cập v&agrave; tham gia v&agrave;o&nbsp;chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long do C&ocirc;ng ty C&ocirc;̉ Ph&acirc;̀n Ph&uacute;c Long Heritage thực hiện. C&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y kh&ocirc;ng l&agrave;m thay đổi theo bất cứ c&aacute;ch n&agrave;o c&aacute;c điều khoản hoặc điều kiện của bất cứ thỏa thuận n&agrave;o kh&aacute;c m&agrave; bạn c&oacute; thể giao kết với Ph&uacute;c Long về c&aacute;c sản phẩm v&agrave; dịch vụ kh&aacute;c.</p>\r\n\r\n<p>Ph&uacute;c Long cũng c&oacute; quyền thay đổi, chỉnh sửa v&agrave;/hoặc loại bỏ chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long v&agrave;/hoặc tất cả hoặc bất cứ phần n&agrave;o của c&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y hoặc bất cứ ch&iacute;nh s&aacute;ch, C&acirc;u Hỏi Thường Gặp, hoặc hướng dẫn li&ecirc;n quan đến Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long tại bất cứ thời điểm n&agrave;o v&agrave; theo quyền quyết định chỉ ri&ecirc;ng của Ph&uacute;c Long đưa ra.</p>\r\n\r\n<p>Bất cứ thay đổi hoặc sửa đổi n&agrave;o sẽ c&oacute; hiệu lực ngay khi được đăng tải tại trang chủ hoặc/v&agrave; trang Fanpage ch&iacute;nh thức của Ph&uacute;c Long tại&nbsp;<a href=\"http://phuclong.com.vn/\">www.phuclong.com.vn</a>&nbsp;v&agrave;&nbsp;<a href=\"https://www.facebook.com/phuclongcoffeeandtea/\">https://www.facebook.com/phuclongcoffeeandtea</a>, v&agrave; bạn c&oacute; thể khước từ bất cứ quyền n&agrave;o m&agrave; bạn c&oacute; thể c&oacute; để nhận được th&ocirc;ng b&aacute;o cụ thể về những thay đổi hoặc sửa đổi đ&oacute;.</p>\r\n\r\n<p>Sự tham gia của bạn v&agrave;o chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long ch&iacute;nh l&agrave; việc x&aacute;c nhận sự chấp nhận của bạn về c&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y v&agrave; bất cứ thay đổi hoặc sửa đổi n&agrave;o; Do vậy, bạn phải thường xuy&ecirc;n kiểm tra v&agrave; xem c&aacute;c Điều khoản &amp; Điều kiện Sử dụng, c&aacute;c ch&iacute;nh s&aacute;ch &aacute;p dụng v&agrave; C&acirc;u Hỏi Thường Gặp, để c&oacute; thể hiểu r&otilde; c&aacute;c điều khoản v&agrave; điều kiện &aacute;p dụng cho chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long. Nếu bạn kh&ocirc;ng đồng &yacute; c&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y, bạn phải chấm dứt việc tham gia v&agrave;o chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long.</p>\r\n\r\n<p>Chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long d&agrave;nh cho việc sử dụng c&aacute; nh&acirc;n. Việc sử dụng cho mục đ&iacute;ch thương mại dưới mọi h&igrave;nh thức được xem như bị cấm. Chương tr&igrave;nh n&agrave;y kh&ocirc;ng nhằm tới v&agrave; cũng kh&ocirc;ng được dự liệu cho việc sử dụng bởi bất cứ người n&agrave;o dưới 18 tuổi.</p>\r\n\r\n<p>Xin vui l&ograve;ng xem kỹ Ch&iacute;nh S&aacute;ch Quyền Ri&ecirc;ng Tư tại trang chủ của Ph&uacute;c Long để hiểu c&aacute;ch ch&uacute;ng t&ocirc;i thu thập, sử dụng, tiết lộ c&aacute;c th&ocirc;ng tin về kh&aacute;ch h&agrave;ng (bạn) v&agrave; c&aacute;ch để cập nhật hoặc thay đổi th&ocirc;ng tin c&aacute; nh&acirc;n của bạn cũng như c&aacute;ch ch&uacute;ng t&ocirc;i li&ecirc;n lạc với bạn.</p>\r\n\r\n<p>Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long l&agrave; một c&aacute;ch thức thể hiện sự nỗ lực của Ph&uacute;c Long để tri &acirc;n v&agrave; cảm ơn kh&aacute;ch h&agrave;ng trung th&agrave;nh ủng hộ hoạt động kinh doanh, v&agrave; mua c&aacute;c sản phẩm Ph&uacute;c Long. C&aacute;c th&agrave;nh vi&ecirc;n của Ph&uacute;c Long c&oacute; thể nhận được v&agrave; t&iacute;ch lũy điểm m&agrave; c&oacute; thể được sử dụng để hưởng c&aacute;c lợi &iacute;ch của chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long, c&ograve;n được biết đến như l&agrave; &ldquo;Ưu Đ&atilde;i&rdquo;, tại c&aacute;c cửa h&agrave;ng Ph&uacute;c Long tại Việt Nam.</p>\r\n\r\n<div class=\"ddict_btn\" style=\"left:34.4688px; top:45px\"><img src=\"chrome-extension://bpggmmljdiliancllaapiggllnkbjocb/logo/48.png\" /></div>', NULL, NULL, 0, 'chinh-sach', 1, '2022-06-28 00:22:50', '2022-07-01 20:10:20'),
+(10, 'THẾ HỆ CÀ PHÊ MỚI - NHÀ MỜI DEAL TO', 'the-he-ca-phe-moi-nha-moi-deal-to', '<h2>THẾ HỆ C&Agrave; PH&Ecirc; MỚI - NH&Agrave; MỜI DEAL TO</h2>\r\n\r\n<p>Hot!Hot! Thế hệ c&agrave; ph&ecirc; mới CloudFee &ecirc;m mượt như m&acirc;y đ&atilde; ch&iacute;nh thức ra mắt ️🎉️The Coffee House tặng ưu đ&atilde;i MUA 1 TẶNG 1, để bạn trải nghiệm CloudFee cho đơn Giao h&agrave;ng n&egrave;:</p>\r\n\r\n<ol>\r\n	<li>TẶNG 1 CLOUFEE CREAMY (size S) khi mua k&egrave;m 1 C&agrave; ph&ecirc; sữa đ&aacute; (size L)</li>\r\n</ol>\r\n\r\n<ul>\r\n	<li>Nhập m&atilde;: CREAMY</li>\r\n</ul>\r\n\r\n<p>2. TẶNG 1 CLOUFEE CREME BRULEE (size M) khi mua k&egrave;m 1 Tr&agrave; sữa (size L)</p>\r\n\r\n<ul>\r\n	<li>Nhập m&atilde;: BRULEE</li>\r\n</ul>\r\n\r\n<p><img alt=\"🔸\" src=\"https://feed.thecoffeehouse.com//content/images/2022/06/noti.jpg\" /></p>\r\n\r\n<p>Lưu &yacute;</p>\r\n\r\n<p>- &Aacute;p dụng dịch vụ Giao h&agrave;ng (Delivery) khi đặt h&agrave;ng qua App/Web The Coffee House</p>\r\n\r\n<p>- Kh&ocirc;ng &aacute;p dụng cho Topping</p>\r\n\r\n<p>- Kh&ocirc;ng &aacute;p dụng cho c&aacute;c chương tr&igrave;nh khuyến m&atilde;i song song</p>\r\n\r\n<p>- C&oacute; &aacute;p dụng luỹ tiến</p>\r\n\r\n<p>- Thời hạn ưu đ&atilde;i: 25/06/2022 đến hết ng&agrave;y 27/06/2022</p>\r\n\r\n<p>Thử l&agrave; ghiền ngay</p>\r\n\r\n<p>--</p>\r\n\r\n<p>M&Igrave;NH C&Agrave; PH&Ecirc; NH&Eacute;</p>', '3247009.jpg', 1, 0, 'tin-tuc', 1, '2022-06-29 20:04:35', '2022-06-29 20:04:35'),
+(12, 'Điều khoản', 'dieu-khoan', '<h1><strong>ĐIỀU KHOẢN V&Agrave; ĐIỀU KIỆN CAM KẾT</strong></h1>\r\n\r\n<h3><em><strong>Cập nhật ng&agrave;y: 15.03.2022</strong></em></h3>\r\n\r\n<p>VUI L&Ograve;NG ĐỌC KỸ NHỮNG ĐIỀU KHOẢN &amp; ĐIỀU KIỆN SỬ DỤNG N&Agrave;Y. BẰNG C&Aacute;CH TRUY CẬP HAY THAM GIA V&Agrave;O CHƯƠNG TR&Igrave;NH THẺ TH&Agrave;NH VI&Ecirc;N PH&Uacute;C LONG, BẠN ĐỒNG &Yacute; BỊ R&Agrave;NG BUỘC BỞI NHỮNG ĐIỀU KHOẢN &amp; ĐIỀU KIỆN SỬ DỤNG N&Agrave;Y V&Agrave; TẤT CẢ C&Aacute;C ĐIỀU KHOẢN ĐƯỢC KẾT HỢP BẰNG VIỆC THAM CHIẾU. NẾU BẠN KH&Ocirc;NG ĐỒNG &Yacute; VỚI NHỮNG ĐIỀU KHOẢN &amp; ĐIỀU KIỆN SỬ DỤNG N&Agrave;Y, VUI L&Ograve;NG KH&Ocirc;NG THAM GIA V&Agrave;O CHƯƠNG TR&Igrave;NH THẺ TH&Agrave;NH VI&Ecirc;N PH&Uacute;C LONG KỂ TỪ B&Acirc;Y GIỜ.</p>\r\n\r\n<p>C&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y được &aacute;p dụng đối với việc bạn truy cập v&agrave; tham gia v&agrave;o&nbsp;chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long do C&ocirc;ng ty C&ocirc;̉ Ph&acirc;̀n Ph&uacute;c Long Heritage thực hiện. C&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y kh&ocirc;ng l&agrave;m thay đổi theo bất cứ c&aacute;ch n&agrave;o c&aacute;c điều khoản hoặc điều kiện của bất cứ thỏa thuận n&agrave;o kh&aacute;c m&agrave; bạn c&oacute; thể giao kết với Ph&uacute;c Long về c&aacute;c sản phẩm v&agrave; dịch vụ kh&aacute;c.</p>\r\n\r\n<p>Ph&uacute;c Long cũng c&oacute; quyền thay đổi, chỉnh sửa v&agrave;/hoặc loại bỏ chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long v&agrave;/hoặc tất cả hoặc bất cứ phần n&agrave;o của c&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y hoặc bất cứ ch&iacute;nh s&aacute;ch, C&acirc;u Hỏi Thường Gặp, hoặc hướng dẫn li&ecirc;n quan đến Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long tại bất cứ thời điểm n&agrave;o v&agrave; theo quyền quyết định chỉ ri&ecirc;ng của Ph&uacute;c Long đưa ra.</p>\r\n\r\n<p>Bất cứ thay đổi hoặc sửa đổi n&agrave;o sẽ c&oacute; hiệu lực ngay khi được đăng tải tại trang chủ hoặc/v&agrave; trang Fanpage ch&iacute;nh thức của Ph&uacute;c Long tại&nbsp;<a href=\"http://phuclong.com.vn/\">www.phuclong.com.vn</a>&nbsp;v&agrave;&nbsp;<a href=\"https://www.facebook.com/phuclongcoffeeandtea/\">https://www.facebook.com/phuclongcoffeeandtea</a>, v&agrave; bạn c&oacute; thể khước từ bất cứ quyền n&agrave;o m&agrave; bạn c&oacute; thể c&oacute; để nhận được th&ocirc;ng b&aacute;o cụ thể về những thay đổi hoặc sửa đổi đ&oacute;.</p>\r\n\r\n<p>Sự tham gia của bạn v&agrave;o chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long ch&iacute;nh l&agrave; việc x&aacute;c nhận sự chấp nhận của bạn về c&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y v&agrave; bất cứ thay đổi hoặc sửa đổi n&agrave;o; Do vậy, bạn phải thường xuy&ecirc;n kiểm tra v&agrave; xem c&aacute;c Điều khoản &amp; Điều kiện Sử dụng, c&aacute;c ch&iacute;nh s&aacute;ch &aacute;p dụng v&agrave; C&acirc;u Hỏi Thường Gặp, để c&oacute; thể hiểu r&otilde; c&aacute;c điều khoản v&agrave; điều kiện &aacute;p dụng cho chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long. Nếu bạn kh&ocirc;ng đồng &yacute; c&aacute;c Điều khoản &amp; Điều kiện Sử dụng n&agrave;y, bạn phải chấm dứt việc tham gia v&agrave;o chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long.</p>\r\n\r\n<p>Chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long d&agrave;nh cho việc sử dụng c&aacute; nh&acirc;n. Việc sử dụng cho mục đ&iacute;ch thương mại dưới mọi h&igrave;nh thức được xem như bị cấm. Chương tr&igrave;nh n&agrave;y kh&ocirc;ng nhằm tới v&agrave; cũng kh&ocirc;ng được dự liệu cho việc sử dụng bởi bất cứ người n&agrave;o dưới 18 tuổi.</p>\r\n\r\n<p>Xin vui l&ograve;ng xem kỹ Ch&iacute;nh S&aacute;ch Quyền Ri&ecirc;ng Tư tại trang chủ của Ph&uacute;c Long để hiểu c&aacute;ch ch&uacute;ng t&ocirc;i thu thập, sử dụng, tiết lộ c&aacute;c th&ocirc;ng tin về kh&aacute;ch h&agrave;ng (bạn) v&agrave; c&aacute;ch để cập nhật hoặc thay đổi th&ocirc;ng tin c&aacute; nh&acirc;n của bạn cũng như c&aacute;ch ch&uacute;ng t&ocirc;i li&ecirc;n lạc với bạn.</p>\r\n\r\n<p>Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long l&agrave; một c&aacute;ch thức thể hiện sự nỗ lực của Ph&uacute;c Long để tri &acirc;n v&agrave; cảm ơn kh&aacute;ch h&agrave;ng trung th&agrave;nh ủng hộ hoạt động kinh doanh, v&agrave; mua c&aacute;c sản phẩm Ph&uacute;c Long. C&aacute;c th&agrave;nh vi&ecirc;n của Ph&uacute;c Long c&oacute; thể nhận được v&agrave; t&iacute;ch lũy điểm m&agrave; c&oacute; thể được sử dụng để hưởng c&aacute;c lợi &iacute;ch của chương tr&igrave;nh Thẻ Th&agrave;nh vi&ecirc;n Ph&uacute;c Long, c&ograve;n được biết đến như l&agrave; &ldquo;Ưu Đ&atilde;i&rdquo;, tại c&aacute;c cửa h&agrave;ng Ph&uacute;c Long tại Việt Nam.</p>\r\n\r\n<p>&nbsp;</p>', NULL, NULL, 0, 'chinh-sach', 1, '2022-07-08 20:33:42', '2022-07-08 20:33:42'),
+(13, 'Tin tức 10', 'tin-tuc-10', '<h2>CLOUDFEE CREAMY ĐI - TỈNH RỒI T&Iacute;NH</h2>\r\n\r\n<p>Đầu xu&ocirc;i đu&ocirc;i lọt, c&ograve;n đầu ng&agrave;y l&agrave; phải tỉnh t&aacute;o. L&agrave;m ngay CloudFee Creamy để chạy deadline cho thiệt &ecirc;m bạn nh&eacute;! Nh&agrave; c&oacute; deal MUA 1 TẶNG 1 tặng bạn đ&acirc;y^^</p>\r\n\r\n<ul>\r\n	<li>Nhập m&atilde;: CLOUDFEEDAY</li>\r\n	<li>Duy nhất thứ 2 (ng&agrave;y 11/07)</li>\r\n	<li>&Aacute;p dụng cho đơn Giao h&agrave;ng khi đặt h&agrave;ng qua App/Web The Coffee House</li>\r\n	<li>Chỉ &aacute;p dụng với bộ sản phẩm CloudFee</li>\r\n	<li>Chương tr&igrave;nh &aacute;p dụng luỹ tiến</li>\r\n	<li>Kh&ocirc;ng &aacute;p dụng cho c&aacute;c chương tr&igrave;nh khuyến m&atilde;i song song</li>\r\n</ul>\r\n\r\n<p>Thử l&agrave; ghiền, THỨ 2 chốt đơn ngay bạn ơi!</p>', '578884.jpg', 2, 0, 'tin-tuc', 1, '2022-07-20 05:37:08', '2022-07-20 05:37:26');
 
 -- --------------------------------------------------------
 
@@ -1252,39 +1484,46 @@ INSERT INTO `posts` (`id`, `tieude`, `slug`, `noidung`, `hinhanh`, `id_danhmuc`,
 -- Table structure for table `products`
 --
 
-CREATE TABLE `products` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `tensp` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mota` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hinhanh` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `noidung` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `noidung` text COLLATE utf8mb4_unicode_ci,
   `id_loaisanpham` int(10) UNSIGNED NOT NULL,
   `giaban` double NOT NULL,
-  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  `trangthai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `products_tensp_unique` (`tensp`),
+  KEY `products_id_loaisanpham_foreign` (`id_loaisanpham`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`id`, `tensp`, `slug`, `mota`, `hinhanh`, `noidung`, `id_loaisanpham`, `giaban`, `trangthai`, `created_at`, `updated_at`) VALUES
-(1, 'Cà Phê Sữa Nóng', 'ca-phe-sua-nong', 'Cà phê được pha phin truyền thống kết hợp với sữa đặc tạo nên hương vị đậm đà, hài hòa giữa vị ngọt đầu lưỡi và vị đắng thanh thoát nơi hậu vị.', 'ca-phe-nong59.jpg', 'Cà phê sữa nóng - Sự độc đáo trong thưởng thức cà phê của người Việt\r\n\r\nCà phê phin kết hợp cùng sữa đặc là một sáng tạo đầy tự hào của người Việt, được xem món uống thương hiệu của Việt Nam.\r\n\r\nKhi người Pháp đem văn hóa cà phê vào Việt Nam, người bản xứ thay thế sữa tươi đắt đỏ bằng sữa đặc rẻ tiền hơn để pha cùng cà phê. Tuy nhiên, bằng sự kết hợp hài hòa giữa các thái cực đắng – ngọt, bùi – béo, ly cà phê sữa đá lại sánh đặc và đậm đà hơn, không làm mất đi công dụng của cà phê mà bổ sung thêm năng lượng cho cơ thể từ sữa đã trở thành quen thuộc với nếp sống của người Việt và là một nét sáng tạo riêng, chinh phục được trái tim hàng triệu người yêu cà phê trên thế giới.\r\n\r\nNhà báo Nicola Graydon từng miêu tả và chia sẻ cảm nhận của mình trên tờ nhật báo nổi tiếng của Anh rằng: \"Đó là loại cà phê mạnh, nhỏ giọt từ một phin kim loại nhỏ, bên dưới ly chứa khoảng ¼ lượng sữa đặc. Sau khoảng 15 phút, khi café ngừng nhỏ giọt, bạn sẽ khuấy đều và cho đá vào. Đầu tiên, tôi không chịu được cái ngọt kiểu như vậy. Tuy nhiên sau 3 ngày, tôi bị khuất phục và nghiện cái ngọt “thần thánh” ấy. Thật tuyệt vời khi cảm nhận cái ngọt thanh mát trong cuống họng, điều mà chúng ta không thấy ở một ly latte cổ điển”.\r\n\r\nCũng có người đã miêu tả Cà phê sữa rằng: Cà phê thì đắng mà sữa lại quá ngọt ngào. Hai vị đắng - ngọt như hương vị của cuộc sống, nên thưởng thức Cà phê sữa cũng giống như đang thưởng thức cuộc sống.\r\n\r\nVà The Coffee House nghĩ rằng: Chằng có cách nào mô tả chính xác được mùi vị của Cà phê sữa Việt Nam hơn việc tự mình thưởng thức. Còn gì tuyệt vời hơn bắt đầu một ngày mới, trong tiết trời se se lạnh bằng một ly Cà phê sữa nóng thơm lừng và tinh tế đúng không nào!', 1, 20000, 1, NULL, NULL),
-(2, 'Americano Nóng', 'amerricano-nong', 'Americano được pha chế bằng cách pha thêm nước với tỷ lệ nhất định vào tách cà phê Espresso, từ đó mang lại hương vị nhẹ nhàng và giữ trọn được mùi hương cà phê đặc trưng.', 'americano-nong14.jpg', 'Khám phá tách cà phê Americano theo phong cách Mỹ\r\n\r\nAmericano bắt nguồn từ Espresso. Đây là một thức uống truyền thống của Mỹ và đã trở nên quen thuộc với các tín đồ cà phê trên thế giới.\r\n\r\n\r\n\r\nNguồn gốc lịch sử\r\n\r\nCâu chuyện được kể lại rằng trong Thế Chiến Thứ II, những binh sĩ Mỹ đóng quân trên đất Ý đã rơi vào tình trạng \"say bí tỉ\" khi lần đầu tiếp xúc với hương vị Espresso mạnh mẽ vùng bản địa.\r\n\r\nVốn không quen với độ sánh đặc của cà phê nơi đây, họ đã nảy ra ý tưởng thêm nước nóng vào cốc Espresso để làm loãng nó.\r\n\r\nVà từ đó, Americano của người Mỹ (American) ra đời.\r\n\r\nTại The Coffee House, Americano được các nghệ nhân pha chế bằng cách pha thêm nước với tỷ lệ nhất định vào tách cà phê Espresso, từ đó mang lại hương vị nhẹ nhàng và giữ trọn được mùi hương cà phê đặc trưng.\r\n\r\n\r\n\r\nLợi ích khi thưởng thức cà phê Americano mỗi ngày\r\n\r\nNgoài việc mang đến sự tỉnh táo, linh hoạt cho người uống, Americano còn có thành phần chống oxy hóa nên nếu thưởng thức hằng ngày sẽ giúp ngăn ngừa xơ gan, giảm hen suyễn, lợi tiểu và hỗ trợ chống ung thư.\r\n\r\n\r\n\r\nVậy nên, hãy bắt đầu buổi sáng của mình bằng một tách Cà phê Americano The Coffee House nhé!', 1, 21000, 1, NULL, NULL),
+(1, 'Cà Phê Sữa Nóng', 'ca-phe-sua-nong', 'Cà phê được pha phin truyền thống kết hợp với sữa đặc tạo nên hương vị đậm đà, hài hòa giữa vị ngọt đầu lưỡi và vị đắng thanh thoát nơi hậu vị.', 'ca-phe-nong59.jpg', 'Cà phê sữa nóng - Sự độc đáo trong thưởng thức cà phê của người Việt\r\n\r\nCà phê phin kết hợp cùng sữa đặc là một sáng tạo đầy tự hào của người Việt, được xem món uống thương hiệu của Việt Nam.\r\n\r\nKhi người Pháp đem văn hóa cà phê vào Việt Nam, người bản xứ thay thế sữa tươi đắt đỏ bằng sữa đặc rẻ tiền hơn để pha cùng cà phê. Tuy nhiên, bằng sự kết hợp hài hòa giữa các thái cực đắng – ngọt, bùi – béo, ly cà phê sữa đá lại sánh đặc và đậm đà hơn, không làm mất đi công dụng của cà phê mà bổ sung thêm năng lượng cho cơ thể từ sữa đã trở thành quen thuộc với nếp sống của người Việt và là một nét sáng tạo riêng, chinh phục được trái tim hàng triệu người yêu cà phê trên thế giới.\r\n\r\nNhà báo Nicola Graydon từng miêu tả và chia sẻ cảm nhận của mình trên tờ nhật báo nổi tiếng của Anh rằng: \"Đó là loại cà phê mạnh, nhỏ giọt từ một phin kim loại nhỏ, bên dưới ly chứa khoảng ¼ lượng sữa đặc. Sau khoảng 15 phút, khi café ngừng nhỏ giọt, bạn sẽ khuấy đều và cho đá vào. Đầu tiên, tôi không chịu được cái ngọt kiểu như vậy. Tuy nhiên sau 3 ngày, tôi bị khuất phục và nghiện cái ngọt “thần thánh” ấy. Thật tuyệt vời khi cảm nhận cái ngọt thanh mát trong cuống họng, điều mà chúng ta không thấy ở một ly latte cổ điển”.\r\n\r\nCũng có người đã miêu tả Cà phê sữa rằng: Cà phê thì đắng mà sữa lại quá ngọt ngào. Hai vị đắng - ngọt như hương vị của cuộc sống, nên thưởng thức Cà phê sữa cũng giống như đang thưởng thức cuộc sống.\r\n\r\nVà The Coffee House nghĩ rằng: Chằng có cách nào mô tả chính xác được mùi vị của Cà phê sữa Việt Nam hơn việc tự mình thưởng thức. Còn gì tuyệt vời hơn bắt đầu một ngày mới, trong tiết trời se se lạnh bằng một ly Cà phê sữa nóng thơm lừng và tinh tế đúng không nào!', 1, 20000, 1, NULL, '2022-07-20 19:41:12'),
+(2, 'Americano Nóng', 'amerricano-nong', 'Americano được pha chế bằng cách pha thêm nước với tỷ lệ nhất định vào tách cà phê Espresso, từ đó mang lại hương vị nhẹ nhàng và giữ trọn được mùi hương cà phê đặc trưng.', 'americano-nong14.jpg', 'Khám phá tách cà phê Americano theo phong cách Mỹ\r\n\r\nAmericano bắt nguồn từ Espresso. Đây là một thức uống truyền thống của Mỹ và đã trở nên quen thuộc với các tín đồ cà phê trên thế giới.\r\n\r\n\r\n\r\nNguồn gốc lịch sử\r\n\r\nCâu chuyện được kể lại rằng trong Thế Chiến Thứ II, những binh sĩ Mỹ đóng quân trên đất Ý đã rơi vào tình trạng \"say bí tỉ\" khi lần đầu tiếp xúc với hương vị Espresso mạnh mẽ vùng bản địa.\r\n\r\nVốn không quen với độ sánh đặc của cà phê nơi đây, họ đã nảy ra ý tưởng thêm nước nóng vào cốc Espresso để làm loãng nó.\r\n\r\nVà từ đó, Americano của người Mỹ (American) ra đời.\r\n\r\nTại The Coffee House, Americano được các nghệ nhân pha chế bằng cách pha thêm nước với tỷ lệ nhất định vào tách cà phê Espresso, từ đó mang lại hương vị nhẹ nhàng và giữ trọn được mùi hương cà phê đặc trưng.\r\n\r\n\r\n\r\nLợi ích khi thưởng thức cà phê Americano mỗi ngày\r\n\r\nNgoài việc mang đến sự tỉnh táo, linh hoạt cho người uống, Americano còn có thành phần chống oxy hóa nên nếu thưởng thức hằng ngày sẽ giúp ngăn ngừa xơ gan, giảm hen suyễn, lợi tiểu và hỗ trợ chống ung thư.\r\n\r\n\r\n\r\nVậy nên, hãy bắt đầu buổi sáng của mình bằng một tách Cà phê Americano The Coffee House nhé!', 1, 21000, 1, NULL, '2022-07-14 06:01:25'),
 (3, 'Cà Phê Hòa Tan Đậm Vị Việt Túi 40x16G', 'ca-phe-da-hoa-tan', 'Bắt đầu ngày mới với tách cà phê sữa “Đậm vị Việt” mạnh mẽ sẽ giúp bạn luôn tỉnh táo và hứng khởi cho ngày làm việc thật hiệu quả.', 'ca-phe-da-hoa-tan56.jpg', 'Khám phá tách cà phê Americano theo phong cách Mỹ\r\n\r\nAmericano bắt nguồn từ Espresso. Đây là một thức uống truyền thống của Mỹ và đã trở nên quen thuộc với các tín đồ cà phê trên thế giới.\r\n\r\n\r\n\r\nNguồn gốc lịch sử\r\n\r\nCâu chuyện được kể lại rằng trong Thế Chiến Thứ II, những binh sĩ Mỹ đóng quân trên đất Ý đã rơi vào tình trạng \"say bí tỉ\" khi lần đầu tiếp xúc với hương vị Espresso mạnh mẽ vùng bản địa.\r\n\r\nVốn không quen với độ sánh đặc của cà phê nơi đây, họ đã nảy ra ý tưởng thêm nước nóng vào cốc Espresso để làm loãng nó.\r\n\r\nVà từ đó, Americano của người Mỹ (American) ra đời.\r\n\r\nTại The Coffee House, Americano được các nghệ nhân pha chế bằng cách pha thêm nước với tỷ lệ nhất định vào tách cà phê Espresso, từ đó mang lại hương vị nhẹ nhàng và giữ trọn được mùi hương cà phê đặc trưng.\r\n\r\n\r\n\r\nLợi ích khi thưởng thức cà phê Americano mỗi ngày\r\n\r\nNgoài việc mang đến sự tỉnh táo, linh hoạt cho người uống, Americano còn có thành phần chống oxy hóa nên nếu thưởng thức hằng ngày sẽ giúp ngăn ngừa xơ gan, giảm hen suyễn, lợi tiểu và hỗ trợ chống ung thư.\r\n', 4, 50000, 1, NULL, NULL),
 (4, 'Cà Phê Sữa Đá', 'ca-phe-sua-da', 'Cà phê Đắk Lắk nguyên chất được pha phin truyền thống kết hợp với sữa đặc tạo nên hương vị đậm đà, hài hòa giữa vị ngọt đầu lưỡi và vị đắng thanh thoát nơi hậu vị.', 'ca-phe-sua-da16.jpg', 'Cà phê sữa đá - Sự độc đáo trong thưởng thức cà phê của người Việt\r\n\r\n\r\n\r\nCà phê phin kết hợp cùng sữa đặc là một sáng tạo đầy tự hào của người Việt, được xem món uống thương hiệu của Việt Nam.\r\n\r\nKhi người Pháp đem văn hóa cà phê vào Việt Nam, người bản xứ thay thế sữa tươi đắt đỏ bằng sữa đặc rẻ tiền hơn để pha cùng cà phê. Tuy nhiên, bằng sự kết hợp hài hòa giữa các thái cực đắng – ngọt, bùi – béo, ly cà phê sữa đá lại sánh đặc và đậm đà hơn, không làm mất đi công dụng của cà phê mà bổ sung thêm năng lượng cho cơ thể từ sữa đã trở thành quen thuộc với nếp sống của người Việt và là một nét sáng tạo riêng, chinh phục được trái tim hàng triệu người yêu cà phê trên thế giới.\r\n\r\nNhà báo Nicola Graydon từng miêu tả và chia sẻ cảm nhận của mình trên tờ nhật báo nổi tiếng của Anh rằng: \"Đó là loại cà phê mạnh, nhỏ giọt từ một phin kim loại nhỏ, bên dưới ly chứa khoảng ¼ lượng sữa đặc. Sau khoảng 15 phút, khi café ngừng nhỏ giọt, bạn sẽ khuấy đều và cho đá vào. Đầu tiên, tôi không chịu được cái ngọt kiểu như vậy. Tuy nhiên sau 3 ngày, tôi bị khuất phục và nghiện cái ngọt “thần thánh” ấy. Thật tuyệt vời khi cảm nhận cái ngọt thanh mát trong cuống họng, điều mà chúng ta không thấy ở một ly latte cổ điển”.\r\n\r\nCũng có người đã miêu tả Cà phê sữa đá rằng: Cà phê thì đắng mà sữa lại quá ngọt ngào. Hai vị đắng - ngọt như hương vị của cuộc sống, nên thưởng thức Cà phê sữa cũng giống như đang thưởng thức cuộc sống.\r\n\r\nVà The Coffee House nghĩ rằng: Chằng có cách nào mô tả chính xác được mùi vị của Cà phê sữa Việt Nam hơn việc tự mình thưởng thức. Còn gì tuyệt vời hơn khi bắt đầu một ngày làm việc tràn đầy năng lượng hay tận hưởng ngày nghỉ của mình bằng một ly Cà phê sữa tinh tế đúng không nào!.\r\n\r\n', 1, 22000, 1, NULL, NULL),
 (5, 'Cappuccino Nóng', 'cappuccino-nong', 'Capuchino là thức uống hòa quyện giữa hương thơm của sữa, vị béo của bọt kem cùng vị đậm đà từ cà phê Espresso. Tất cả tạo nên một hương vị đặc biệt, một chút nhẹ nhàng, trầm lắng và tinh tế.', 'cappuccino-nong1.jpg', 'Cappuchino - Hương vị hoàn hảo làm say đắm mọi giác quan\r\nCappuchino là một thức uống quen thuộc gắn liền với đất nước Ý xinh đẹp và thơ mộng. \r\n\r\nĐây là một loại thức uống được pha chế cầu kỳ và tinh tế. Một tách Cappuchino ngon đúng điệu là sẽ mang hương vị nồng nàn của cà phê Espresso hòa quyện sữa thơm dịu, đi kèm lớp bọt sữa bồng bềnh, béo ngậy.\r\n\r\nBởi chính hương vị thơm ngon cùng nghệ thuật pha chế và tạo hình bọt sữa đầy tinh tế của Barista tại The Coffee House, khi nhấp một ngụm Cappuchino, thực khách sẽ được trải nghiệm một hành trình vị giác đầy mê hoặc. Đó cũng là lý do vì sao Cà phê Cappuchino dễ dàng chinh phục nhiều khách hàng trong những năm qua.\r\n\r\nHãy đặt thử và cho The Coffee House cảm nhận của riêng mình nhé!', 1, 30000, 1, NULL, NULL),
 (6, 'Caramel Macchiato Nóng', 'caramel-macchiato-nong', 'Caramel Macchiato sẽ mang đến một sự ngạc nhiên thú vị khi vị thơm béo của bọt sữa, sữa tươi, vị đắng thanh thoát của cà phê Espresso hảo hạng và vị ngọt đậm của sốt caramel được gói gọn trong một tách cà phê.', 'caramel-macchiato-nong4.jpg', 'Caramel Macchiato - Cái nhấp môi ngọt ngào\r\nMỗi cái nhấp môi vào tách Caramel Macchiato sẽ đem đến một sự ngạc nhiên thú vị, vì nhiều hương vị được gói gọn trong một tách cà phê.\r\n\r\nNhững năm trở lại đây, những món đồ uống liên quan đến cụm từ “Macchiato” đều trở thành trào lưu của các tín đồ sành ăn.\r\n\r\nTùy vào sở thích, tâm trạng khác nhau mà chúng ta có những cảm nhận rất riêng. Ở The Coffee House, Caramel Macchiato là một trong món khách hàng ưa thích chọn lựa.\r\n\r\nVậy điều gì đã làm nên thức uống đầy mê hoặc này?\r\n\r\nĐể tạo nên một tách cà phê Caramel Macchiato tuyệt hảo thì yêu cầu bắt buộc phải sử dụng cà phê thượng hạng và nguyên chất. Do đó, The Coffee House luôn đảm bảo chất lượng cà phê từ chọn giống, chăm sóc, sơ chế,… để mang đến cho thực khách sự ngạc nhiên và thỏa mãn vị giác bởi một tách cà phê Caramel Macchiato thơm béo của bọt sữa sữa tươi, vị đắng thanh thoát của cà phê Espresso hảo hạng và vị ngọt đậm của sốt caramel được gói gọn trong một tách cà phê.\r\n\r\nBên cạnh đó, bằng sự điêu luyện và tỉ mỉ của các nghệ nhân pha chế, mỗi tách Caramel Macchiato tại The Coffee House đều thể hiện sự tinh tế, nhẹ nhàng mang đến cảm xúc thăng hoa cho người thưởng thức.\r\n\r\nGiờ thì thử liền một tách Caramel Macchiato ngon đúng điệu đi chứ nhỉ!', 1, 32000, 1, NULL, NULL),
-(7, 'Trà Matcha Latte Đá', 'chanh-da-xay', 'Với màu xanh mát mắt của bột trà Matcha, vị ngọt nhẹ nhàng, pha trộn cùng sữa tươi và lớp foam mềm mịn, Matcha Latte sẽ khiến bạn yêu ngay từ lần đầu tiên.', 'chanh-da-xay65.jpg', 'Matcha Latte – Yêu từ cái nhìn đầu tiên\r\nVới thành phần chính là Matcha quen thuộc vậy Matcha Latte có gì thú vị để có thể khiến bạn yêu từ cái nhìn đầu tiên?\r\n\r\nHương vị vừa quen vừa lạ\r\n\r\nTuy là thức uống được The Coffee House ra mắt từ nhiều năm, nhưng Matcha latte luôn nằm trong Top thức uống được mọi người lựa chọn. Là thức uống được biến tấu độc đáo từ Coffee latte - thức uống kết hợp giữa cà phê và sữa tươi, được thay thế nguyên liệu cà phê bằng nguyên liệu bột trà xanh. Do vậy thức uống này có hàm lượng cafein ít hơn cà phê để phục vụ những khách hàng không thích nạp nhiều cafein vào trong cơ thể. Matcha latte vừa quen vừa lạ với hương thơm trà xanh đặc trưng, quyện cùng lớp sữa béo ngậy, cho từng ngụm tươi mát, khiến các fan matcha sẽ không thể bỏ lỡ.\r\n\r\nThưởng thức Matcha Latte có gì thú vị?\r\n\r\nKhông những có hương vị tuyệt vời, Matcha còn chứa hàm lượng chất chống oxy hóa cao và nguồn caffein tốt cho sức khỏe. Nếu Cappucinno hay Latte có hơi \"quá sức\" đối với bạn, The Coffee House gợi ý bạn nên thử Matcha Latte - Bạn sẽ cảm thấy sảng khoái và tỉnh táo suốt một ngày dài đấy.\r\n\r\nOrder ngay một ly latte cho cả ngày tỉnh táo nhé!', 3, 24000, 1, NULL, NULL),
+(7, 'Trà Matcha Latte Đá', 'chanh-da-xay', 'Với màu xanh mát mắt của bột trà Matcha, vị ngọt nhẹ nhàng, pha trộn cùng sữa tươi và lớp foam mềm mịn, Matcha Latte sẽ khiến bạn yêu ngay từ lần đầu tiên.', 'chanh-da-xay65.jpg', 'Matcha Latte – Yêu từ cái nhìn đầu tiên\r\nVới thành phần chính là Matcha quen thuộc vậy Matcha Latte có gì thú vị để có thể khiến bạn yêu từ cái nhìn đầu tiên?\r\n\r\nHương vị vừa quen vừa lạ\r\n\r\nTuy là thức uống được The Coffee House ra mắt từ nhiều năm, nhưng Matcha latte luôn nằm trong Top thức uống được mọi người lựa chọn. Là thức uống được biến tấu độc đáo từ Coffee latte - thức uống kết hợp giữa cà phê và sữa tươi, được thay thế nguyên liệu cà phê bằng nguyên liệu bột trà xanh. Do vậy thức uống này có hàm lượng cafein ít hơn cà phê để phục vụ những khách hàng không thích nạp nhiều cafein vào trong cơ thể. Matcha latte vừa quen vừa lạ với hương thơm trà xanh đặc trưng, quyện cùng lớp sữa béo ngậy, cho từng ngụm tươi mát, khiến các fan matcha sẽ không thể bỏ lỡ.\r\n\r\nThưởng thức Matcha Latte có gì thú vị?\r\n\r\nKhông những có hương vị tuyệt vời, Matcha còn chứa hàm lượng chất chống oxy hóa cao và nguồn caffein tốt cho sức khỏe. Nếu Cappucinno hay Latte có hơi \"quá sức\" đối với bạn, The Coffee House gợi ý bạn nên thử Matcha Latte - Bạn sẽ cảm thấy sảng khoái và tỉnh táo suốt một ngày dài đấy.\r\n\r\nOrder ngay một ly latte cho cả ngày tỉnh táo nhé!', 3, 24000, 1, NULL, '2022-07-20 06:43:20'),
 (8, 'Espresso Đá', 'espresso-da', 'Một tách Espresso nguyên bản được bắt đầu bởi những hạt Arabica chất lượng, phối trộn với tỉ lệ cân đối hạt Robusta, cho ra vị ngọt caramel, vị chua dịu và sánh đặc.', 'espresso-da87.jpg', 'Espresso - Cà phê tinh chất nhất theo phong cách Ý\r\nTạm gác lại những ồn ào nơi phố thị và thử nhâm nhi ly cà phê Espresso hương vị đậm đà, tinh tế của The Coffee House để tận hưởng những khoảnh khắc diệu kỳ của cuộc sống.\r\n\r\nNgười ta vẫn hay ví Espresso là phép màu trong một chiếc tách vì độ quyến rũ không phai của nó.\r\n\r\nMột cốc Espresso nguyên bản được bắt đầu bởi những hạt Arabica chất lượng, phối trộn với tỉ lệ cân đối hạt Robusta, cho ra vị ngọt caramel, vị chua dịu và sánh đặc. Để đạt được sự kết hợp này, The Coffee House xay tươi hạt cà phê cho mỗi lần pha.\r\n\r\nLớp bọt khí nhỏ li ti màu nâu nhạt nằm trên cùng của cốc Espresso được gọi là crema. Thời gian để \"bắt\" được lớp crema xốp nhẹ và lâu tan chỉ vỏn vẹn 27 giây, dưới áp suất nước xấp xỉ 9 bar của Macchiana (máy pha Espresso) với nhiệt độ không quá 95°C. Nếu không chính xác, crema của bạn sẽ bị đắng.\r\n\r\nTuy nhiên, không có gì gọi là chuẩn mực, cà phê Espresso cũng thế. Hương vị cuối cùng của Espresso được tạo ra bằng dấu ấn của Barista khi pha chế.\r\n\r\nVì thế mỗi cốc Espresso The Coffee House mang đến cho bạn đều mang một vị ngon rất riêng, không trộn lẫn, không lặp lại.', 1, 35000, 1, NULL, NULL),
 (9, 'Latte Đá', 'latte-tao-da', 'Một sự kết hợp tinh tế giữa vị đắng cà phê Espresso nguyên chất hòa quyện cùng vị sữa nóng ngọt ngào, bên trên là một lớp kem mỏng nhẹ tạo nên một tách cà phê hoàn hảo về hương vị lẫn nhãn quan.', 'latte-tao-da30.jpg', 'Latte - Sự tinh tế trong hương vị, mùi vị lẫn nhãn quan\r\nKhi chuẩn bị Latte, cà phê Espresso và sữa nóng được trộn lẫn vào nhau, bên trên vẫn là lớp bọt sữa nhưng mỏng và nhẹ hơn Cappucinno.\r\n\r\nGiống như Cappuchino, Latte cũng được pha chế gồm 3 lớp nguyên liệu chính: Cà phê Espresso, sữa nóng và lớp bọt sữa thơm mịn. Nếu không phải là người sành thưởng thức cà phê, bạn sẽ khó lòng phân biệt được 2 loại cà phê này. Khi pha chế Latte, các Barista thường thể hiện sự sáng tạo hoặc gửi gắm tâm ý của họ đến thực khách thông qua những hình vẽ nghệ thuật và tinh tế. Thực chất, điểm khác biệt giữa Latte và Cappuchino chính là: Lượng bọt sữa của Cappuchino dày hơn so với Latte.\r\n\r\nNgoài ra, Cà phê Latte The Coffee House là một sự kết hợp tinh tế giữa vị đắng cà phê Espresso nguyên chất hòa quyện cùng vị sữa nóng ngọt ngào, bên trên là một lớp kem mỏng nhẹ tạo nên một tách cà phê hoàn hảo về hương vị lẫn nhãn quan.\r\n\r\nChọn một tách Latte tinh tế chính là cách giúp bạn có một ngày thêm trọn vẹn, thử ngay nhé!', 1, 23000, 1, NULL, NULL),
 (10, 'Latte Táo Lê Quế', 'latte-tao-le', 'Phiên bản Chai Fresh tiện lợi, với thức uống đậm đà, thú vị tuyệt hảo để cùng bạn tận hưởng những ngày cuối năm ấm áp và trọn vẹn.', 'latte-tao-le21.jpg', 'Latte - Sự tinh tế trong hương vị, mùi vị lẫn nhãn quan\r\nKhi chuẩn bị Latte, cà phê Espresso và sữa nóng được trộn lẫn vào nhau, bên trên vẫn là lớp bọt sữa nhưng mỏng và nhẹ hơn Cappucinno.\r\n\r\nGiống như Cappuchino, Latte cũng được pha chế gồm 3 lớp nguyên liệu chính: Cà phê Espresso, sữa nóng và lớp bọt sữa thơm mịn. Nếu không phải là người sành thưởng thức cà phê, bạn sẽ khó lòng phân biệt được 2 loại cà phê này. Khi pha chế Latte, các Barista thường thể hiện sự sáng tạo hoặc gửi gắm tâm ý của họ đến thực khách thông qua những hình vẽ nghệ thuật và tinh tế. Thực chất, điểm khác biệt giữa Latte và Cappuchino chính là: Lượng bọt sữa của Cappuchino dày hơn so với Latte.\r\n\r\nNgoài ra, Cà phê Latte The Coffee House là một sự kết hợp tinh tế giữa vị đắng cà phê Espresso nguyên chất hòa quyện cùng vị sữa nóng ngọt ngào, bên trên là một lớp kem mỏng nhẹ tạo nên một tách cà phê hoàn hảo về hương vị lẫn nhãn quan.\r\n\r\nChọn một tách Latte tinh tế chính là cách giúp bạn có một ngày thêm trọn vẹn, thử ngay nhé!', 1, 29000, 1, NULL, NULL),
-(11, 'Mít Sấy', 'mit-say', 'Mít sấy khô vàng ươm, giòn rụm, giữ nguyên được vị ngọt lịm của mít tươi.', 'mit-say26.jpg', 'Mít sấy - Món ăn vặt không thể bỏ qua khi ghé The Coffee House\r\n\r\n\r\nMón ăn vặt đặc trưng của miền nhiệt đới\r\n\r\nLà một loại quả đặc trưng của miền nhiệt đới, Mít được trồng rất nhiều ở khu vực Đông Nam Á, trong đó có Việt Nam. Mít sấy khô có màu vàng ươm, giòn rụm, giữ nguyên được vị ngọt lịm của mít tươi.\r\n\r\n\r\n\r\nĂn vặt chứa nhiều Vitamin\r\n\r\nBên cạnh được yêu thích nhờ hương vị hấp dẫn, mít sấy còn là món ăn vặt cung cấp nhiều dinh dưỡng. Trong mít sấy chứa chất xơ, vitamin A, vitamin C, ….giúp cơ thể tăng cường hệ miễn dịch, chống oxy hoá, kiểm soát các bệnh về tim mạch. \r\n\r\n\r\n\r\nMít sấy món ăn vặt không thể thiếu cho những ngày bạn cần một chút ngọt ngào, Order ngay.\r\n\r\n', 5, 60000, 1, NULL, NULL),
+(11, 'Mít Sấy', 'mit-say', 'Mít sấy khô vàng ươm, giòn rụm, giữ nguyên được vị ngọt lịm của mít tươi.', 'mit-say26.jpg', 'Mít sấy - Món ăn vặt không thể bỏ qua khi ghé The Coffee House\r\n\r\n\r\nMón ăn vặt đặc trưng của miền nhiệt đới\r\n\r\nLà một loại quả đặc trưng của miền nhiệt đới, Mít được trồng rất nhiều ở khu vực Đông Nam Á, trong đó có Việt Nam. Mít sấy khô có màu vàng ươm, giòn rụm, giữ nguyên được vị ngọt lịm của mít tươi.\r\n\r\n\r\n\r\nĂn vặt chứa nhiều Vitamin\r\n\r\nBên cạnh được yêu thích nhờ hương vị hấp dẫn, mít sấy còn là món ăn vặt cung cấp nhiều dinh dưỡng. Trong mít sấy chứa chất xơ, vitamin A, vitamin C, ….giúp cơ thể tăng cường hệ miễn dịch, chống oxy hoá, kiểm soát các bệnh về tim mạch. \r\n\r\n\r\n\r\nMít sấy món ăn vặt không thể thiếu cho những ngày bạn cần một chút ngọt ngào, Order ngay.\r\n\r\n', 5, 60000, 0, NULL, '2022-07-20 20:13:53'),
 (12, 'Mocha Đá', 'mocha-da', 'Loại cà phê được tạo nên từ sự kết hợp hoàn hảo của vị đắng đậm đà của Espresso và sốt sô-cô-la ngọt ngào mang tới hương vị đầy lôi cuốn, đánh thức mọi giác quan nên đây chính là thức uống ưa thích của phụ nữ và giới trẻ.', 'mocha-da41.jpg', 'Mocha – Một chút đắng của tình yêu đầu\r\nKhông như cà phê Cappuchino chỉ có một lớp bọt sữa trên bề mặt, cà phê Mocha còn hòa quyện cả vị thơm béo của kem tươi và sốt sô-cô-la.\r\n\r\nNgười ta thường ví cà phê như một thức uống kỳ diệu. Chúng không ngọt ngào để nuông chiều cảm xúc của bất kỳ ai nhưng lại mang đến một sự bí ẩn rất cuốn hút, khơi gợi người khác phải khám phá.\r\n\r\nBên cạnh những loại cà phê máy như Espresso, Cappuchino, Latte,… thực khách tại The Coffee House cũng dành nhiều tình cảm cho một loại cà phê khác mang tên Mocha. Mocha là một dạng hỗn hợp giữa cà phê và sô-cô-la nóng. Không như cà phê Cappuchino chỉ có một lớp bọt sữa trên bề mặt, cà phê Mocha còn hòa quyện cả vị thơm béo của kem tươi và sốt sô-cô-la. Mùi vị này, hương thơm này tựa như hương vị của một tình yêu chớm nở, vừa có chút vị đắng của Espresso và sự ngọt ngào đầy lôi cuốn.\r\n\r\n Nếu bạn thích socola và cũng nghiện cà phê thì Mocha sẽ là sự lựa chọn hoàn hảo rồi đấy!', 1, 43000, 1, NULL, NULL),
 (13, 'Mocha Nóng', 'mocha-nong', 'Loại cà phê được tạo nên từ sự kết hợp hoàn hảo của vị đắng đậm đà của Espresso và sốt sô-cô-la ngọt ngào mang tới hương vị đầy lôi cuốn, đánh thức mọi giác quan nên đây chính là thức uống ưa thích của phụ nữ và giới trẻ.', 'mocha-nong95.jpg', 'Mocha – Một chút đắng của tình yêu đầu\r\nKhông như cà phê Cappuchino chỉ có một lớp bọt sữa trên bề mặt, cà phê Mocha còn hòa quyện cả vị thơm béo của kem tươi và sốt sô-cô-la.\r\n\r\nNgười ta thường ví cà phê như một thức uống kỳ diệu. Chúng không ngọt ngào để nuông chiều cảm xúc của bất kỳ ai nhưng lại mang đến một sự bí ẩn rất cuốn hút, khơi gợi người khác phải khám phá.\r\n\r\nBên cạnh những loại cà phê máy như Espresso, Cappuchino, Latte,… thực khách tại The Coffee House cũng dành nhiều tình cảm cho một loại cà phê khác mang tên Mocha. Mocha là một dạng hỗn hợp giữa cà phê và sô-cô-la nóng. Không như cà phê Cappuchino chỉ có một lớp bọt sữa trên bề mặt, cà phê Mocha còn hòa quyện cả vị thơm béo của kem tươi và sốt sô-cô-la. Mùi vị này, hương thơm này tựa như hương vị của một tình yêu chớm nở, vừa có chút vị đắng của Espresso và sự ngọt ngào đầy lôi cuốn.\r\n\r\n Nếu bạn thích socola và cũng nghiện cà phê thì Mocha sẽ là sự lựa chọn hoàn hảo rồi đấy!', 1, 27000, 1, NULL, NULL),
-(14, 'Trà Dưa Đào Sung Túc', 'tra-chanh', 'Vị thơm ngọt của Dưa lưới và đào tươi chua chua trên nền trà Oolong cùng lớp foam cheese mỏng nhẹ tạo nên cảm giác sung túc trong mùa xuân mới.', 'tra-chanh69.jpg', 'Dưa Đào Sung Túc - Giai điệu tươi vui cho mùa xuân mới\r\n\r\n\r\nNăm mới ngoài bình an, sum vầy, The Coffee House còn mong chúc sự sung túc sẽ đến với mọi nhà. Hy vọng những khó khăn sẽ đi qua, một cuộc sống sung túc hơn sẽ đến, để bạn không còn quá nhiều những bận lòng, bắt lấy thật nhiều cơ hội và thật SUNG cho năm mới 2022..\r\n\r\n\r\n\r\nTrà Dưa Đào Sung Túc với vị thơm ngọt của Dưa lưới và đào tươi chua chua, ngọt ngọt trên nền trà Oolong trứ danh cùng lớp foam cheese mỏng nhẹ vị mặn mặn tạo nên sự cân bằng cho thức uóng, sẽ đem đến cho bạn, gia đình và bạn bè những giai điệu tươi vui, thịnh vượng cho mùa xuân mới.  \r\n\r\n\r\n\r\nDưa Đào Sung Túc của The Coffee House sẽ là đại diện chúc cho năm mới khởi đầu đầy thuận lợi, các chiến hữu sẽ vẫn sát cánh bên nhau thật “sung”. Đặc biệt là đong đầy lộc lá và thật “son” trong năm mới. Cụng ly Dưa Đào Sung Túc của The Coffee House để không khí thêm rộn ràng, khởi đầu sung túc và rước lộc đầu năm bạn nhé!', 2, 22000, 1, NULL, NULL);
+(14, 'Trà Dưa Đào Sung Túc', 'tra-chanh', 'Vị thơm ngọt của Dưa lưới và đào tươi chua chua trên nền trà Oolong cùng lớp foam cheese mỏng nhẹ tạo nên cảm giác sung túc trong mùa xuân mới.', 'tra-chanh69.jpg', 'Dưa Đào Sung Túc - Giai điệu tươi vui cho mùa xuân mới\r\n\r\n\r\nNăm mới ngoài bình an, sum vầy, The Coffee House còn mong chúc sự sung túc sẽ đến với mọi nhà. Hy vọng những khó khăn sẽ đi qua, một cuộc sống sung túc hơn sẽ đến, để bạn không còn quá nhiều những bận lòng, bắt lấy thật nhiều cơ hội và thật SUNG cho năm mới 2022..\r\n\r\n\r\n\r\nTrà Dưa Đào Sung Túc với vị thơm ngọt của Dưa lưới và đào tươi chua chua, ngọt ngọt trên nền trà Oolong trứ danh cùng lớp foam cheese mỏng nhẹ vị mặn mặn tạo nên sự cân bằng cho thức uóng, sẽ đem đến cho bạn, gia đình và bạn bè những giai điệu tươi vui, thịnh vượng cho mùa xuân mới.  \r\n\r\n\r\n\r\nDưa Đào Sung Túc của The Coffee House sẽ là đại diện chúc cho năm mới khởi đầu đầy thuận lợi, các chiến hữu sẽ vẫn sát cánh bên nhau thật “sung”. Đặc biệt là đong đầy lộc lá và thật “son” trong năm mới. Cụng ly Dưa Đào Sung Túc của The Coffee House để không khí thêm rộn ràng, khởi đầu sung túc và rước lộc đầu năm bạn nhé!', 2, 22000, 1, NULL, NULL),
+(15, 'Cold Brew Sữa Tươi', 'cold-brew-sua-tuoi', 'Thanh mát và cân bằng với hương vị cà phê nguyên bản 100% Arabica Cầu Đất cùng sữa tươi thơm béo cho từng ngụm tròn vị, hấp dẫn.', '1656663496.jpg', NULL, 7, 30000, 1, '2022-07-01 01:18:16', '2022-07-01 02:02:17'),
+(16, 'cà phê đá lạnh', 'ca-phe-da-nong', 'Đây là cà phê nóng', '1657251006.jpg', NULL, 2, 20000, 1, '2022-07-04 07:36:21', '2022-07-07 20:30:06'),
+(18, 'cam tươi', 'cam-tuoi', 'cam tươi dhdhhđhdhdhdh', '1661327832.jpg', 'dddddddddddddddddddddđ', 1, 18000, 1, '2022-08-24 00:57:12', '2022-08-24 00:57:12');
 
 -- --------------------------------------------------------
 
@@ -1292,22 +1531,27 @@ INSERT INTO `products` (`id`, `tensp`, `slug`, `mota`, `hinhanh`, `noidung`, `id
 -- Table structure for table `products_coupon`
 --
 
-CREATE TABLE `products_coupon` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `products_coupon`;
+CREATE TABLE IF NOT EXISTS `products_coupon` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_coupon` int(11) UNSIGNED NOT NULL,
-  `id_product` int(11) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id_product` int(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_product` (`id_product`),
+  KEY `id_coupon` (`id_coupon`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `products_coupon`
 --
 
 INSERT INTO `products_coupon` (`id`, `id_coupon`, `id_product`) VALUES
-(14, 10, 7),
-(15, 10, 3),
-(16, 10, 11),
-(31, 9, 1),
-(32, 9, 5);
+(50, 13, 1),
+(51, 13, 2),
+(52, 13, 14),
+(53, 10, 7),
+(54, 10, 3),
+(55, 10, 11);
 
 -- --------------------------------------------------------
 
@@ -1315,14 +1559,16 @@ INSERT INTO `products_coupon` (`id`, `id_coupon`, `id_product`) VALUES
 -- Table structure for table `province`
 --
 
-CREATE TABLE `province` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `province`;
+CREATE TABLE IF NOT EXISTS `province` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `province_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `province_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `province_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `province`
@@ -1396,25 +1642,136 @@ INSERT INTO `province` (`id`, `province_code`, `province_name`, `province_type`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sale_statisticals`
+--
+
+DROP TABLE IF EXISTS `sale_statisticals`;
+CREATE TABLE IF NOT EXISTS `sale_statisticals` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ngay_ban` date NOT NULL,
+  `id_don_hang` int(11) NOT NULL,
+  `tien_don_hang` int(11) NOT NULL,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sale_statisticals`
+--
+
+INSERT INTO `sale_statisticals` (`id`, `ngay_ban`, `id_don_hang`, `tien_don_hang`, `trang_thai`, `created_at`, `updated_at`) VALUES
+(1, '2022-07-01', 95, 33000, 1, '2022-07-01 12:44:00', '2022-07-01 12:44:00'),
+(2, '2022-07-01', 96, 37000, 1, '2022-07-01 12:53:53', '2022-07-01 12:53:53'),
+(3, '2022-07-01', 97, 37000, 1, '2022-07-01 12:54:41', '2022-07-01 12:54:41'),
+(4, '2022-07-01', 99, 33000, 1, '2022-07-01 13:13:54', '2022-07-01 13:13:54'),
+(5, '2022-07-01', 100, 3500, 1, '2022-07-01 14:41:42', '2022-07-01 14:41:42'),
+(6, '2022-01-22', 1, 30000, 1, NULL, NULL),
+(7, '2022-01-22', 2, 300000, 1, NULL, NULL),
+(8, '2022-01-22', 3, 300000, 1, NULL, NULL),
+(9, '2022-01-22', 4, 300000, 1, NULL, NULL),
+(10, '2022-01-22', 5, 300000, 1, NULL, NULL),
+(11, '2022-01-22', 6, 300000, 1, NULL, NULL),
+(12, '2022-01-22', 7, 300000, 1, NULL, NULL),
+(13, '2022-01-22', 8, 300000, 1, NULL, NULL),
+(14, '2022-02-22', 9, 300000, 1, NULL, NULL),
+(15, '2022-02-22', 10, 300000, 1, NULL, NULL),
+(16, '2022-02-22', 12, 300000, 1, NULL, NULL),
+(17, '2022-02-22', 13, 300000, 1, NULL, NULL),
+(18, '2022-02-22', 14, 300000, 1, NULL, NULL),
+(19, '2022-02-22', 15, 300000, 1, NULL, NULL),
+(20, '2022-02-22', 16, 300000, 1, NULL, NULL),
+(21, '2022-02-22', 17, 300000, 1, NULL, NULL),
+(22, '2022-02-22', 18, 300000, 1, NULL, NULL),
+(23, '2022-02-22', 19, 300000, 1, NULL, NULL),
+(24, '2022-07-02', 102, 51011, 1, '2022-07-02 00:27:07', '2022-07-02 00:27:07'),
+(25, '2022-07-01', 103, 27000, 1, '2022-07-02 01:03:20', '2022-07-02 01:03:20'),
+(26, '1970-01-01', 104, 48000, 1, '2022-07-02 04:09:43', '2022-07-02 04:09:43'),
+(27, '2022-07-04', 105, 84000, 1, '2022-07-04 07:40:17', '2022-07-04 07:40:17'),
+(28, '2022-07-04', 106, 35000, 1, '2022-07-04 07:41:52', '2022-07-04 07:41:52'),
+(29, '2022-02-01', 3, 300000, 1, NULL, NULL),
+(30, '2022-03-03', 2, 200000, 1, NULL, NULL),
+(31, '2022-04-30', 17, 100000, 1, NULL, NULL),
+(32, '2022-06-12', 9, 8300000, 1, NULL, NULL),
+(33, '2022-05-22', 15, 1000000, 1, NULL, NULL),
+(34, '2022-07-09', 107, 46000, 1, '2022-07-09 15:07:43', '2022-07-09 15:07:43'),
+(35, '2022-07-09', 108, 29000, 1, '2022-07-09 15:10:42', '2022-07-09 15:10:42'),
+(36, '2022-07-09', 109, 19600, 1, '2022-07-09 15:19:38', '2022-07-09 15:19:38'),
+(37, '1970-01-01', 110, 18000, 1, '2022-07-10 02:37:27', '2022-07-10 02:37:27'),
+(38, '1970-01-01', 111, 40000, 1, '2022-07-11 04:02:09', '2022-07-11 04:02:09'),
+(39, '1970-01-01', 112, 28000, 1, '2022-07-12 03:25:38', '2022-07-12 03:25:38'),
+(40, '1970-01-01', 113, 32000, 1, '2022-07-12 03:36:23', '2022-07-12 03:36:23'),
+(41, '1970-01-01', 115, 28000, 1, '2022-07-13 14:33:33', '2022-07-13 14:33:33'),
+(42, '1970-01-01', 116, 56000, 1, '2022-07-14 07:32:29', '2022-07-14 07:32:29'),
+(43, '2022-07-14', 117, 28000, 1, '2022-07-14 07:36:29', '2022-07-14 07:36:29'),
+(44, '1970-01-01', 118, 76000, 1, '2022-07-14 07:43:21', '2022-07-14 07:43:21'),
+(45, '2022-07-14', 119, 54000, 1, '2022-07-14 07:59:10', '2022-07-14 07:59:10'),
+(46, '2022-07-14', 120, 73039, 1, '2022-07-14 08:07:14', '2022-07-14 08:07:14'),
+(47, '2022-07-14', 121, 73039, 1, '2022-07-14 08:12:54', '2022-07-14 08:12:54'),
+(51, '2022-07-15', 126, 28000, 1, '2022-07-15 00:33:57', '2022-07-15 00:33:57'),
+(52, '2022-07-15', 127, 34000, 1, '2022-07-15 00:46:49', '2022-07-15 00:46:49'),
+(53, '2022-07-17', 128, 45000, 1, '2022-07-17 13:46:05', '2022-07-17 13:46:05'),
+(54, '2022-07-19', 129, 19000, 1, '2022-07-19 14:52:41', '2022-07-19 14:52:41'),
+(55, '2022-07-20', 130, 40000, 0, '2022-07-20 12:01:01', '2022-07-20 12:01:01'),
+(56, '2022-07-20', 131, 22000, 1, '2022-07-20 12:04:10', '2022-07-20 12:04:10'),
+(57, '2022-07-20', 132, 40000, 1, '2022-07-20 13:33:56', '2022-07-20 13:33:56'),
+(58, '2022-07-20', 133, 30000, 1, '2022-07-20 13:46:41', '2022-07-20 13:46:41'),
+(59, '2022-07-21', 134, 20000, 1, '2022-07-20 21:22:29', '2022-07-20 21:22:29'),
+(60, '2022-07-21', 135, 41968, 1, '2022-07-20 21:55:15', '2022-07-20 21:55:15'),
+(61, '2022-07-21', 136, 28000, 1, '2022-07-21 01:31:43', '2022-07-21 01:31:43'),
+(62, '2022-07-21', 137, 53000, 1, '2022-07-21 03:21:56', '2022-07-21 03:21:56'),
+(63, '2022-07-21', 138, 44000, 1, '2022-07-21 03:57:32', '2022-07-21 03:57:32'),
+(64, '2022-07-21', 139, 26897, 1, '2022-07-21 04:08:36', '2022-07-21 04:08:36'),
+(65, '2022-07-21', 140, 28000, 0, '2022-07-21 12:00:50', '2022-07-21 12:00:50'),
+(66, '2022-08-24', 141, 30000, 0, '2022-08-24 08:02:12', '2022-08-24 08:02:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `setting`
+--
+
+DROP TABLE IF EXISTS `setting`;
+CREATE TABLE IF NOT EXISTS `setting` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `options` text COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `setting`
+--
+
+INSERT INTO `setting` (`id`, `options`, `created_at`, `updated_at`) VALUES
+(1, '{\"name\":\"Coffee & Drink\",\"email\":\"0306181326@caothang.edu.vn\",\"dienthoai\":\"0343754517\",\"diachi\":\"\\u0110. L\\u00ea L\\u1ee3i, Ph\\u01b0\\u1eddng B\\u1ebfn Th\\u00e0nh, Qu\\u1eadn 1, Th\\u00e0nh ph\\u1ed1 H\\u1ed3 Ch\\u00ed Minh\",\"iframemap\":\"<iframe src=\\\"https:\\/\\/www.google.com\\/maps\\/embed?pb=!1m18!1m12!1m3!1d3919.505760803063!2d106.69583211424604!3d10.77252206221281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3f3129e64d%3A0x8d6b2d79522c7f30!2zQ2jhu6MgQuG6v24gVGjDoG5o!5e0!3m2!1svi!2ssg!4v1656560919153!5m2!1svi!2ssg\\\" width=\\\"400\\\" height=\\\"300\\\" style=\\\"border:0;\\\" allowfullscreen=\\\"\\\" loading=\\\"lazy\\\" referrerpolicy=\\\"no-referrer-when-downgrade\\\"><\\/iframe>\"}', '2022-06-09 06:39:13', '2022-08-24 00:50:59');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sizes`
 --
 
-CREATE TABLE `sizes` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `sizes`;
+CREATE TABLE IF NOT EXISTS `sizes` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `size_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trang_thai` tinyint(4) NOT NULL DEFAULT 1,
+  `price` int(11) NOT NULL DEFAULT '0',
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `sizes`
 --
 
-INSERT INTO `sizes` (`id`, `size_name`, `trang_thai`, `created_at`, `updated_at`) VALUES
-(1, 'Nhỏ', 1, NULL, NULL),
-(2, 'Vừa', 1, NULL, NULL),
-(3, 'Lớn', 1, NULL, NULL);
+INSERT INTO `sizes` (`id`, `size_name`, `price`, `trang_thai`, `created_at`, `updated_at`) VALUES
+(1, 'Nhỏ', 0, 1, NULL, NULL),
+(3, 'Lớn', 6000, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1422,13 +1779,17 @@ INSERT INTO `sizes` (`id`, `size_name`, `trang_thai`, `created_at`, `updated_at`
 -- Table structure for table `size_pros`
 --
 
-CREATE TABLE `size_pros` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `size_pros`;
+CREATE TABLE IF NOT EXISTS `size_pros` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_pro` int(10) UNSIGNED NOT NULL,
   `id_size` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `size_pros_id_pro_foreign` (`id_pro`),
+  KEY `size_pros_id_size_foreign` (`id_size`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `size_pros`
@@ -1436,24 +1797,82 @@ CREATE TABLE `size_pros` (
 
 INSERT INTO `size_pros` (`id`, `id_pro`, `id_size`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, NULL, NULL),
-(2, 1, 2, NULL, NULL),
+(2, 1, 3, NULL, NULL),
 (3, 2, 1, NULL, NULL),
 (4, 2, 3, NULL, NULL),
-(5, 3, 2, NULL, NULL),
-(6, 4, 2, NULL, NULL),
+(5, 3, 1, NULL, NULL),
+(6, 4, 1, NULL, NULL),
 (7, 5, 1, NULL, NULL),
-(8, 5, 2, NULL, NULL),
-(9, 6, 2, NULL, NULL),
+(8, 5, 3, NULL, NULL),
+(9, 6, 1, NULL, NULL),
 (10, 6, 3, NULL, NULL),
-(11, 7, 2, NULL, NULL),
-(12, 10, 2, NULL, NULL),
+(11, 7, 1, NULL, NULL),
+(12, 10, 1, NULL, NULL),
 (13, 8, 1, NULL, NULL),
 (14, 8, 3, NULL, NULL),
-(15, 9, 2, NULL, NULL),
-(16, 11, 2, NULL, NULL),
-(17, 12, 2, NULL, NULL),
-(18, 13, 2, NULL, NULL),
-(19, 14, 2, NULL, NULL);
+(15, 9, 1, NULL, NULL),
+(16, 11, 1, NULL, NULL),
+(17, 12, 1, NULL, NULL),
+(18, 13, 1, NULL, NULL),
+(19, 14, 1, NULL, NULL),
+(20, 15, 1, '2022-07-01 01:18:16', '2022-07-01 01:18:16'),
+(21, 15, 3, '2022-07-01 01:18:16', '2022-07-01 01:18:16'),
+(22, 16, 1, '2022-07-04 07:36:21', '2022-07-04 07:36:21'),
+(23, 16, 3, '2022-07-04 07:36:21', '2022-07-04 07:36:21'),
+(25, 18, 1, '2022-08-24 00:57:12', '2022-08-24 00:57:12'),
+(26, 18, 3, '2022-08-24 00:57:12', '2022-08-24 00:57:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `static`
+--
+
+DROP TABLE IF EXISTS `static`;
+CREATE TABLE IF NOT EXISTS `static` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tieude` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mota` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `noidung` text COLLATE utf8_unicode_ci NOT NULL,
+  `loai` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `trangthai` int(11) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `static`
+--
+
+INSERT INTO `static` (`id`, `tieude`, `mota`, `noidung`, `loai`, `trangthai`, `created_at`, `updated_at`) VALUES
+(4, NULL, NULL, '<h1 style=\"text-align:center\"><img alt=\"\" src=\"/ckfinder/userfiles/files/logo.png\" style=\"height:51px; width:80px\" /></h1>\r\n\r\n<p><strong>VỀ CH&Uacute;NG T&Ocirc;I</strong></p>\r\n\r\n<p>Giới thiệu sản phẩm tr&agrave; v&agrave; c&agrave; ph&ecirc; thuần Việt đến với kh&aacute;ch h&agrave;ng trong nước cũng như quốc tế.</p>\r\n\r\n<p>Ch&uacute;ng t&ocirc;i tin rằng từng sản phẩm tr&agrave; v&agrave; c&agrave; ph&ecirc; sẽ c&agrave;ng th&ecirc;m hảo hạng khi được tạo ra từ sự phấn đấu kh&ocirc;ng ngừng c&ugrave;ng niềm đam m&ecirc;. V&agrave; ch&iacute;nh kết nối dựa tr&ecirc;n niềm tin, sự trung thực v&agrave; tin y&ecirc;u g&oacute;p phần mang đến những n&eacute;t đẹp trong văn h&oacute;a thưởng tr&agrave; &amp; c&agrave; ph&ecirc; ng&agrave;y c&agrave;ng bay cao v&agrave; vươn xa. Tiếp nối nỗ lực, từ một cửa h&agrave;ng đầu ti&ecirc;n, đến nay, x&acirc;y dựng hơn 80&nbsp;cửa h&agrave;ng tr&ecirc;n khu vực TP.HCM, B&igrave;nh Dương, Bi&ecirc;n H&ograve;a, Cần Thơ, Đ&agrave; Nẵng, Nha Trang, H&agrave; Nội phục vụ những thức uống tươi ngon từ tr&agrave; v&agrave; c&agrave; ph&ecirc;. Kh&ocirc;ng dừng lại tại đ&oacute;, ch&uacute;ng t&ocirc;i tiếp tục định hướng ph&aacute;t triển mở rộng hệ thống cửa h&agrave;ng trải d&agrave;i từ Nam ra Bắc. Tăng độ phủ của sản phẩm đến tất cả c&aacute;c hệ thống: si&ecirc;u thị, cửa h&agrave;ng tiện lợi&hellip;</p>\r\n\r\n<p>Hoạt động với phương ch&acirc;m &ldquo;Chất lượng khởi nguồn từ đam m&ecirc;&rdquo;, c&ugrave;ng nhau, ch&uacute;ng t&ocirc;i đ&atilde; v&agrave; đang viết tiếp c&acirc;u chuyện của một thương hiệu Việt gi&agrave;u truyền thống, kết nối tinh t&uacute;y của nhiều thập ni&ecirc;n kinh nghiệm v&agrave; kh&ocirc;ng ngừng chắt lọc, l&agrave;m mới m&igrave;nh trong bước chuyển thời gian để trở th&agrave;nh thương hiệu lu&ocirc;n gắn b&oacute; với nhiều thế hệ kh&aacute;ch h&agrave;ng.</p>\r\n\r\n<p>Lu&ocirc;n t&acirc;m huyết với việc khai th&aacute;c nguồn n&ocirc;ng sản Việt Nam để tạo ra những ly thức uống tươi ngon, an to&agrave;n v&agrave; gi&agrave;u gi&aacute; trị dinh dưỡng, mang trong m&igrave;nh l&ograve;ng đam m&ecirc; v&agrave; kh&aacute;t vọng x&acirc;y dựng một thương hiệu tr&agrave; sữa thuần Việt, mang đậm hương vị qu&ecirc; hương. Tin rằng thưởng thức một ly tr&agrave; sữa được pha chế từ tr&agrave; Mộc Ch&acirc;u, tr&acirc;n ch&acirc;u từ sắn d&acirc;y Nghệ An hay mứt d&acirc;u tằm từ Đ&agrave; Lạt sẽ l&agrave; những trải nghiệm ho&agrave;n to&agrave;n kh&aacute;c biệt v&agrave; tuyệt vời nhất cho những kh&aacute;ch h&agrave;ng của m&igrave;nh.</p>\r\n\r\n<p>H&agrave;nh tr&igrave;nh đầy đam m&ecirc; v&agrave; t&acirc;m huyết n&agrave;y sẽ tiếp tục nh&acirc;n rộng để lan tỏa những ly tr&agrave; thuần khiết n&ocirc;ng sản Việt đến mọi miền tr&ecirc;n Việt Nam v&agrave; thế giới.</p>', 'gioi-thieu', 1, '2022-06-27 00:44:36', '2022-07-10 21:48:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `type_accounts`
+--
+
+DROP TABLE IF EXISTS `type_accounts`;
+CREATE TABLE IF NOT EXISTS `type_accounts` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type_account` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `type_accounts`
+--
+
+INSERT INTO `type_accounts` (`id`, `type_account`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 1, NULL, NULL),
+(2, 'nhân viên bán hàng', 1, NULL, NULL),
+(3, 'nhân viên pha chế', 1, NULL, NULL),
+(4, 'nhân viên thu ngân', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1461,23 +1880,594 @@ INSERT INTO `size_pros` (`id`, `id_pro`, `id_size`, `created_at`, `updated_at`) 
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `level` int(11) NOT NULL,
+  `level` int(11) NOT NULL DEFAULT '1',
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `name_staff` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `page_access` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type_account` tinyint(4) NOT NULL,
+  `phone_number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `email_verified_at`, `password`, `level`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin@gmail.com', NULL, '$2y$10$Az2nV8LaeHELgVdlV23KUu2Lr8Z7lY4k8nk0QQgwHmCrUSiDfm/OS', 1, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `email`, `email_verified_at`, `password`, `level`, `remember_token`, `created_at`, `updated_at`, `name_staff`, `roles_id`, `page_access`, `type_account`, `phone_number`, `status`) VALUES
+(5, 'admin@gmail.com', NULL, '$2y$10$EQEqaY0mtni5ZCLKsc2E.ee2P5h7w1wDZgd2cRrCOgMNtff/eOv0K', 1, NULL, '2022-07-01 10:22:48', '2022-07-09 02:25:55', 'Nguyễn Văn Chung', '1,', '1,', 1, '0343754517', 1),
+(9, '0306181377@caothang.edu.vn', NULL, '$2y$10$DPiSogeJb2UWMW4YwTCoZOcDa6HIIP1PrnMOqdE9Q/ZfI1x.MpbG2', 1, NULL, '2022-07-09 05:32:24', '2022-07-10 21:55:18', 'Phan Minh Trí', '1,', '1,', 1, '1234567890', 1),
+(13, 'phanminhtri11800@gmail.com', NULL, '$2y$10$6aGvk0zjHb.foVikWCDCzekdYnIMYEi.iwyinQ09Vv536Drzvsrb2', 1, NULL, '2022-07-20 19:51:01', '2022-07-20 19:51:01', 'Nguyen Van B', 'demo', 'demo', 2, '0328369701', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `visitors`
+--
+
+DROP TABLE IF EXISTS `visitors`;
+CREATE TABLE IF NOT EXISTS `visitors` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT '1',
+  `date_visitor` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=538 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `visitors`
+--
+
+INSERT INTO `visitors` (`id`, `ip_address`, `trang_thai`, `date_visitor`, `created_at`, `updated_at`) VALUES
+(1, '::1', 1, '2022-07-01', '2022-07-01 00:50:48', '2022-07-01 00:50:48'),
+(2, '::1', 1, '2022-07-01', '2022-07-01 00:50:55', '2022-07-01 00:50:55'),
+(3, '::1', 1, '2022-07-01', '2022-07-01 00:52:41', '2022-07-01 00:52:41'),
+(4, '::1', 1, '2022-07-01', '2022-07-01 00:53:15', '2022-07-01 00:53:15'),
+(5, '::1', 1, '2022-07-01', '2022-07-01 00:53:43', '2022-07-01 00:53:43'),
+(6, '::1', 1, '2022-07-01', '2022-07-01 00:55:54', '2022-07-01 00:55:54'),
+(7, '::1', 1, '2022-07-01', '2022-07-01 00:57:28', '2022-07-01 00:57:28'),
+(8, '::1', 1, '2022-07-01', '2022-07-01 01:16:22', '2022-07-01 01:16:22'),
+(9, '::1', 1, '2022-07-01', '2022-07-01 01:16:27', '2022-07-01 01:16:27'),
+(10, '::1', 1, '2022-07-01', '2022-07-01 01:18:21', '2022-07-01 01:18:21'),
+(11, '::1', 1, '2022-07-01', '2022-07-01 01:18:22', '2022-07-01 01:18:22'),
+(12, '::1', 1, '2022-07-01', '2022-07-01 01:26:56', '2022-07-01 01:26:56'),
+(13, '::1', 1, '2022-07-01', '2022-07-01 01:27:33', '2022-07-01 01:27:33'),
+(14, '::1', 1, '2022-07-01', '2022-07-01 01:30:01', '2022-07-01 01:30:01'),
+(15, '::1', 1, '2022-07-01', '2022-07-01 01:30:05', '2022-07-01 01:30:05'),
+(16, '::1', 1, '2022-07-01', '2022-07-01 01:30:16', '2022-07-01 01:30:16'),
+(17, '::1', 1, '2022-07-01', '2022-07-01 01:30:34', '2022-07-01 01:30:34'),
+(18, '::1', 1, '2022-07-01', '2022-07-01 01:30:56', '2022-07-01 01:30:56'),
+(19, '::1', 1, '2022-07-01', '2022-07-01 01:31:45', '2022-07-01 01:31:45'),
+(20, '::1', 1, '2022-07-01', '2022-07-01 02:03:18', '2022-07-01 02:03:18'),
+(21, '::1', 1, '2022-07-01', '2022-07-01 02:03:31', '2022-07-01 02:03:31'),
+(22, '::1', 1, '2022-07-01', '2022-07-01 02:03:46', '2022-07-01 02:03:46'),
+(23, '::1', 1, '2022-07-01', '2022-07-01 02:04:04', '2022-07-01 02:04:04'),
+(24, '::1', 1, '2022-07-01', '2022-07-01 04:32:44', '2022-07-01 04:32:44'),
+(25, '::1', 1, '2022-07-01', '2022-07-01 04:50:25', '2022-07-01 04:50:25'),
+(26, '::1', 1, '2022-07-01', '2022-07-01 04:50:54', '2022-07-01 04:50:54'),
+(27, '::1', 1, '2022-07-01', '2022-07-01 04:51:18', '2022-07-01 04:51:18'),
+(28, '::1', 1, '2022-07-01', '2022-07-01 04:51:42', '2022-07-01 04:51:42'),
+(29, '::1', 1, '2022-07-01', '2022-07-01 05:13:56', '2022-07-01 05:13:56'),
+(30, '::1', 1, '2022-07-01', '2022-07-01 05:33:17', '2022-07-01 05:33:17'),
+(31, '::1', 1, '2022-07-01', '2022-07-01 05:37:51', '2022-07-01 05:37:51'),
+(32, '::1', 1, '2022-07-01', '2022-07-01 05:45:08', '2022-07-01 05:45:08'),
+(33, '::1', 1, '2022-07-01', '2022-07-01 05:45:10', '2022-07-01 05:45:10'),
+(34, '::1', 1, '2022-07-01', '2022-07-01 05:45:10', '2022-07-01 05:45:10'),
+(35, '::1', 1, '2022-07-01', '2022-07-01 05:45:10', '2022-07-01 05:45:10'),
+(36, '::1', 1, '2022-07-01', '2022-07-01 05:45:10', '2022-07-01 05:45:10'),
+(37, '::1', 1, '2022-07-01', '2022-07-01 05:53:35', '2022-07-01 05:53:35'),
+(38, '::1', 1, '2022-07-01', '2022-07-01 06:14:11', '2022-07-01 06:14:11'),
+(39, '::1', 1, '2022-07-01', '2022-07-01 06:48:37', '2022-07-01 06:48:37'),
+(40, '::1', 1, '2022-07-01', '2022-07-01 06:51:26', '2022-07-01 06:51:26'),
+(41, '127.0.0.1', 1, '2022-07-01', '2022-07-01 07:35:41', '2022-07-01 07:35:41'),
+(42, '::1', 1, '2022-07-01', '2022-07-01 08:24:22', '2022-07-01 08:24:22'),
+(43, '::1', 1, '2022-07-01', '2022-07-01 08:36:27', '2022-07-01 08:36:27'),
+(44, '::1', 1, '2022-07-01', '2022-07-01 09:03:19', '2022-07-01 09:03:19'),
+(45, '::1', 1, '2022-07-01', '2022-07-01 09:03:25', '2022-07-01 09:03:25'),
+(46, '::1', 1, '2022-07-01', '2022-07-01 09:03:35', '2022-07-01 09:03:35'),
+(47, '::1', 1, '2022-07-01', '2022-07-01 09:43:29', '2022-07-01 09:43:29'),
+(48, '::1', 1, '2022-07-01', '2022-07-01 09:47:11', '2022-07-01 09:47:11'),
+(49, '127.0.0.1', 1, '2022-07-01', '2022-07-01 09:53:41', '2022-07-01 09:53:41'),
+(50, '127.0.0.1', 1, '2022-07-01', '2022-07-01 09:54:21', '2022-07-01 09:54:21'),
+(51, '::1', 1, '2022-07-01', '2022-07-01 09:56:07', '2022-07-01 09:56:07'),
+(52, '::1', 1, '2022-07-02', '2022-07-01 10:20:31', '2022-07-01 10:20:31'),
+(53, '::1', 1, '2022-07-02', '2022-07-01 10:20:39', '2022-07-01 10:20:39'),
+(54, '127.0.0.1', 1, '2022-07-02', '2022-07-01 16:13:43', '2022-07-01 16:13:43'),
+(55, '::1', 1, '2022-07-02', '2022-07-01 16:14:30', '2022-07-01 16:14:30'),
+(56, '::1', 1, '2022-07-02', '2022-07-01 16:14:39', '2022-07-01 16:14:39'),
+(57, '::1', 1, '2022-07-02', '2022-07-01 16:15:48', '2022-07-01 16:15:48'),
+(58, '::1', 1, '2022-07-02', '2022-07-01 16:24:35', '2022-07-01 16:24:35'),
+(59, '::1', 1, '2022-07-02', '2022-07-01 17:23:42', '2022-07-01 17:23:42'),
+(60, '::1', 1, '2022-07-02', '2022-07-01 17:42:31', '2022-07-01 17:42:31'),
+(61, '::1', 1, '2022-07-02', '2022-07-01 17:42:39', '2022-07-01 17:42:39'),
+(62, '::1', 1, '2022-07-02', '2022-07-01 17:44:10', '2022-07-01 17:44:10'),
+(63, '127.0.0.1', 1, '2022-07-02', '2022-07-01 18:00:31', '2022-07-01 18:00:31'),
+(64, '127.0.0.1', 1, '2022-07-02', '2022-07-01 18:04:01', '2022-07-01 18:04:01'),
+(65, '::1', 1, '2022-07-02', '2022-07-01 19:46:00', '2022-07-01 19:46:00'),
+(66, '127.0.0.1', 1, '2022-07-02', '2022-07-01 19:46:11', '2022-07-01 19:46:11'),
+(67, '::1', 1, '2022-07-02', '2022-07-01 20:06:19', '2022-07-01 20:06:19'),
+(68, '::1', 1, '2022-07-02', '2022-07-01 20:06:38', '2022-07-01 20:06:38'),
+(69, '::1', 1, '2022-07-02', '2022-07-01 20:06:49', '2022-07-01 20:06:49'),
+(70, '::1', 1, '2022-07-02', '2022-07-01 20:10:30', '2022-07-01 20:10:30'),
+(71, '::1', 1, '2022-07-02', '2022-07-01 20:12:04', '2022-07-01 20:12:04'),
+(72, '::1', 1, '2022-07-02', '2022-07-01 20:15:32', '2022-07-01 20:15:32'),
+(73, '::1', 1, '2022-07-02', '2022-07-01 20:15:41', '2022-07-01 20:15:41'),
+(74, '::1', 1, '2022-07-02', '2022-07-01 20:15:46', '2022-07-01 20:15:46'),
+(75, '::1', 1, '2022-07-02', '2022-07-01 20:41:35', '2022-07-01 20:41:35'),
+(76, '::1', 1, '2022-07-02', '2022-07-01 20:54:43', '2022-07-01 20:54:43'),
+(77, '::1', 1, '2022-07-02', '2022-07-01 21:04:48', '2022-07-01 21:04:48'),
+(78, '::1', 1, '2022-07-02', '2022-07-01 21:10:06', '2022-07-01 21:10:06'),
+(79, '::1', 1, '2022-07-02', '2022-07-01 21:10:54', '2022-07-01 21:10:54'),
+(80, '::1', 1, '2022-07-02', '2022-07-01 21:11:05', '2022-07-01 21:11:05'),
+(81, '::1', 1, '2022-07-02', '2022-07-01 21:20:07', '2022-07-01 21:20:07'),
+(82, '::1', 1, '2022-07-02', '2022-07-01 21:37:43', '2022-07-01 21:37:43'),
+(83, '::1', 1, '2022-07-04', '2022-07-03 18:56:18', '2022-07-03 18:56:18'),
+(84, '127.0.0.1', 1, '2022-07-04', '2022-07-03 19:02:25', '2022-07-03 19:02:25'),
+(85, '127.0.0.1', 1, '2022-07-04', '2022-07-04 00:39:45', '2022-07-04 00:39:45'),
+(86, '127.0.0.1', 1, '2022-07-04', '2022-07-04 00:41:25', '2022-07-04 00:41:25'),
+(87, '127.0.0.1', 1, '2022-07-04', '2022-07-04 00:42:16', '2022-07-04 00:42:16'),
+(88, '::1', 1, '2022-07-04', '2022-07-04 04:44:09', '2022-07-04 04:44:09'),
+(89, '::1', 1, '2022-07-04', '2022-07-04 07:24:44', '2022-07-04 07:24:44'),
+(90, '::1', 1, '2022-07-04', '2022-07-04 07:30:31', '2022-07-04 07:30:31'),
+(91, '::1', 1, '2022-07-04', '2022-07-04 07:37:07', '2022-07-04 07:37:07'),
+(92, '::1', 1, '2022-07-04', '2022-07-04 07:38:54', '2022-07-04 07:38:54'),
+(93, '::1', 1, '2022-07-04', '2022-07-04 07:41:52', '2022-07-04 07:41:52'),
+(94, '::1', 1, '2022-07-05', '2022-07-04 20:33:14', '2022-07-04 20:33:14'),
+(95, '::1', 1, '2022-07-05', '2022-07-04 21:09:15', '2022-07-04 21:09:15'),
+(96, '::1', 1, '2022-07-05', '2022-07-04 21:12:37', '2022-07-04 21:12:37'),
+(97, '::1', 1, '2022-07-05', '2022-07-04 21:44:27', '2022-07-04 21:44:27'),
+(98, '::1', 1, '2022-07-05', '2022-07-04 21:44:33', '2022-07-04 21:44:33'),
+(99, '::1', 1, '2022-07-05', '2022-07-04 22:39:34', '2022-07-04 22:39:34'),
+(100, '::1', 1, '2022-07-05', '2022-07-04 22:41:57', '2022-07-04 22:41:57'),
+(101, '::1', 1, '2022-07-05', '2022-07-04 22:46:17', '2022-07-04 22:46:17'),
+(102, '::1', 1, '2022-07-05', '2022-07-05 00:49:57', '2022-07-05 00:49:57'),
+(103, '127.0.0.1', 1, '2022-07-05', '2022-07-05 05:32:09', '2022-07-05 05:32:09'),
+(104, '127.0.0.1', 1, '2022-07-05', '2022-07-05 07:41:56', '2022-07-05 07:41:56'),
+(105, '127.0.0.1', 1, '2022-07-05', '2022-07-05 08:23:57', '2022-07-05 08:23:57'),
+(106, '::1', 1, '2022-07-06', '2022-07-05 18:23:06', '2022-07-05 18:23:06'),
+(107, '::1', 1, '2022-07-06', '2022-07-06 00:54:43', '2022-07-06 00:54:43'),
+(108, '::1', 1, '2022-07-06', '2022-07-06 05:16:10', '2022-07-06 05:16:10'),
+(109, '::1', 1, '2022-07-06', '2022-07-06 06:14:49', '2022-07-06 06:14:49'),
+(110, '127.0.0.1', 1, '2022-07-06', '2022-07-06 06:15:02', '2022-07-06 06:15:02'),
+(111, '127.0.0.1', 1, '2022-07-06', '2022-07-06 06:17:13', '2022-07-06 06:17:13'),
+(112, '::1', 1, '2022-07-08', '2022-07-07 20:12:18', '2022-07-07 20:12:18'),
+(113, '::1', 1, '2022-07-08', '2022-07-07 20:12:18', '2022-07-07 20:12:18'),
+(114, '::1', 1, '2022-07-08', '2022-07-07 20:31:26', '2022-07-07 20:31:26'),
+(115, '127.0.0.1', 1, '2022-07-08', '2022-07-07 20:40:19', '2022-07-07 20:40:19'),
+(116, '127.0.0.1', 1, '2022-07-08', '2022-07-07 20:40:29', '2022-07-07 20:40:29'),
+(117, '127.0.0.1', 1, '2022-07-08', '2022-07-07 20:40:37', '2022-07-07 20:40:37'),
+(118, '::1', 1, '2022-07-08', '2022-07-07 20:45:47', '2022-07-07 20:45:47'),
+(119, '::1', 1, '2022-07-08', '2022-07-07 21:30:39', '2022-07-07 21:30:39'),
+(120, '::1', 1, '2022-07-08', '2022-07-07 22:09:40', '2022-07-07 22:09:40'),
+(121, '::1', 1, '2022-07-08', '2022-07-07 22:32:28', '2022-07-07 22:32:28'),
+(122, '::1', 1, '2022-07-09', '2022-07-08 19:21:24', '2022-07-08 19:21:24'),
+(123, '::1', 1, '2022-07-09', '2022-07-08 19:41:29', '2022-07-08 19:41:29'),
+(124, '::1', 1, '2022-07-09', '2022-07-08 19:42:20', '2022-07-08 19:42:20'),
+(125, '::1', 1, '2022-07-09', '2022-07-08 19:43:40', '2022-07-08 19:43:40'),
+(126, '::1', 1, '2022-07-09', '2022-07-08 19:45:28', '2022-07-08 19:45:28'),
+(127, '::1', 1, '2022-07-09', '2022-07-08 19:45:38', '2022-07-08 19:45:38'),
+(128, '::1', 1, '2022-07-09', '2022-07-08 19:46:40', '2022-07-08 19:46:40'),
+(129, '::1', 1, '2022-07-09', '2022-07-08 19:56:48', '2022-07-08 19:56:48'),
+(130, '::1', 1, '2022-07-09', '2022-07-08 20:34:44', '2022-07-08 20:34:44'),
+(131, '::1', 1, '2022-07-09', '2022-07-08 20:52:43', '2022-07-08 20:52:43'),
+(132, '::1', 1, '2022-07-09', '2022-07-09 01:18:47', '2022-07-09 01:18:47'),
+(133, '::1', 1, '2022-07-09', '2022-07-09 05:01:58', '2022-07-09 05:01:58'),
+(134, '::1', 1, '2022-07-09', '2022-07-09 05:10:01', '2022-07-09 05:10:01'),
+(135, '127.0.0.1', 1, '2022-07-09', '2022-07-09 05:56:49', '2022-07-09 05:56:49'),
+(136, '127.0.0.1', 1, '2022-07-09', '2022-07-09 05:57:00', '2022-07-09 05:57:00'),
+(137, '127.0.0.1', 1, '2022-07-09', '2022-07-09 06:41:46', '2022-07-09 06:41:46'),
+(138, '127.0.0.1', 1, '2022-07-09', '2022-07-09 07:35:51', '2022-07-09 07:35:51'),
+(139, '127.0.0.1', 1, '2022-07-09', '2022-07-09 07:36:03', '2022-07-09 07:36:03'),
+(140, '127.0.0.1', 1, '2022-07-09', '2022-07-09 07:36:16', '2022-07-09 07:36:16'),
+(141, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:06:16', '2022-07-09 08:06:16'),
+(142, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:08:35', '2022-07-09 08:08:35'),
+(143, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:11:05', '2022-07-09 08:11:05'),
+(144, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:21:48', '2022-07-09 08:21:48'),
+(145, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:22:13', '2022-07-09 08:22:13'),
+(146, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:23:47', '2022-07-09 08:23:47'),
+(147, '127.0.0.1', 1, '2022-07-09', '2022-07-09 08:23:52', '2022-07-09 08:23:52'),
+(148, '::1', 1, '2022-07-09', '2022-07-09 08:24:17', '2022-07-09 08:24:17'),
+(149, '::1', 1, '2022-07-09', '2022-07-09 08:24:32', '2022-07-09 08:24:32'),
+(150, '::1', 1, '2022-07-09', '2022-07-09 08:24:49', '2022-07-09 08:24:49'),
+(151, '::1', 1, '2022-07-09', '2022-07-09 08:25:17', '2022-07-09 08:25:17'),
+(152, '::1', 1, '2022-07-09', '2022-07-09 08:25:17', '2022-07-09 08:25:17'),
+(153, '::1', 1, '2022-07-09', '2022-07-09 08:25:37', '2022-07-09 08:25:37'),
+(154, '::1', 1, '2022-07-09', '2022-07-09 08:25:51', '2022-07-09 08:25:51'),
+(155, '::1', 1, '2022-07-09', '2022-07-09 08:25:57', '2022-07-09 08:25:57'),
+(156, '::1', 1, '2022-07-09', '2022-07-09 08:26:34', '2022-07-09 08:26:34'),
+(157, '::1', 1, '2022-07-10', '2022-07-09 19:20:46', '2022-07-09 19:20:46'),
+(158, '127.0.0.1', 1, '2022-07-10', '2022-07-09 19:24:10', '2022-07-09 19:24:10'),
+(159, '127.0.0.1', 1, '2022-07-10', '2022-07-09 19:34:17', '2022-07-09 19:34:17'),
+(160, '127.0.0.1', 1, '2022-07-10', '2022-07-09 19:34:50', '2022-07-09 19:34:50'),
+(161, '127.0.0.1', 1, '2022-07-10', '2022-07-09 19:40:14', '2022-07-09 19:40:14'),
+(162, '::1', 1, '2022-07-10', '2022-07-09 23:17:52', '2022-07-09 23:17:52'),
+(163, '127.0.0.1', 1, '2022-07-10', '2022-07-09 23:18:26', '2022-07-09 23:18:26'),
+(164, '127.0.0.1', 1, '2022-07-10', '2022-07-09 23:20:21', '2022-07-09 23:20:21'),
+(165, '::1', 1, '2022-07-11', '2022-07-10 20:47:05', '2022-07-10 20:47:05'),
+(166, '127.0.0.1', 1, '2022-07-11', '2022-07-10 20:51:04', '2022-07-10 20:51:04'),
+(167, '127.0.0.1', 1, '2022-07-11', '2022-07-10 20:51:25', '2022-07-10 20:51:25'),
+(168, '127.0.0.1', 1, '2022-07-11', '2022-07-10 20:51:31', '2022-07-10 20:51:31'),
+(169, '127.0.0.1', 1, '2022-07-11', '2022-07-10 20:51:47', '2022-07-10 20:51:47'),
+(170, '127.0.0.1', 1, '2022-07-11', '2022-07-10 20:57:16', '2022-07-10 20:57:16'),
+(171, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:38:02', '2022-07-10 21:38:02'),
+(172, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:40:50', '2022-07-10 21:40:50'),
+(173, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:40:53', '2022-07-10 21:40:53'),
+(174, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:46:40', '2022-07-10 21:46:40'),
+(175, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:48:21', '2022-07-10 21:48:21'),
+(176, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:48:32', '2022-07-10 21:48:32'),
+(177, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:50:25', '2022-07-10 21:50:25'),
+(178, '127.0.0.1', 1, '2022-07-11', '2022-07-10 21:55:44', '2022-07-10 21:55:44'),
+(179, '127.0.0.1', 1, '2022-07-11', '2022-07-10 22:10:16', '2022-07-10 22:10:16'),
+(180, '127.0.0.1', 1, '2022-07-11', '2022-07-10 22:23:11', '2022-07-10 22:23:11'),
+(181, '::1', 1, '2022-07-11', '2022-07-10 23:15:32', '2022-07-10 23:15:32'),
+(182, '127.0.0.1', 1, '2022-07-11', '2022-07-10 23:16:50', '2022-07-10 23:16:50'),
+(183, '::1', 1, '2022-07-12', '2022-07-11 20:24:23', '2022-07-11 20:24:23'),
+(184, '::1', 1, '2022-07-12', '2022-07-11 20:37:52', '2022-07-11 20:37:52'),
+(185, '::1', 1, '2022-07-12', '2022-07-11 20:44:40', '2022-07-11 20:44:40'),
+(186, '127.0.0.1', 1, '2022-07-13', '2022-07-13 06:05:44', '2022-07-13 06:05:44'),
+(187, '127.0.0.1', 1, '2022-07-13', '2022-07-13 07:28:32', '2022-07-13 07:28:32'),
+(188, '127.0.0.1', 1, '2022-07-13', '2022-07-13 07:40:59', '2022-07-13 07:40:59'),
+(189, '127.0.0.1', 1, '2022-07-14', '2022-07-13 18:26:10', '2022-07-13 18:26:10'),
+(190, '127.0.0.1', 1, '2022-07-14', '2022-07-13 18:45:02', '2022-07-13 18:45:02'),
+(191, '127.0.0.1', 1, '2022-07-14', '2022-07-13 18:52:23', '2022-07-13 18:52:23'),
+(192, '::1', 1, '2022-07-14', '2022-07-13 18:52:37', '2022-07-13 18:52:37'),
+(193, '127.0.0.1', 1, '2022-07-14', '2022-07-13 18:52:42', '2022-07-13 18:52:42'),
+(194, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:09:17', '2022-07-13 19:09:17'),
+(195, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:11:39', '2022-07-13 19:11:39'),
+(196, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:14:20', '2022-07-13 19:14:20'),
+(197, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:18:05', '2022-07-13 19:18:05'),
+(198, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:18:49', '2022-07-13 19:18:49'),
+(199, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:19:10', '2022-07-13 19:19:10'),
+(200, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:19:35', '2022-07-13 19:19:35'),
+(201, '127.0.0.1', 1, '2022-07-14', '2022-07-13 19:19:47', '2022-07-13 19:19:47'),
+(202, '::1', 1, '2022-07-14', '2022-07-13 19:19:53', '2022-07-13 19:19:53'),
+(203, '::1', 1, '2022-07-14', '2022-07-13 19:20:00', '2022-07-13 19:20:00'),
+(204, '::1', 1, '2022-07-14', '2022-07-13 19:20:12', '2022-07-13 19:20:12'),
+(205, '::1', 1, '2022-07-14', '2022-07-13 19:20:18', '2022-07-13 19:20:18'),
+(206, '::1', 1, '2022-07-14', '2022-07-13 19:20:20', '2022-07-13 19:20:20'),
+(207, '::1', 1, '2022-07-14', '2022-07-13 19:21:16', '2022-07-13 19:21:16'),
+(208, '::1', 1, '2022-07-14', '2022-07-13 19:21:21', '2022-07-13 19:21:21'),
+(209, '::1', 1, '2022-07-14', '2022-07-13 19:21:30', '2022-07-13 19:21:30'),
+(210, '::1', 1, '2022-07-14', '2022-07-13 19:21:45', '2022-07-13 19:21:45'),
+(211, '::1', 1, '2022-07-14', '2022-07-13 19:23:58', '2022-07-13 19:23:58'),
+(212, '::1', 1, '2022-07-14', '2022-07-13 19:24:04', '2022-07-13 19:24:04'),
+(213, '::1', 1, '2022-07-14', '2022-07-13 19:24:09', '2022-07-13 19:24:09'),
+(214, '::1', 1, '2022-07-14', '2022-07-13 19:26:48', '2022-07-13 19:26:48'),
+(215, '::1', 1, '2022-07-14', '2022-07-13 19:26:51', '2022-07-13 19:26:51'),
+(216, '::1', 1, '2022-07-14', '2022-07-13 19:31:45', '2022-07-13 19:31:45'),
+(217, '::1', 1, '2022-07-14', '2022-07-13 19:53:31', '2022-07-13 19:53:31'),
+(218, '::1', 1, '2022-07-14', '2022-07-13 19:53:37', '2022-07-13 19:53:37'),
+(219, '::1', 1, '2022-07-14', '2022-07-13 19:53:46', '2022-07-13 19:53:46'),
+(220, '::1', 1, '2022-07-14', '2022-07-13 20:18:16', '2022-07-13 20:18:16'),
+(221, '::1', 1, '2022-07-14', '2022-07-13 20:18:43', '2022-07-13 20:18:43'),
+(222, '::1', 1, '2022-07-14', '2022-07-13 20:18:55', '2022-07-13 20:18:55'),
+(223, '::1', 1, '2022-07-14', '2022-07-13 20:23:05', '2022-07-13 20:23:05'),
+(224, '::1', 1, '2022-07-14', '2022-07-13 20:23:10', '2022-07-13 20:23:10'),
+(225, '::1', 1, '2022-07-14', '2022-07-13 20:23:32', '2022-07-13 20:23:32'),
+(226, '::1', 1, '2022-07-14', '2022-07-13 20:23:49', '2022-07-13 20:23:49'),
+(227, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:24:03', '2022-07-13 20:24:03'),
+(228, '::1', 1, '2022-07-14', '2022-07-13 20:24:06', '2022-07-13 20:24:06'),
+(229, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:24:09', '2022-07-13 20:24:09'),
+(230, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:25:59', '2022-07-13 20:25:59'),
+(231, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:26:49', '2022-07-13 20:26:49'),
+(232, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:27:16', '2022-07-13 20:27:16'),
+(233, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:27:25', '2022-07-13 20:27:25'),
+(234, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:32:49', '2022-07-13 20:32:49'),
+(235, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:33:44', '2022-07-13 20:33:44'),
+(236, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:34:06', '2022-07-13 20:34:06'),
+(237, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:34:52', '2022-07-13 20:34:52'),
+(238, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:35:31', '2022-07-13 20:35:31'),
+(239, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:35:36', '2022-07-13 20:35:36'),
+(240, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:38:56', '2022-07-13 20:38:56'),
+(241, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:39:11', '2022-07-13 20:39:11'),
+(242, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:40:34', '2022-07-13 20:40:34'),
+(243, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:40:53', '2022-07-13 20:40:53'),
+(244, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:42:14', '2022-07-13 20:42:14'),
+(245, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:42:16', '2022-07-13 20:42:16'),
+(246, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:42:16', '2022-07-13 20:42:16'),
+(247, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:42:17', '2022-07-13 20:42:17'),
+(248, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:42:17', '2022-07-13 20:42:17'),
+(249, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:44:11', '2022-07-13 20:44:11'),
+(250, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:45:02', '2022-07-13 20:45:02'),
+(251, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:45:22', '2022-07-13 20:45:22'),
+(252, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:46:15', '2022-07-13 20:46:15'),
+(253, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:46:32', '2022-07-13 20:46:32'),
+(254, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:46:35', '2022-07-13 20:46:35'),
+(255, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:47:10', '2022-07-13 20:47:10'),
+(256, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:47:32', '2022-07-13 20:47:32'),
+(257, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:47:52', '2022-07-13 20:47:52'),
+(258, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:48:01', '2022-07-13 20:48:01'),
+(259, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:49:15', '2022-07-13 20:49:15'),
+(260, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:49:31', '2022-07-13 20:49:31'),
+(261, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:50:01', '2022-07-13 20:50:01'),
+(262, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:50:05', '2022-07-13 20:50:05'),
+(263, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:50:55', '2022-07-13 20:50:55'),
+(264, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:52:25', '2022-07-13 20:52:25'),
+(265, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:53:25', '2022-07-13 20:53:25'),
+(266, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:54:42', '2022-07-13 20:54:42'),
+(267, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:56:08', '2022-07-13 20:56:08'),
+(268, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:56:15', '2022-07-13 20:56:15'),
+(269, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:56:54', '2022-07-13 20:56:54'),
+(270, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:57:56', '2022-07-13 20:57:56'),
+(271, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:58:22', '2022-07-13 20:58:22'),
+(272, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:58:24', '2022-07-13 20:58:24'),
+(273, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:58:36', '2022-07-13 20:58:36'),
+(274, '127.0.0.1', 1, '2022-07-14', '2022-07-13 20:59:37', '2022-07-13 20:59:37'),
+(275, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:00:40', '2022-07-13 21:00:40'),
+(276, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:02:20', '2022-07-13 21:02:20'),
+(277, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:02:52', '2022-07-13 21:02:52'),
+(278, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:03:06', '2022-07-13 21:03:06'),
+(279, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:04:02', '2022-07-13 21:04:02'),
+(280, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:04:53', '2022-07-13 21:04:53'),
+(281, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:05:10', '2022-07-13 21:05:10'),
+(282, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:05:25', '2022-07-13 21:05:25'),
+(283, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:11:26', '2022-07-13 21:11:26'),
+(284, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:12:22', '2022-07-13 21:12:22'),
+(285, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:12:23', '2022-07-13 21:12:23'),
+(286, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:12:23', '2022-07-13 21:12:23'),
+(287, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:12:23', '2022-07-13 21:12:23'),
+(288, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:12:24', '2022-07-13 21:12:24'),
+(289, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:14:27', '2022-07-13 21:14:27'),
+(290, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:16:07', '2022-07-13 21:16:07'),
+(291, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:16:22', '2022-07-13 21:16:22'),
+(292, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:17:02', '2022-07-13 21:17:02'),
+(293, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:17:18', '2022-07-13 21:17:18'),
+(294, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:19:54', '2022-07-13 21:19:54'),
+(295, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:21:25', '2022-07-13 21:21:25'),
+(296, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:21:42', '2022-07-13 21:21:42'),
+(297, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:22:04', '2022-07-13 21:22:04'),
+(298, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:22:18', '2022-07-13 21:22:18'),
+(299, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:23:17', '2022-07-13 21:23:17'),
+(300, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:24:52', '2022-07-13 21:24:52'),
+(301, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:25:46', '2022-07-13 21:25:46'),
+(302, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:25:59', '2022-07-13 21:25:59'),
+(303, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:26:15', '2022-07-13 21:26:15'),
+(304, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:27:22', '2022-07-13 21:27:22'),
+(305, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:27:55', '2022-07-13 21:27:55'),
+(306, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:28:09', '2022-07-13 21:28:09'),
+(307, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:28:27', '2022-07-13 21:28:27'),
+(308, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:28:59', '2022-07-13 21:28:59'),
+(309, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:29:21', '2022-07-13 21:29:21'),
+(310, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:30:05', '2022-07-13 21:30:05'),
+(311, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:30:27', '2022-07-13 21:30:27'),
+(312, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:30:35', '2022-07-13 21:30:35'),
+(313, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:30:54', '2022-07-13 21:30:54'),
+(314, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:31:06', '2022-07-13 21:31:06'),
+(315, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:31:08', '2022-07-13 21:31:08'),
+(316, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:47:47', '2022-07-13 21:47:47'),
+(317, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:48:25', '2022-07-13 21:48:25'),
+(318, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:52:45', '2022-07-13 21:52:45'),
+(319, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:52:46', '2022-07-13 21:52:46'),
+(320, '127.0.0.1', 1, '2022-07-14', '2022-07-13 21:56:51', '2022-07-13 21:56:51'),
+(321, '::1', 1, '2022-07-14', '2022-07-13 21:57:01', '2022-07-13 21:57:01'),
+(322, '::1', 1, '2022-07-14', '2022-07-13 21:57:07', '2022-07-13 21:57:07'),
+(323, '::1', 1, '2022-07-14', '2022-07-13 21:57:10', '2022-07-13 21:57:10'),
+(324, '::1', 1, '2022-07-14', '2022-07-13 21:58:46', '2022-07-13 21:58:46'),
+(325, '::1', 1, '2022-07-14', '2022-07-13 21:59:12', '2022-07-13 21:59:12'),
+(326, '::1', 1, '2022-07-14', '2022-07-13 21:59:15', '2022-07-13 21:59:15'),
+(327, '::1', 1, '2022-07-14', '2022-07-13 21:59:18', '2022-07-13 21:59:18'),
+(328, '127.0.0.1', 1, '2022-07-14', '2022-07-13 22:00:06', '2022-07-13 22:00:06'),
+(329, '127.0.0.1', 1, '2022-07-14', '2022-07-13 22:00:16', '2022-07-13 22:00:16'),
+(330, '::1', 1, '2022-07-14', '2022-07-13 22:00:23', '2022-07-13 22:00:23'),
+(331, '::1', 1, '2022-07-14', '2022-07-13 22:00:38', '2022-07-13 22:00:38'),
+(332, '::1', 1, '2022-07-14', '2022-07-13 22:00:52', '2022-07-13 22:00:52'),
+(333, '127.0.0.1', 1, '2022-07-14', '2022-07-13 22:01:07', '2022-07-13 22:01:07'),
+(334, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:14:03', '2022-07-14 00:14:03'),
+(335, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:15:45', '2022-07-14 00:15:45'),
+(336, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:19:24', '2022-07-14 00:19:24'),
+(337, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:21:27', '2022-07-14 00:21:27'),
+(338, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:22:00', '2022-07-14 00:22:00'),
+(339, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:23:41', '2022-07-14 00:23:41'),
+(340, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:24:00', '2022-07-14 00:24:00'),
+(341, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:24:11', '2022-07-14 00:24:11'),
+(342, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:24:16', '2022-07-14 00:24:16'),
+(343, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:24:41', '2022-07-14 00:24:41'),
+(344, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:25:14', '2022-07-14 00:25:14'),
+(345, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:25:22', '2022-07-14 00:25:22'),
+(346, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:25:31', '2022-07-14 00:25:31'),
+(347, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:26:18', '2022-07-14 00:26:18'),
+(348, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:28:23', '2022-07-14 00:28:23'),
+(349, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:29:13', '2022-07-14 00:29:13'),
+(350, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:29:15', '2022-07-14 00:29:15'),
+(351, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:29:15', '2022-07-14 00:29:15'),
+(352, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:29:16', '2022-07-14 00:29:16'),
+(353, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:36:07', '2022-07-14 00:36:07'),
+(354, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:37:25', '2022-07-14 00:37:25'),
+(355, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:39:05', '2022-07-14 00:39:05'),
+(356, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:39:35', '2022-07-14 00:39:35'),
+(357, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:40:23', '2022-07-14 00:40:23'),
+(358, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:54:11', '2022-07-14 00:54:11'),
+(359, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:08', '2022-07-14 00:57:08'),
+(360, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:13', '2022-07-14 00:57:13'),
+(361, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:15', '2022-07-14 00:57:15'),
+(362, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:16', '2022-07-14 00:57:16'),
+(363, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:16', '2022-07-14 00:57:16'),
+(364, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:16', '2022-07-14 00:57:16'),
+(365, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:17', '2022-07-14 00:57:17'),
+(366, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:17', '2022-07-14 00:57:17'),
+(367, '127.0.0.1', 1, '2022-07-14', '2022-07-14 00:57:17', '2022-07-14 00:57:17'),
+(368, '127.0.0.1', 1, '2022-07-14', '2022-07-14 01:04:43', '2022-07-14 01:04:43'),
+(369, '127.0.0.1', 1, '2022-07-14', '2022-07-14 01:11:04', '2022-07-14 01:11:04'),
+(370, '127.0.0.1', 1, '2022-07-14', '2022-07-14 01:11:05', '2022-07-14 01:11:05'),
+(371, '127.0.0.1', 1, '2022-07-14', '2022-07-14 01:17:36', '2022-07-14 01:17:36'),
+(372, '::1', 1, '2022-07-14', '2022-07-14 01:41:07', '2022-07-14 01:41:07'),
+(373, '::1', 1, '2022-07-14', '2022-07-14 01:43:34', '2022-07-14 01:43:34'),
+(374, '::1', 1, '2022-07-14', '2022-07-14 01:43:38', '2022-07-14 01:43:38'),
+(375, '127.0.0.1', 1, '2022-07-14', '2022-07-14 01:43:48', '2022-07-14 01:43:48'),
+(376, '::1', 1, '2022-07-14', '2022-07-14 01:44:53', '2022-07-14 01:44:53'),
+(377, '::1', 1, '2022-07-14', '2022-07-14 01:45:12', '2022-07-14 01:45:12'),
+(378, '::1', 1, '2022-07-14', '2022-07-14 01:45:25', '2022-07-14 01:45:25'),
+(379, '::1', 1, '2022-07-14', '2022-07-14 01:46:05', '2022-07-14 01:46:05'),
+(380, '::1', 1, '2022-07-14', '2022-07-14 01:46:15', '2022-07-14 01:46:15'),
+(381, '::1', 1, '2022-07-14', '2022-07-14 01:46:19', '2022-07-14 01:46:19'),
+(382, '::1', 1, '2022-07-14', '2022-07-14 01:46:39', '2022-07-14 01:46:39'),
+(383, '::1', 1, '2022-07-14', '2022-07-14 01:48:17', '2022-07-14 01:48:17'),
+(384, '::1', 1, '2022-07-14', '2022-07-14 01:49:38', '2022-07-14 01:49:38'),
+(385, '127.0.0.1', 1, '2022-07-14', '2022-07-14 05:29:47', '2022-07-14 05:29:47'),
+(386, '127.0.0.1', 1, '2022-07-14', '2022-07-14 05:42:39', '2022-07-14 05:42:39'),
+(387, '127.0.0.1', 1, '2022-07-14', '2022-07-14 05:42:56', '2022-07-14 05:42:56'),
+(388, '127.0.0.1', 1, '2022-07-14', '2022-07-14 05:45:10', '2022-07-14 05:45:10'),
+(389, '127.0.0.1', 1, '2022-07-14', '2022-07-14 06:04:32', '2022-07-14 06:04:32'),
+(390, '127.0.0.1', 1, '2022-07-14', '2022-07-14 07:07:09', '2022-07-14 07:07:09'),
+(391, '127.0.0.1', 1, '2022-07-15', '2022-07-14 15:43:53', '2022-07-14 15:43:53'),
+(392, '127.0.0.1', 1, '2022-07-15', '2022-07-14 15:46:55', '2022-07-14 15:46:55'),
+(393, '127.0.0.1', 1, '2022-07-15', '2022-07-14 15:46:55', '2022-07-14 15:46:55'),
+(394, '127.0.0.1', 1, '2022-07-15', '2022-07-14 15:46:56', '2022-07-14 15:46:56'),
+(395, '127.0.0.1', 1, '2022-07-15', '2022-07-14 15:47:05', '2022-07-14 15:47:05'),
+(396, '127.0.0.1', 1, '2022-07-15', '2022-07-14 16:07:20', '2022-07-14 16:07:20'),
+(397, '127.0.0.1', 1, '2022-07-15', '2022-07-14 16:07:51', '2022-07-14 16:07:51'),
+(398, '127.0.0.1', 1, '2022-07-15', '2022-07-14 17:28:25', '2022-07-14 17:28:25'),
+(399, '127.0.0.1', 1, '2022-07-15', '2022-07-14 17:45:35', '2022-07-14 17:45:35'),
+(400, '127.0.0.1', 1, '2022-07-15', '2022-07-14 17:51:11', '2022-07-14 17:51:11'),
+(401, '127.0.0.1', 1, '2022-07-15', '2022-07-14 18:36:41', '2022-07-14 18:36:41'),
+(402, '127.0.0.1', 1, '2022-07-15', '2022-07-14 18:48:00', '2022-07-14 18:48:00'),
+(403, '127.0.0.1', 1, '2022-07-16', '2022-07-15 18:18:50', '2022-07-15 18:18:50'),
+(404, '127.0.0.1', 1, '2022-07-16', '2022-07-15 19:42:13', '2022-07-15 19:42:13'),
+(405, '127.0.0.1', 1, '2022-07-16', '2022-07-15 19:42:23', '2022-07-15 19:42:23'),
+(406, '127.0.0.1', 1, '2022-07-16', '2022-07-15 19:42:51', '2022-07-15 19:42:51'),
+(407, '127.0.0.1', 1, '2022-07-16', '2022-07-15 19:43:04', '2022-07-15 19:43:04'),
+(408, '127.0.0.1', 1, '2022-07-16', '2022-07-15 19:57:54', '2022-07-15 19:57:54'),
+(409, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:23:26', '2022-07-15 20:23:26'),
+(410, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:25:34', '2022-07-15 20:25:34'),
+(411, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:30:08', '2022-07-15 20:30:08'),
+(412, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:31:18', '2022-07-15 20:31:18'),
+(413, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:31:48', '2022-07-15 20:31:48'),
+(414, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:32:15', '2022-07-15 20:32:15'),
+(415, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:32:31', '2022-07-15 20:32:31'),
+(416, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:36:47', '2022-07-15 20:36:47'),
+(417, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:36:56', '2022-07-15 20:36:56'),
+(418, '127.0.0.1', 1, '2022-07-16', '2022-07-15 20:42:08', '2022-07-15 20:42:08'),
+(419, '::1', 1, '2022-07-17', '2022-07-17 06:42:42', '2022-07-17 06:42:42'),
+(420, '127.0.0.1', 1, '2022-07-17', '2022-07-17 06:43:26', '2022-07-17 06:43:26'),
+(421, '127.0.0.1', 1, '2022-07-17', '2022-07-17 06:44:53', '2022-07-17 06:44:53'),
+(422, '127.0.0.1', 1, '2022-07-19', '2022-07-19 07:48:16', '2022-07-19 07:48:16'),
+(423, '127.0.0.1', 1, '2022-07-19', '2022-07-19 07:48:17', '2022-07-19 07:48:17'),
+(424, '127.0.0.1', 1, '2022-07-19', '2022-07-19 07:49:18', '2022-07-19 07:49:18'),
+(425, '127.0.0.1', 1, '2022-07-19', '2022-07-19 07:50:07', '2022-07-19 07:50:07'),
+(426, '127.0.0.1', 1, '2022-07-19', '2022-07-19 07:51:17', '2022-07-19 07:51:17'),
+(427, '127.0.0.1', 1, '2022-07-19', '2022-07-19 07:51:36', '2022-07-19 07:51:36'),
+(428, '127.0.0.1', 1, '2022-07-19', '2022-07-19 08:01:51', '2022-07-19 08:01:51'),
+(429, '127.0.0.1', 1, '2022-07-19', '2022-07-19 08:44:35', '2022-07-19 08:44:35'),
+(430, '127.0.0.1', 1, '2022-07-19', '2022-07-19 08:44:54', '2022-07-19 08:44:54'),
+(431, '::1', 1, '2022-07-19', '2022-07-19 08:46:46', '2022-07-19 08:46:46'),
+(432, '127.0.0.1', 1, '2022-07-19', '2022-07-19 08:47:02', '2022-07-19 08:47:02'),
+(433, '::1', 1, '2022-07-19', '2022-07-19 08:55:08', '2022-07-19 08:55:08'),
+(434, '127.0.0.1', 1, '2022-07-19', '2022-07-19 08:55:13', '2022-07-19 08:55:13'),
+(435, '::1', 1, '2022-07-19', '2022-07-19 08:57:21', '2022-07-19 08:57:21'),
+(436, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:46:40', '2022-07-19 20:46:40'),
+(437, '::1', 1, '2022-07-20', '2022-07-19 20:46:49', '2022-07-19 20:46:49'),
+(438, '::1', 1, '2022-07-20', '2022-07-19 20:47:15', '2022-07-19 20:47:15'),
+(439, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:47:34', '2022-07-19 20:47:34'),
+(440, '::1', 1, '2022-07-20', '2022-07-19 20:48:15', '2022-07-19 20:48:15'),
+(441, '::1', 1, '2022-07-20', '2022-07-19 20:48:28', '2022-07-19 20:48:28'),
+(442, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:48:49', '2022-07-19 20:48:49'),
+(443, '::1', 1, '2022-07-20', '2022-07-19 20:49:47', '2022-07-19 20:49:47'),
+(444, '::1', 1, '2022-07-20', '2022-07-19 20:50:16', '2022-07-19 20:50:16'),
+(445, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:50:19', '2022-07-19 20:50:19'),
+(446, '::1', 1, '2022-07-20', '2022-07-19 20:52:13', '2022-07-19 20:52:13'),
+(447, '::1', 1, '2022-07-20', '2022-07-19 20:52:28', '2022-07-19 20:52:28'),
+(448, '::1', 1, '2022-07-20', '2022-07-19 20:53:19', '2022-07-19 20:53:19'),
+(449, '::1', 1, '2022-07-20', '2022-07-19 20:53:33', '2022-07-19 20:53:33'),
+(450, '::1', 1, '2022-07-20', '2022-07-19 20:53:39', '2022-07-19 20:53:39'),
+(451, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:54:21', '2022-07-19 20:54:21'),
+(452, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:54:22', '2022-07-19 20:54:22'),
+(453, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:54:57', '2022-07-19 20:54:57'),
+(454, '127.0.0.1', 1, '2022-07-20', '2022-07-19 20:57:33', '2022-07-19 20:57:33'),
+(455, '::1', 1, '2022-07-20', '2022-07-19 21:03:28', '2022-07-19 21:03:28'),
+(456, '::1', 1, '2022-07-20', '2022-07-19 21:03:58', '2022-07-19 21:03:58'),
+(457, '::1', 1, '2022-07-20', '2022-07-19 22:53:51', '2022-07-19 22:53:51'),
+(458, '::1', 1, '2022-07-20', '2022-07-19 22:59:34', '2022-07-19 22:59:34'),
+(459, '::1', 1, '2022-07-20', '2022-07-19 22:59:40', '2022-07-19 22:59:40'),
+(460, '::1', 1, '2022-07-20', '2022-07-19 23:00:12', '2022-07-19 23:00:12'),
+(461, '::1', 1, '2022-07-20', '2022-07-19 23:01:38', '2022-07-19 23:01:38'),
+(462, '127.0.0.1', 1, '2022-07-20', '2022-07-19 23:59:05', '2022-07-19 23:59:05'),
+(463, '127.0.0.1', 1, '2022-07-20', '2022-07-20 04:57:55', '2022-07-20 04:57:55'),
+(464, '127.0.0.1', 1, '2022-07-20', '2022-07-20 05:05:27', '2022-07-20 05:05:27'),
+(465, '127.0.0.1', 1, '2022-07-20', '2022-07-20 05:05:37', '2022-07-20 05:05:37'),
+(466, '127.0.0.1', 1, '2022-07-20', '2022-07-20 05:07:26', '2022-07-20 05:07:26'),
+(467, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:30:54', '2022-07-20 06:30:54'),
+(468, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:31:18', '2022-07-20 06:31:18'),
+(469, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:31:40', '2022-07-20 06:31:40'),
+(470, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:42:38', '2022-07-20 06:42:38'),
+(471, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:47:13', '2022-07-20 06:47:13'),
+(472, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:59:02', '2022-07-20 06:59:02'),
+(473, '127.0.0.1', 1, '2022-07-20', '2022-07-20 06:59:15', '2022-07-20 06:59:15'),
+(474, '127.0.0.1', 1, '2022-07-20', '2022-07-20 07:04:33', '2022-07-20 07:04:33'),
+(475, '127.0.0.1', 1, '2022-07-20', '2022-07-20 07:05:08', '2022-07-20 07:05:08'),
+(476, '127.0.0.1', 1, '2022-07-20', '2022-07-20 07:07:18', '2022-07-20 07:07:18'),
+(477, '127.0.0.1', 1, '2022-07-20', '2022-07-20 08:00:12', '2022-07-20 08:00:12'),
+(478, '127.0.0.1', 1, '2022-07-20', '2022-07-20 08:00:21', '2022-07-20 08:00:21'),
+(479, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:18:07', '2022-07-20 14:18:07'),
+(480, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:19:32', '2022-07-20 14:19:32'),
+(481, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:19:55', '2022-07-20 14:19:55'),
+(482, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:20:22', '2022-07-20 14:20:22'),
+(483, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:20:42', '2022-07-20 14:20:42'),
+(484, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:20:48', '2022-07-20 14:20:48'),
+(485, '127.0.0.1', 1, '2022-07-21', '2022-07-20 14:21:32', '2022-07-20 14:21:32'),
+(486, '::1', 1, '2022-07-21', '2022-07-20 14:24:31', '2022-07-20 14:24:31'),
+(487, '::1', 1, '2022-07-21', '2022-07-20 14:24:50', '2022-07-20 14:24:50'),
+(488, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:23:23', '2022-07-20 18:23:23'),
+(489, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:32:16', '2022-07-20 18:32:16'),
+(490, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:32:26', '2022-07-20 18:32:26'),
+(491, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:32:40', '2022-07-20 18:32:40'),
+(492, '::1', 1, '2022-07-21', '2022-07-20 18:37:05', '2022-07-20 18:37:05'),
+(493, '::1', 1, '2022-07-21', '2022-07-20 18:37:31', '2022-07-20 18:37:31'),
+(494, '::1', 1, '2022-07-21', '2022-07-20 18:37:34', '2022-07-20 18:37:34'),
+(495, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:40:44', '2022-07-20 18:40:44'),
+(496, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:40:50', '2022-07-20 18:40:50'),
+(497, '127.0.0.1', 1, '2022-07-21', '2022-07-20 18:49:51', '2022-07-20 18:49:51'),
+(498, '127.0.0.1', 1, '2022-07-21', '2022-07-20 20:20:59', '2022-07-20 20:20:59'),
+(499, '127.0.0.1', 1, '2022-07-21', '2022-07-20 20:49:25', '2022-07-20 20:49:25'),
+(500, '127.0.0.1', 1, '2022-07-21', '2022-07-20 20:55:23', '2022-07-20 20:55:23'),
+(501, '127.0.0.1', 1, '2022-07-21', '2022-07-20 20:55:44', '2022-07-20 20:55:44'),
+(502, '127.0.0.1', 1, '2022-07-21', '2022-07-20 21:00:01', '2022-07-20 21:00:01'),
+(503, '127.0.0.1', 1, '2022-07-21', '2022-07-20 21:03:25', '2022-07-20 21:03:25'),
+(504, '127.0.0.1', 1, '2022-07-21', '2022-07-20 21:24:57', '2022-07-20 21:24:57'),
+(505, '127.0.0.1', 1, '2022-07-21', '2022-07-21 05:00:24', '2022-07-21 05:00:24'),
+(506, '::1', 1, '2022-07-21', '2022-07-21 05:08:41', '2022-07-21 05:08:41'),
+(507, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:16:25', '2022-08-23 23:16:25'),
+(508, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:19:13', '2022-08-23 23:19:13'),
+(509, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:19:54', '2022-08-23 23:19:54'),
+(510, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:24:15', '2022-08-23 23:24:15'),
+(511, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:24:30', '2022-08-23 23:24:30'),
+(512, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:27:36', '2022-08-23 23:27:36'),
+(513, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:29:03', '2022-08-23 23:29:03'),
+(514, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:29:58', '2022-08-23 23:29:58'),
+(515, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:30:17', '2022-08-23 23:30:17'),
+(516, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:55:06', '2022-08-23 23:55:06'),
+(517, '127.0.0.1', 1, '2022-08-24', '2022-08-23 23:55:22', '2022-08-23 23:55:22'),
+(518, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:02:15', '2022-08-24 00:02:15'),
+(519, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:02:32', '2022-08-24 00:02:32'),
+(520, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:06:37', '2022-08-24 00:06:37'),
+(521, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:06:48', '2022-08-24 00:06:48'),
+(522, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:48:05', '2022-08-24 00:48:05'),
+(523, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:51:12', '2022-08-24 00:51:12'),
+(524, '127.0.0.1', 1, '2022-08-24', '2022-08-24 00:54:43', '2022-08-24 00:54:43'),
+(525, '127.0.0.1', 1, '2022-08-24', '2022-08-24 01:00:55', '2022-08-24 01:00:55'),
+(526, '127.0.0.1', 1, '2022-08-24', '2022-08-24 01:01:12', '2022-08-24 01:01:12'),
+(527, '127.0.0.1', 1, '2022-08-24', '2022-08-24 01:04:12', '2022-08-24 01:04:12'),
+(528, '127.0.0.1', 1, '2022-08-24', '2022-08-24 01:14:17', '2022-08-24 01:14:17'),
+(529, '127.0.0.1', 1, '2022-08-25', '2022-08-24 17:29:44', '2022-08-24 17:29:44'),
+(530, '127.0.0.1', 1, '2022-08-25', '2022-08-24 17:31:04', '2022-08-24 17:31:04'),
+(531, '127.0.0.1', 1, '2022-08-25', '2022-08-24 17:31:58', '2022-08-24 17:31:58'),
+(532, '127.0.0.1', 1, '2022-08-25', '2022-08-24 17:45:24', '2022-08-24 17:45:24'),
+(533, '127.0.0.1', 1, '2022-08-25', '2022-08-24 19:11:51', '2022-08-24 19:11:51'),
+(534, '127.0.0.1', 1, '2022-08-25', '2022-08-24 19:14:15', '2022-08-24 19:14:15'),
+(535, '127.0.0.1', 1, '2022-08-25', '2022-08-24 19:17:04', '2022-08-24 19:17:04'),
+(536, '127.0.0.1', 1, '2022-08-25', '2022-08-24 19:17:19', '2022-08-24 19:17:19'),
+(537, '127.0.0.1', 1, '2022-08-25', '2022-08-24 19:26:18', '2022-08-24 19:26:18');
 
 -- --------------------------------------------------------
 
@@ -1485,15 +2475,17 @@ INSERT INTO `users` (`id`, `email`, `email_verified_at`, `password`, `level`, `r
 -- Table structure for table `ward`
 --
 
-CREATE TABLE `ward` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `ward`;
+CREATE TABLE IF NOT EXISTS `ward` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `district_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `ward_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `ward_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `ward_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11163 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ward`
@@ -12689,351 +13681,15 @@ INSERT INTO `ward` (`id`, `district_code`, `ward_code`, `ward_name`, `ward_type`
 -- Table structure for table `wishlists`
 --
 
-CREATE TABLE `wishlists` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `wishlists`;
+CREATE TABLE IF NOT EXISTS `wishlists` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `id_sanpham` int(11) UNSIGNED NOT NULL,
-  `id_khachhang` int(11) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `categories_tenloai_unique` (`tenloai`);
-
---
--- Indexes for table `comments`
---
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_khachhang` (`id_khachhang`),
-  ADD KEY `id_sanpham` (`id_sanpham`),
-  ADD KEY `id_post` (`id_baiviet`);
-
---
--- Indexes for table `coupon`
---
-ALTER TABLE `coupon`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `customers`
---
-ALTER TABLE `customers`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `customers_email_unique` (`email`);
-
---
--- Indexes for table `district`
---
-ALTER TABLE `district`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `failed_jobs`
---
-ALTER TABLE `failed_jobs`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
-
---
--- Indexes for table `feeship`
---
-ALTER TABLE `feeship`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `image`
---
-ALTER TABLE `image`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `materials`
---
-ALTER TABLE `materials`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `material_units`
---
-ALTER TABLE `material_units`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `menu_posts`
---
-ALTER TABLE `menu_posts`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `menu_posts_tendanhmuc_unique` (`tendanhmuc`);
-
---
--- Indexes for table `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `orders_id_nhanvien_foreign` (`id_nhanvien`),
-  ADD KEY `orders_id_khachhang_foreign` (`id_khachhang`);
-
---
--- Indexes for table `order_details`
---
-ALTER TABLE `order_details`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `order_details_id_donhang_foreign` (`id_donhang`),
-  ADD KEY `order_details_id_size_foreign` (`id_size`),
-  ADD KEY `order_details_id_sanpham_foreign` (`id_sanpham`);
-
---
--- Indexes for table `password_resets`
---
-ALTER TABLE `password_resets`
-  ADD KEY `password_resets_email_index` (`email`);
-
---
--- Indexes for table `payments`
---
-ALTER TABLE `payments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `payments_id_donhang_foreign` (`id_donhang`);
-
---
--- Indexes for table `personal_access_tokens`
---
-ALTER TABLE `personal_access_tokens`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
-
---
--- Indexes for table `posts`
---
-ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `posts_tieude_unique` (`tieude`),
-  ADD KEY `posts_id_danhmuc_foreign` (`id_danhmuc`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `products_tensp_unique` (`tensp`),
-  ADD KEY `products_id_loaisanpham_foreign` (`id_loaisanpham`);
-
---
--- Indexes for table `products_coupon`
---
-ALTER TABLE `products_coupon`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_product` (`id_product`),
-  ADD KEY `id_coupon` (`id_coupon`);
-
---
--- Indexes for table `province`
---
-ALTER TABLE `province`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `sizes`
---
-ALTER TABLE `sizes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `size_pros`
---
-ALTER TABLE `size_pros`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `size_pros_id_pro_foreign` (`id_pro`),
-  ADD KEY `size_pros_id_size_foreign` (`id_size`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
-
---
--- Indexes for table `ward`
---
-ALTER TABLE `ward`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `wishlists`
---
-ALTER TABLE `wishlists`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_khachhang` (`id_khachhang`),
-  ADD KEY `id_sanpham` (`id_sanpham`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `comments`
---
-ALTER TABLE `comments`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
-
---
--- AUTO_INCREMENT for table `coupon`
---
-ALTER TABLE `coupon`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `customers`
---
-ALTER TABLE `customers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `district`
---
-ALTER TABLE `district`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=714;
-
---
--- AUTO_INCREMENT for table `failed_jobs`
---
-ALTER TABLE `failed_jobs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `feeship`
---
-ALTER TABLE `feeship`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `image`
---
-ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `materials`
---
-ALTER TABLE `materials`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `material_units`
---
-ALTER TABLE `material_units`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `menu_posts`
---
-ALTER TABLE `menu_posts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
-
---
--- AUTO_INCREMENT for table `order_details`
---
-ALTER TABLE `order_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
-
---
--- AUTO_INCREMENT for table `payments`
---
-ALTER TABLE `payments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `personal_access_tokens`
---
-ALTER TABLE `personal_access_tokens`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `posts`
---
-ALTER TABLE `posts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `products_coupon`
---
-ALTER TABLE `products_coupon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `province`
---
-ALTER TABLE `province`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
-
---
--- AUTO_INCREMENT for table `sizes`
---
-ALTER TABLE `sizes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `size_pros`
---
-ALTER TABLE `size_pros`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `ward`
---
-ALTER TABLE `ward`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11163;
-
---
--- AUTO_INCREMENT for table `wishlists`
---
-ALTER TABLE `wishlists`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  `id_khachhang` int(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_khachhang` (`id_khachhang`),
+  KEY `id_sanpham` (`id_sanpham`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Constraints for dumped tables
@@ -13051,8 +13707,7 @@ ALTER TABLE `comments`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_id_khachhang_foreign` FOREIGN KEY (`id_khachhang`) REFERENCES `customers` (`id`),
-  ADD CONSTRAINT `orders_id_nhanvien_foreign` FOREIGN KEY (`id_nhanvien`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `orders_id_khachhang_foreign` FOREIGN KEY (`id_khachhang`) REFERENCES `customers` (`id`);
 
 --
 -- Constraints for table `order_details`

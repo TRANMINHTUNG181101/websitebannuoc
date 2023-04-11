@@ -182,20 +182,7 @@
             <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="blog-sidebar">
 
-                    <div class="side-widget">
-                        <div class="side-widget-header border-0">
-                            <h4><i class="fa fa-search" aria-hidden="true"></i> Tìm Kiếm</h4>
-                        </div>
 
-                        <div class="side-widget-body p-t-10">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Từ Khoá...">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-lg">Go</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="side-widget">
                         <div class="side-widget-header">

@@ -42,7 +42,7 @@
                         <select name="typeaccount" id="">
                             @foreach ($typeAcc as $value)
                                 @if ($value->id == $staff->type_account)
-                                    <option value="{{ $value->id }}"selected="selected">{{ $value->type_account }}
+                                    <option value="{{ $value->id }}"selected="selected"> {{ $value->type_account }}
                                     </option>
                                 @else
                                     <option value="{{ $value->id }}"> {{ $value->type_account }}

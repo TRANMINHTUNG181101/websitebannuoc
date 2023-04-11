@@ -1511,7 +1511,7 @@ ul.list-style-none li a:hover {
     border: 2px solid transparent;
 }
 .btn {
-	color: #ffffff;
+	color: #ffffff !important;
 	padding: 15px 25px;
 	cursor: pointer;
 	-webkit-transition: 0s;
@@ -7658,6 +7658,7 @@ ul.digital_product_share li a {
 /*-------------------- Contact Us --------------*/
 .contact-box {
     width: 100%;
+    height: 100%;
     margin: 0 auto;
     display: table;
     text-align: center;
@@ -10070,7 +10071,7 @@ ul.tp-list li {
 .social.google a {
     background: #fff;
     border: 1px solid black;
-    color : #000;
+    color : #000!important;
 }
 #verify {
     display: none;
@@ -11075,3 +11076,7 @@ article.post-promotion {
     bottom: 90px!important;  
     right: 20px!important;  
 } 
+
+.tab_history table tr td {
+    border-top: none;
+}

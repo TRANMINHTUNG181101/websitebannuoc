@@ -158,8 +158,8 @@ input[type="password"] {
     box-shadow: none;
     border-bottom: 2px solid #0db8de;
     outline: 0;
-    background-color: #1a2226;
-    color: #ecf0f5;
+    background-color: unset;
+    color: unset;
 }
 
 input:focus {

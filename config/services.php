@@ -36,8 +36,9 @@ return [
     'google' => [
         'client_id' => '872153443222-flgmpsqdshqa8lmsgpl0l5gnqopbrepe.apps.googleusercontent.com',
         'client_secret' => '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',
-        'redirect' => 'http://localhost/website_ban_nuoc/public/callback/google'
+        'redirect' => 'http://127.0.0.1:8000/callback/google'
     ],
 
 ];
 // http://127.0.0.1:8000/callback/google
+// http://localhost/website_ban_nuoc/public/callback/google

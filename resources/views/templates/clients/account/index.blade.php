@@ -147,10 +147,10 @@
                                 <tbody>
                                     @if(isset($order))
                                     @foreach($order as $value)
-                                    <tr>
-                                        <th scope="row">
+                                    <tr style="border-top: none;">
+                                        <td scope="row">
                                             {{ $value->madh}}
-                                        </th>
+                                        </td>
                                         <td>{{ $value->hoten}}</td>
                                         <td> {{format_date($value->ngaytao)}}</td>
                                         <td> {{currency_format($value->tongtien)}}</td>
@@ -164,6 +164,23 @@
                                                 class="btn btn-sm btn-theme btn-user-detailorder">Xem</a></td>
 
                                     </tr>
+                                    @if(+$value->trangthai === 4)
+                                    <tr style="border-bottom: 1px solid #e8eaf1">
+                                        <td colspan="6">
+                                            <a class="btn btn-warning"
+                                                href="{{ route('confirm.order', $value->id)}}">Xác
+                                                nhận đã
+                                                nhận hàng</a>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if(+$value->trangthai === 5)
+                                    <tr style="border-bottom: 1px solid #e8eaf1">
+                                        <td colspan="6">
+                                            <button class="btn btn-success" disabled>Đã nhận hàng</button>
+                                        </td>
+                                    </tr>
+                                    @endif
 
                                     @endforeach
                                     @endif

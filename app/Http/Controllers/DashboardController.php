@@ -31,13 +31,12 @@ class DashboardController extends Controller
     }
     public function show(Request $req)
     {
-        $nowMonth = Carbon::now()->month;
-        $nowYear = Carbon::now()->year;
-        $nowday = Carbon::now()->day;
+        $nowMonth = Carbon::now('Asia/Ho_Chi_Minh')->month;
+        $nowYear = Carbon::now('Asia/Ho_Chi_Minh')->year;
+        $nowday = Carbon::now('Asia/Ho_Chi_Minh')->day;
         $statisByYear = array();
         $statisByDay = array();
         $datadays = null;
-
         for ($i = 1; $i < 13; $i++) {
             $month = 'Tháng ' . $i;
             $data['name'] = $month;
@@ -82,7 +81,7 @@ class DashboardController extends Controller
             return view('auths.login');
         }
         $countProduct = Products::where('trangthai', 1)->count();
-        $countOrder = Order::whereDate('ngaytao', Carbon::today()->toDateString())->count();
+        $countOrder = Order::whereDate('ngaytao', Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d'))->count();
         return view('templates.admins.index', compact('name_login'), ['topproduct' => json_encode($data), 'statisByYear' => json_encode($statisByYear), 'statisByDay' => json_encode($statisByDay), 'countProduct' => $countProduct, 'countOrder' => $countOrder]);
     }
 
@@ -212,7 +211,7 @@ class DashboardController extends Controller
 
     function statisByMonthy1($month)
     {
-        $nowYear = Carbon::now()->year;
+        $nowYear = Carbon::now('Asia/Ho_Chi_Minh')->year;
         $moneySale = 0;
         $moneyBuyMaterial = 0;
         $getSaleByMonth = Sale_statisticals::whereYear('ngay_ban', $nowYear)->whereMonth('ngay_ban', $month)->get();
@@ -235,7 +234,7 @@ class DashboardController extends Controller
     }
     function statisByDay($month, $day)
     {
-        $nowYear = Carbon::now()->year;
+        $nowYear = Carbon::now('Asia/Ho_Chi_Minh')->year;
         $date = Carbon::createFromDate($nowYear, $month, $day)->format('Y-m-d');
         $moneySale = 0;
         $moneyBuyMaterial = 0;
@@ -260,7 +259,7 @@ class DashboardController extends Controller
 
     function statisByMonthy($month)
     {
-        $nowYear = Carbon::now()->year;
+        $nowYear = Carbon::now('Asia/Ho_Chi_Minh')->year;
         $moneySale = 0;
         $moneyBuyMaterial = 0;
         $getSaleByMonth = Sale_statisticals::whereYear('ngay_ban', $nowYear)->whereMonth('ngay_ban', $month)->get();
